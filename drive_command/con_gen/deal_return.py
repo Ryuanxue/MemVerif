@@ -147,6 +147,7 @@ def deal_return(rast, funnamne, return_val):
     进行return归一化操作，将函数中的return语句替换为赋值语句，并添加label
     :param rast: 对应于函数的ast
     :param funnamne: 函数名
+    :return_val:list,存放为每个函数定义的返回值变量
     :return: 无
     """
 

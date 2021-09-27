@@ -14,11 +14,13 @@ dir_src_sink_xml="../../meta_data"
 nodes = filedot.get_nodes()
 edges = filedot.get_edges()
 get_funname_and_funedgs(nodes, edges)
-
-
 parser = argparse.ArgumentParser()
+
+"""它的值为true或者false，true则同时生成xml，false则只生成用户代码"""
+is_gen_xml=True
 mainflag=True
 if len(sys.argv)==1 or mainflag:
+    """生成所有的source和sink组合的diamante"""
     sorce_info = []
     sink_info = []
     xmlabspath=os.path.abspath(dir_src_sink_xml)
@@ -62,6 +64,7 @@ if len(sys.argv)==1 or mainflag:
             outfile = os.path.abspath(outdir) + "/"
             main_entry(srcfile, srcline, sinkfile, sinkline, filedot, nodes, edges, outfile, gen_funname)
 else:
+    """生成一个source对应一个sink的代码"""
     parser.add_argument("source")
     parser.add_argument("src_line")
     parser.add_argument("sink")

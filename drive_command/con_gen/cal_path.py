@@ -6,6 +6,7 @@ from pycparser import parse_file, c_generator, c_ast, c_parser
 
 from con_gen.lib_code_gen import get_classifypath_key, sort_deup1, merge_two_list, \
     gen_code_entry, get_lineinfo
+from con_gen.main_code_gen import is_gen_xml
 
 sys.setrecursionlimit(1000)
 
@@ -250,6 +251,7 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
     print("start finding srcnode and sinknode......")
     src = src_fun + ":" + src_line
     sink = sink_fun + ":" + sink_line
+
     print(src)
     print(sink)
     for n in nodes:
@@ -262,6 +264,10 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
             sinkflag = True
         if srcflag and sinkflag:
             break
+    if is_gen_xml:
+        srcinfo=[src_fun,src_line,srcnode]
+    else:
+        srcinfo=None
     print("find srcnode and sinknode ending......")
     print(srcnode)
     print(destnode)
@@ -286,6 +292,9 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
     #     for p in pa:
     #         print(p.get_name())
     #         # print(p)
+
+    """一个source到sink可能有多种不同的路径
+    对路径进行分类，按行号进行排序，合并，得到最终的路径"""
 
     classify_pathlist = {}
 
@@ -342,5 +351,5 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
                         blocknamelist.append(bbname)
                         final_list.append(i)
                 return_val = []
-                gen_code_entry(final_list, startline, endline, outfile_1, gen_funname1, return_val)
+                gen_code_entry(final_list, startline, endline, outfile_1, gen_funname1, return_val,srcinfo)
                 key_inc = key_inc + 1

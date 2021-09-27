@@ -1,9 +1,14 @@
 import copy
 import os
 import subprocess
+from xml.dom.minidom import parse
 
 from pycparser import parse_file, c_ast, c_generator, c_parser
 from con_gen.deal_return import deal_return, global_return_sta, get_last_linenum, global_return_decl
+from con_gen.lib_gen_xml import get_src_ast, get_srcvarname, get_c_filename, saveinfo_input_xml, get_project_path, \
+    parse_c_to_ll, create_xml_function
+from con_gen.main_code_gen import is_gen_xml
+from gen_xml.createxml import entry_createxml
 
 dir_ast = {}
 global_dic = {}
@@ -131,7 +136,7 @@ def gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, la
             funparam.append(vardecl)
             continue
         funparam.append(p)
-    temp_ret_name=[]
+    temp_ret_name = []
     for p in return_val:
         if p.name in temp_ret_name:
             continue
@@ -277,6 +282,7 @@ def modifyid(st, funname, fun_global_list, localval):
     :param st: ast节点（对应c语言中语句的ast节点或子节点）
     :param funname:字符串（函数名）
     :param fun_global_list:列表（包含funname函数中所使用到的全局变量的变量名）
+    :param localval:list （存放局部变量的声明）
     :return:无
     """
     # if type(st)==c_ast.Decl:
@@ -735,6 +741,14 @@ def deal_global_variable(ast):
 
 
 def modifylocalvarible(ast, funname, fun_global_list, return_val):
+    """
+    在ast上将funname函数进行ssa操作
+    :param ast: FileAST(funname所在的文件ast)
+    :param funname: string（当前函数的函数名）
+    :param fun_global_list:list(每个函数中使用到的全局变量)
+    :param return_val:list（）存放为每个函数定义的返回值变量的ast语句
+    :return:
+    """
     for fun in ast.ext:
         if type(fun) == c_ast.FuncDef and fun.decl.name == funname:
             st = fun
@@ -748,6 +762,12 @@ def modifylocalvarible(ast, funname, fun_global_list, return_val):
 
 
 def parse_to_ast(ele, return_val):
+    """
+    根据ele中的文件路径信息，获得对应文件的ast
+    :param ele: 基本块（基本块中包含行号等信息）
+    :param return_val: list(用于存放在deal_return函数中定义的返回值变量ast语句）
+    :return:
+    """
     # relabel_list = ele.get("label")[2:-2]
     # relabellist_list = relabel_list.split("\n")
     # print(ele.get_name())
@@ -782,25 +802,27 @@ def parse_to_ast(ele, return_val):
             # print(fpath + '/fun1')
             tempast = parse_file(fpath + '/fun1', use_cpp=True)
 
+            """
+            获取ele所在的c文件名
+            判断此文件是否是路径中的最后一个c文件名
+            调用entry_createxml()
+            """
+            if is_gen_xml:
+                entry_createxml(tempast, False, None)
             deal_global_variable(tempast)
             # 对两个函数进行ssa修改
             fun2_global_list = global_dic[funname]
 
             modifylocalvarible(tempast, funname, fun2_global_list, return_val)
             find_fun_loop(tempast, funname)
-            # if "s3_pkt.c" == filename:
-            #     print("fileast....")
-            #     print(tempast)
-            # exit()
             Ismodifyloclavarible.append(funname)
             dir_ast[filename] = tempast
-            # dir_ast[filename].append(tempast)
             os.remove(fpath + '/fun1')
     retast = copy.deepcopy(tempast)
     return retast
 
 
-def notloop_move(linenum, next_ast, ele, re_po_flag, return_val):
+def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname, is_srcpart, dfa_srcline):
     """
     不是loop类型的移动，将所有called函数内联到主调函数中相应的位置
     :param linenum: called函数在主调函数中的行号
@@ -813,6 +835,9 @@ def notloop_move(linenum, next_ast, ele, re_po_flag, return_val):
     for ext1 in tempast.ext:
         if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
             next_ast1 = ext1.body.block_items
+            if is_gen_xml and is_srcpart:
+                memcpy_ast = get_src_ast(dfa_srcline, ext1.body)
+                get_srcvarname(memcpy_ast, dfa_srcvarname)
             for i in next_ast:
                 rdic = []
                 depth = 1
@@ -893,7 +918,7 @@ def split_path_end(blocknamelist, split_pathlist):
             end = end + 1
 
 
-def deal_recur(list3, prefunname, split_pathlist, bblist, re_po_flag, outfile, genfunname, param_list, return_val):
+def deal_recur(list3, prefunname, param_list, return_val, dfa_srcline, dfa_srcvarname):
     firstele = list3[0]
     firsfunname = getfunnmae(firstele)
     if firsfunname != prefunname:
@@ -910,50 +935,17 @@ def deal_recur(list3, prefunname, split_pathlist, bblist, re_po_flag, outfile, g
 
                 for i in funast.decl.type.args.params:
                     param_list.append(i)
+
+                """
+                在funbody中找到dfa_srcline且memcpy
+                得到memcpyast
+                传递memcpyast获得varname
+                """
+                if is_gen_xml:
+                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    get_srcvarname(memcpy_ast, dfa_srcvarname)
+
                 return funast.body
-                # firstpart = split_pathlist[0]
-                # prepart = firstpart
-                # for j in split_pathlist:
-                #     if j == firstpart:
-                #         continue
-                #     else:
-                #         start = j[0]
-                #         ele = list3[start]
-                #         elefunname = getfunnmae(ele)
-                #         if elefunname == funname:
-                #             prepart = j
-                #             continue
-                #         else:
-                #             prestart = prepart[0]
-                #             preend = prepart[1]
-                #             part_path = list3[prestart: preend]
-                #             ret_list = []
-                #             get_bb_linenum(part_path, elefunname, ret_list, bblist)
-                #             if len(ret_list) > 0:
-                #                 linenum = ret_list[0]
-                #                 next_ast = funast.body.block_items
-                #                 next_ast = notloop_move(linenum, next_ast, ele, re_po_flag, return_val)
-                #             prepart = j
-                # print("finally_code")
-                # fundef = getfundef()
-                # fundef.ext[0].decl.name = genfunname
-                # fundef.ext[0].decl.type.type.declname = genfunname
-                # funparam = fundef.ext[0].decl.type.args.params
-                # funparam.pop()
-                # for p in ext1.decl.type.args.params:
-                #     if p.init != None:
-                #         vardecl = c_ast.Decl(quals='', name=p.name, type=p.type, storage='', funcspec='', init=None,
-                #                              bitsize=None)
-                #         funparam.append(vardecl)
-                #         continue
-                #     funparam.append(p)
-                # fundef.ext[0].body.block_items = []
-                # for ele in ext1.body.block_items:
-                #     fundef.ext[0].body.block_items.append(ele)
-                # c_file = open(outfile, "w")
-                # c_file.write(generator.visit(fundef))
-                # c_file.close()
-                # break
 
 
 def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, return_val):
@@ -1072,7 +1064,8 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
 #                 break
 
 
-def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabel, labeldefine, return_val):
+def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabel, labeldefine,
+                  return_val, ndfa_srcvaname, dfa_srcfunname, dfa_srcline):
     """
     对最终路径的endpart部分进行处理（将每条路径根据end和start标识分成不同的区间，endpart部分包含第一区间到end与start之间的区间）
     :param pathlist: 列表（包含第一区间到end与start之间的区间的一条子路径）
@@ -1105,6 +1098,9 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == callerfunname:
                 # deal_return(ext1, callerfunname)
                 funast = copy.deepcopy(ext1)
+                if is_gen_xml and callerfunname == dfa_srcfunname:
+                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    get_srcvarname(memcpy_ast, ndfa_srcvaname)
                 # if part==split_path[0]:
                 #     print("first ast generater...")
                 #     print(generator.visit(funast))
@@ -1515,7 +1511,8 @@ def find_goto_balel(st, gotolabel, labeldefine):
         pass
 
 
-def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val):
+def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
+                      dfa_functionlist, dfa_srcline, dfa_srcvarname):
     """
     对于路径中有end节点的情况，判断路径中的endpart部分是否有loop，如果有loop，进行代码移动操作,
     并根据loop所在的位置对路径进行拆分，返回5种不同种类的拆分情况
@@ -1532,8 +1529,8 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val):
     isloop = False
     split_flag = False
     is_first_part = False
-    if len(endlist) > 0:
-        endlist.reverse()
+    if len(endlist) > 0:  # endlist不为空
+        endlist.reverse()  # 逆转endlist
         for part in endlist:
             print("part....")
             print(part)
@@ -1566,6 +1563,16 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val):
                     判断子区间中剩余的其他元素是否在大loop中"""
                     print("haveloop.......")
                     # print(loop_list)
+
+                    """
+                    获得c文件名，将函数信息，文件添加到相应的列表中
+                    """
+                    if is_gen_xml:
+                        temp_c_file = get_c_filename(curele)
+                        if temp_c_file not in dfa_filelist_c:
+                            dfa_filelist_c.append(temp_c_file)
+                        dfa_functionlist.append(curfunname)
+
                     print(generator.visit(loop_list[0]))
                     find_loopid(loop_list[0], varlist)
                     if part == endlist[0]:
@@ -1605,8 +1612,22 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val):
                             if len(templist) > 0:
                                 linenum = templist[0]
                                 bbele = pathlist[startind - 2]
+
+                                if is_gen_xml:
+                                    temp_c_file = get_c_filename(bbele)
+                                    temp_funname = getfunnmae(bbele)
+                                    if temp_c_file not in dfa_filelist_c:
+                                        dfa_filelist_c.append(temp_c_file)
+                                    dfa_functionlist.append(temp_funname)
                                 mvflag = "reverse"
-                                next_ast = notloop_move(linenum, next_ast, bbele, mvflag, return_val)
+
+                                if is_gen_xml and t == tunc_list[-2]:
+                                    is_srcpart = True
+                                else:
+                                    is_srcpart = False
+
+                                next_ast = notloop_move(linenum, next_ast, bbele, mvflag, return_val,
+                                                        dfa_srcvarname, is_srcpart, dfa_srcline)
                     new_start = start + subpart_ele_index + 1
                     newpart_pathlist = pathlist[new_start:end + 1]
 
@@ -1659,7 +1680,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val):
     return retlist
 
 
-def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val):
+def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val, srcinfo):
     """
     代码生成的入口,将路径分成不同种类，每种不同的路径调用不同的接口进行处理
     1.路径当中没有end节点，source所在的深度为0，直接调用deal_start进行处理
@@ -1681,6 +1702,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
     :param endline: int整数（sink行号）
     :param outfile: string字符串（生成函数存放的路径名）
     :param genfunname:string字符串（生成函数的函数名）
+    :srcinfo: None或者list[src_file,src_line]
     :return:无
     """
     split_pathlist = []
@@ -1688,6 +1710,19 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
     param_list = []
     gotolabel = []
     labeldefine = []
+
+    is_dfa = False  # 用于判断是否需要数据流分析
+    dfa_functionlist = []  # 存放loop入口到source 的函数名
+    if is_gen_xml:
+        dfa_srcfunname = getfunnmae(srcinfo[2])  # src所在函数名用于dfa
+        dfa_srcline = srcinfo[1]  # dfa src行号
+    else:
+        dfa_srcfunname = None
+        dfa_srcline = None
+    dfa_srcvarname = []  # dfa src变量名
+    ndfa_srcvarname = []  # 非df src变量名（有可能是数组，基础便阿玲，结构体成员变量）
+    dfa_filelist_c = []  # loop入口到src的所有c文件
+    dfa_filelist__ll = []  # 编译dfa_filelist_c转换为相应的.ll
 
     for bb in pathlist:
         bbname = bb.get_name()
@@ -1708,15 +1743,22 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
             拥有end节点与start节点之间只包含一个元素的区间  
             4.判断路径是否是递归
             """
-            recur_flag = judge_recur(pathlist, end_start_part[0])
+            recur_flag = judge_recur(pathlist, end_start_part[0])  ##first
             if recur_flag:
                 """递归类型处理"""
                 start = end_start_part[0][0]
                 preele = pathlist[start - 1]
                 prefunname = getfunnmae(preele)
                 re_po_flag = "positive"
-                recurast = deal_recur(pathlist, prefunname, split_pathlist, bblist, re_po_flag, outfile, genfunname,
-                                      param_list, return_val)
+                """
+                目前只支持在src所在的函数为递归函数
+                """
+                if is_gen_xml:
+                    is_dfa = True
+                    dfa_filelist_c.append(srcinfo[0])
+                    dfa_functionlist.append(dfa_srcfunname)
+
+                recurast = deal_recur(pathlist, prefunname, param_list, return_val, dfa_srcline, dfa_srcvarname)
                 callerast = recurast
                 sub_split_path = []
                 split_path_start(bblist, sub_split_path)
@@ -1744,7 +1786,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                         funparam.append(vardecl)
                         continue
                     funparam.append(p)
-                temp_ret_name=[]
+                temp_ret_name = []
                 for p in return_val:
                     if p.name in temp_ret_name:
                         continue
@@ -1772,12 +1814,14 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 3.判断路径是否应该被排除
                 5.判断路径是否是同一个source同一个sink
                 """
-                # loop_same_source_sink(split_pathlist, pathlist, end_start_part[0], outfile, genfunname)
-                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val)
+                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
+                                               dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 if len(rloop_list) > 2:
                     print(generator.visit(rloop_list[2]))
                 if rloop_list[0] == "one":
                     """is_first_part and split_flag is False"""
+                    if is_gen_xml:
+                        is_dfa = True
                     subpathlist = rloop_list[1]
                     callerast = rloop_list[2]
                     sub_split_path = []
@@ -1807,7 +1851,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                             funparam.append(vardecl)
                             continue
                         funparam.append(p)
-                    temp_ret_name=[]
+                    temp_ret_name = []
                     for p in return_val:
                         if p.name in temp_name:
                             continue
@@ -1844,11 +1888,14 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
             e_end_funname = getfunnmae(e_end_ele)
             if e_start_funname == e_end_funname:
                 """source和sink同一个函数中，且这个函数被一个loop调用"""
-                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val)
+                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
+                                               dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 if len(rloop_list) > 2:
                     print(generator.visit(rloop_list[2]))
                 if rloop_list[0] == "one":
                     """is_first_part and split_flag is False"""
+                    if is_gen_xml:
+                        is_dfa = True
                     subpathlist = rloop_list[1]
                     callerast = rloop_list[2]
                     sub_split_path = []
@@ -1876,7 +1923,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                             funparam.append(vardecl)
                             continue
                         funparam.append(p)
-                    temp_ret_name=[]
+                    temp_ret_name = []
                     for p in return_val:
                         if p.name in temp_ret_name:
                             continue
@@ -1898,11 +1945,14 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     c_file.write(generator.visit(fundef))
                     c_file.close()
             else:
-                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val)
+                rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
+                                               dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 # if len(rloop_list) > 2:
                 #     print(generator.visit(rloop_list[2]))
                 if rloop_list[0] == "one":
                     """is_first_part and split_flag is False"""
+                    if is_gen_xml:
+                        is_dfa = True
                     subpathlist = rloop_list[1]
                     callerast = rloop_list[2]
                     sub_split_path = []
@@ -1931,7 +1981,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                             funparam.append(vardecl)
                             continue
                         funparam.append(p)
-                    temp_return_name=[]
+                    temp_return_name = []
                     for p in return_val:
                         if p.name in temp_return_name:
                             continue
@@ -1954,17 +2004,21 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     c_file.close()
                 elif rloop_list[0] == "two":
                     """is_first_part and split_flag"""
+                    if is_gen_xml:
+                        is_dfa = True
                     startpathlist = rloop_list[1]
                     startlinenum = 0
                     callerast = rloop_list[2]
                     dealed_ast = [callerast]
                     line_ast = []
                     deal_start_part(bblist, startpathlist, startlinenum, endline, dealed_ast, line_ast, param_list,
-                                    None, gotolabel, labeldefine, return_val)
+                                    None, gotolabel, labeldefine, return_val, None, None, None)
                     line_ast.reverse()
                     gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine, return_val)
                 elif rloop_list[0] == "three":
                     """is_first_part is False and split_flag"""
+                    if is_gen_xml:
+                        is_dfa = True
                     subpathlist = rloop_list[1]
                     callerast = rloop_list[2]
                     subbblist = []
@@ -1979,7 +2033,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     endpathlist = subpathlist[start:end + 1]
                     dep_list = []
                     deal_end_part(endpathlist, starline, dep_list, param_list, callerast, gotolabel, labeldefine,
-                                  return_val)
+                                  return_val, None, None, None)
                     if len(dep_list) > 0:
                         split_index = dep_list[0]
                         startpathlist = subpathlist[split_index:]
@@ -1990,7 +2044,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                         inc_line = dep_list[2]
                         deal_start_part(bblist, startpathlist, startlinenum, endline, endpart_astlist, line_ast,
                                         param_list,
-                                        inc_line, gotolabel, labeldefine, return_val)
+                                        inc_line, gotolabel, labeldefine, return_val, None, None, None)
                         print("line ast...")
                         for t in line_ast:
                             print(t)
@@ -2002,6 +2056,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 elif rloop_list[0] == "five":
                     """没有loop的情况，分为endpart,和startpart处理"""
                     print("five....1457")
+
                     split_endlist = []
                     split_path_end(bblist, split_endlist)
                     start = split_endlist[0][0]
@@ -2009,7 +2064,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     endpathlist = pathlist[start:end + 1]
                     dep_list = []
                     deal_end_part(endpathlist, startline, dep_list, param_list, None, gotolabel, labeldefine,
-                                  return_val)
+                                  return_val, ndfa_srcvarname, dfa_srcfunname, dfa_srcline)
                     if len(dep_list) > 0:
                         split_index = dep_list[0]
                         startpathlist = pathlist[split_index:]
@@ -2025,7 +2080,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                         inc_line = dep_list[2]
                         deal_start_part(bblist, startpathlist, startlinenum, endline, endpart_astlist, line_ast,
                                         param_list,
-                                        inc_line, gotolabel, labeldefine, return_val)
+                                        inc_line, gotolabel, labeldefine, return_val, None, None, None)
                         line_ast.reverse()
                         gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine,
                                             return_val)
@@ -2036,9 +2091,115 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
         dealed_ast = []
         line_ast = []
         deal_start_part(bblist, pathlist, startline, endline, dealed_ast, line_ast, param_list, None, gotolabel,
-                        labeldefine, return_val)
+                        labeldefine, return_val, ndfa_srcvarname, dfa_srcfunname, dfa_srcline)
         line_ast.reverse()
         gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine, return_val)
+
+    entry_createxml(None, True, outfile[:-1]+"xml")
+    if is_gen_xml:
+        """
+        需要数据流分析的类型，不需要数据流分析的类型
+        """
+
+        """解析sec_filename.xml"""
+        finally_xmlfile = '../../meta_data/sec_xmlfile/' + outfile[:-1]+".xml"
+        sec_doc = parse(finally_xmlfile)
+        sec_root = sec_doc.documentElement
+        sec_decl=sec_root.getElementsByTagName("decl")
+
+        if is_dfa:
+            """
+            将srcinfo保存到dfa_input.xml中
+            clang 编译 dfa_filelist_c中的文件到.ll
+            调用数据流分析获得安全级信息存放dfa_out.xml中
+            解析dfa_output.xml获得安全级信息
+            解析sec_temp.xml，在文件中标记安全级信息
+            """
+            saveinfo_input_xml(dfa_functionlist, dfa_srcfunname, dfa_srcline, dfa_srcvarname)
+
+            pro_path = get_project_path(srcinfo[2])
+            dfa_filelist_ll = []
+            parse_c_to_ll(pro_path,dfa_filelist_c,dfa_filelist_ll)
+
+            dfa_command = ". ../../data_flow_analysis/bin/svf-ex"
+            for llfile in dfa_filelist_ll:
+                dfa_command = dfa_command + " " + llfile
+
+            (status1, output1) = subprocess.getstatusoutput(dfa_command)
+            if status1 == 0:
+                pass
+                """将安全数据添加到sec_filename.xml"""
+
+                """解析dfa_output.xml"""
+                dfa_output="dfa_output.xml"
+                doc = parse(dfa_output)
+                root = doc.documentElement
+                structlist = root.getElementsByTagName('structvar')
+                locarlist = root.getElementsByTagName('localvar')
+                globallist= root.getElementsByTagName("globalvar")
+
+
+                """创建function元素，并修改locallist中的元素安全级为H"""
+                localnamelist=[]
+                for ele in locarlist:
+                    elename=ele.getAttribute("name")
+                    localnamelist.append(elename)
+                create_xml_function(sec_doc,sec_root,param_list, outfile[:-2],localnamelist)
+
+                """检查structlist中的元素修改相应的元素为H"""
+                if len(structlist)>0:
+                    for sele in structlist:
+                        structname=sele.getAttribute("struct_name")
+                        memname=sele.getAttribute("member_name")
+
+                        for sd in sec_decl:
+                            sdname=sd.getAttribute("name")
+                            if sdname==structname:
+                                varlist=sd.getElementsByTagName("variable")
+                                for var in varlist:
+                                    vname=var.getAttribute("name")
+                                    if vname==memname:
+                                        var.setAttribute("level","H")
+                                        break
+                                break
+                """检查并修改globallist中的元素修改相应的元素为'H'"""
+                if len(globallist)>0:
+                    for gele in globallist:
+                        gname=gele.getAttribute("name")
+                        for sd in sec_decl:
+                            sdname=sd.getAttribute("name")
+                            if sdname==gname:
+                                varlist=sd.getElementsByTagName("variable")
+                                for var in varlist:
+                                    vname=var.getAttribute("name")
+                                    if vname==gname:
+                                        var.setAttribute("level","H")
+                                        break
+                                break
+
+        else:
+            """
+            从ndfa_srcvarname获得安全级信息
+            解析sec_temp.xml，在文件中标记安全级信息
+            """
+            if len(ndfa_srcvarname)>1:
+                """pass获得结构体的名字或者pycparser
+                找到struct_name 和member_name
+                修改相应的结构体成员变量为高安全级"""
+                pass
+            else:
+                if ndfa_srcvarname[0]=="_const_":
+                    pass
+                else:
+                    hvarname=dfa_srcfunname+ndfa_srcvarname[1]
+                    localnamelist=[hvarname]
+                    create_xml_function(sec_doc,sec_root,param_list, outfile[:-2],localnamelist)
+        """保存修改后的xml文档"""
+        with open(finally_xmlfile, 'w') as f:
+            f.write(sec_doc.toprettyxml(indent=' '))
+            f.close()
+
+
 
 
 def get_last_lineinfo(no):
@@ -2196,7 +2357,7 @@ def find_in_return(linenum, tempast, funname, varlist, inc_linenum):
 
 
 def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, line_ast, param_list, inc_line, gotolabel,
-                    labeldefine, return_val):
+                    labeldefine, return_val, ndfa_srcvarname, dfa_srcfunnme, dfa_srcline):
     """
     处理最终路径列表中的startpart部分（包括本身路径单重没有_end节点的情况，将路径拆分出startpart的情况）
     :param blocknamelist: 列表（包含所有未拆分情况下的基本块name）
@@ -2233,6 +2394,9 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
         for ext1 in ast.ext:
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == callerfunname:
                 funast = copy.deepcopy(ext1)
+                if is_gen_xml and callerfunname == dfa_srcfunnme:
+                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    get_srcvarname(memcpy_ast, ndfa_srcvarname)
                 break
         bodyast = funast.body
 

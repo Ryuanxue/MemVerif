@@ -44,7 +44,8 @@ def find_ID(st, l):
             find_ID(i, l)
 
 
-Type_List = ['size_t', '__int8_t', '__uint8_t', '__int16_t', '__uint16_t', '__int32_t', '__uint32_t',
+Type_List = ['size_t', '__int8_t', "unsigned', 'int", "unsigned', 'char", '__uint8_t', '__int16_t', '__uint16_t',
+             '__int32_t', '__uint32_t',
              '__int64_t', '__uint64_t', 'int', 'float', 'double', 'bool', 'int16_t', 'uint16_t', 'uint32_t',
              'uint8_t', 'int8_t', 'Enum', 'uint64_t', 'char', 'int64_t', 'int32_t']
 
@@ -67,7 +68,7 @@ def deal_global_variable(ast):
             global_dic[fun.decl.name] = l
 
 
-def deal_decls(doc,decls, nodes, generator):
+def deal_decls(doc, decls, nodes, generator):
     for j in decls:
         if type(j.type) == c_ast.TypeDecl:
             node1 = doc.createElement("variable")
@@ -85,7 +86,7 @@ def deal_decls(doc,decls, nodes, generator):
                     node1.setAttribute("Enum", "y")
                     e = j.type.type.name
 
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                     nodes[1].appendChild(node1)
                     # print(generator.visit(i))
                     # print("continue+2222222222")
@@ -95,7 +96,7 @@ def deal_decls(doc,decls, nodes, generator):
                 e = te[2:-2]
                 node1.setAttribute("type", e)
                 if e in Type_List:
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                 else:
                     node1.setAttribute("ref", e)
                 nodes[1].appendChild(node1)
@@ -112,7 +113,7 @@ def deal_decls(doc,decls, nodes, generator):
                 node1.setAttribute("type", e)
                 node1.setAttribute("ptr", '*')
                 if e in Type_List:
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                 else:
                     node1.setAttribute("ref", e)
                 nodes[1].appendChild(node1)
@@ -126,7 +127,7 @@ def deal_decls(doc,decls, nodes, generator):
                 node1.setAttribute("type", e)
                 node1.setAttribute("ptr", '*')
                 if e in Type_List:
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                 else:
                     node1.setAttribute("ref", e)
                 nodes[1].appendChild(node1)
@@ -158,7 +159,7 @@ def deal_decls(doc,decls, nodes, generator):
                 node1.setAttribute("type", e)
                 node1.setAttribute("arr", j.type.dim.value)
                 if e in Type_List:
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                 else:
                     node1.setAttribute("ref", e)
                 nodes[1].appendChild(node1)
@@ -179,7 +180,7 @@ def deal_decls(doc,decls, nodes, generator):
             else:
                 node1.setAttribute("arr", j.type.dim.value)
             if e in Type_List:
-                node1.setAttribute("level", "H")
+                node1.setAttribute("level", "L")
             else:
                 node1.setAttribute("ref", e)
             nodes[1].appendChild(node1)
@@ -255,7 +256,7 @@ def createxml(ast, doc, root, flag, filename):
                 if hasattr(i.type, "decls"):
                     decls = i.type.decls
                     if decls is not None:
-                        deal_decls(doc,decls, nodes, generator)
+                        deal_decls(doc, decls, nodes, generator)
             elif type(i.type.type) == c_ast.Enum:
                 if i.name in processed_name:
                     continue
@@ -302,7 +303,7 @@ def createxml(ast, doc, root, flag, filename):
                 if hasattr(i.type.type, "decls"):
                     decls = i.type.type.decls
                     if decls is not None:
-                        deal_decls(doc,decls, nodes, generator)
+                        deal_decls(doc, decls, nodes, generator)
 
                     else:
                         print(generator.visit(i))
@@ -317,11 +318,11 @@ def createxml(ast, doc, root, flag, filename):
                             no.setAttribute("name", i.name)
                             no.setAttribute("type", temp)
                             no.setAttribute("Enum", 'yes')
-                            no.setAttribute("level", "H")
+                            no.setAttribute("level", "L")
                             continue
 
                             if temp in Type_List:
-                                no.setAttribute("level", 'H')
+                                no.setAttribute("level", "L")
                             else:
                                 no.setAttribute("ref", temp)
                             nodes[1].appendChild(no)
@@ -332,7 +333,7 @@ def createxml(ast, doc, root, flag, filename):
                         no.setAttribute("type", Type)
                         no.setAttribute("Enum", 'yes')
                         if Type in Type_List:
-                            node.setAttribute("level", 'H')
+                            node.setAttribute("level", "L")
                         else:
                             node.setAttribute("ref", Type)
                         nodes[1].appendChild(no)
@@ -342,7 +343,7 @@ def createxml(ast, doc, root, flag, filename):
 
                     nodd.setAttribute("type", temp)
                     if temp in Type_List:
-                        nodd.setAttribute("level", "H")
+                        nodd.setAttribute("level", "L")
                     else:
                         nodd.setAttribute("ref", temp)
                     nodes[1].appendChild(nodd)
@@ -353,13 +354,15 @@ def createxml(ast, doc, root, flag, filename):
 
                 no.setAttribute("Enum", 'yes')
 
-                no.setAttribute("level", 'H')
+                no.setAttribute("level", "L")
 
                 nodes[1].appendChild(no)
                 continue
             elif type(i.type) == c_ast.PtrDecl or type(i.type) == c_ast.ArrayDecl:
+                print(type(i.type))
+                print(type(i.type.type))
                 if type(i.type) == c_ast.PtrDecl:
-                    if (i.type.type) == c_ast.FuncDecl:
+                    if type(i.type.type) == c_ast.FuncDecl:
                         continue
                     if type(i.type.type.type) == c_ast.IdentifierType:
                         if str(i.type.type.type.names)[2:-2] == 'void':
@@ -376,7 +379,7 @@ def createxml(ast, doc, root, flag, filename):
                             no.setAttribute("ptr", "*")
                             temp = str(i.type.type.type.names)[2:-2]
                             if temp in Type_List:
-                                no.setAttribute("level", "H")
+                                no.setAttribute("level", "L")
                             else:
                                 no.setAttribute("ref", temp)
                             nodes[1].appendChild(no)
@@ -400,7 +403,7 @@ def createxml(ast, doc, root, flag, filename):
                         temp = i.type.type.type.name
                         if temp in Type_List:
 
-                            no.setAttribute("level", "H")
+                            no.setAttribute("level", "L")
                         else:
                             no.setAttribute("ref", temp)
                         nodes[1].appendChild(no)
@@ -417,7 +420,7 @@ def createxml(ast, doc, root, flag, filename):
                         no.setAttribute("type", str(j.type.type.names)[2:-2])
                         temp = str(j.type.type.names)[2:-2]
                         if temp in Type_List:
-                            no.setAttribute("level", "H")
+                            no.setAttribute("level", "L")
                         else:
                             no.setAttribute("ref", temp)
                         nodes[1].appendChild(no)
@@ -444,7 +447,7 @@ def createxml(ast, doc, root, flag, filename):
                     nod.setAttribute("name", i.name)
                     nod.setAttribute("type", e)
                     if e in Type_List:
-                        nod.setAttribute("level", "H")
+                        nod.setAttribute("level", "L")
                     else:
                         nod.setAttribute("ref", e)
                     if type(i.type) == c_ast.ArrayDecl:
@@ -473,7 +476,7 @@ def createxml(ast, doc, root, flag, filename):
 
                 node1.setAttribute("type", temp)
                 if e in Type_List:
-                    node1.setAttribute("level", "H")
+                    node1.setAttribute("level", "L")
                 else:
                     node1.setAttribute("ref", temp)
                 nodes[1].appendChild(node1)
@@ -538,9 +541,9 @@ def createxml(ast, doc, root, flag, filename):
         #             n1.setAttribute("Enum", "y")
         #         n1.setAttribute("type", returntype)
         #         if returntype in Type_List:
-        #             n1.setAttribute("level", 'H')
+        #             n1.setAttribute("level", "L")
         #         elif node.hasAttribute("Enum"):
-        #             n1.setAttribute("level", "H")
+        #             n1.setAttribute("level", "L")
         #         else:
         #             n1.setAttribute("ref", returntype)
         #         nodes[1].appendChild(n1)
@@ -566,7 +569,7 @@ def createxml(ast, doc, root, flag, filename):
         #                     node1.setAttribute("type", str(j.type.type.name))
         #                     if type(j.type.type) == c_ast.Enum:
         #                         node1.setAttribute("Enum", "y")
-        #                         node1.setAttribute("level", "H")
+        #                         node1.setAttribute("level", "L")
         #                         nodes[1].appendChild(node1)
         #                         continue
         #                 else:
@@ -588,7 +591,7 @@ def createxml(ast, doc, root, flag, filename):
         #                 print(i)
         #             temp = node1.getAttribute("type")
         #             if temp in Type_List:
-        #                 node1.setAttribute("level", "H")
+        #                 node1.setAttribute("level", "L")
         #             else:
         #                 node1.setAttribute("ref", temp)
         #             nodes[1].appendChild(node1)
@@ -601,6 +604,8 @@ def createxml(ast, doc, root, flag, filename):
             continue
 
     with open(filename, 'w') as f:
+        print("output xml doc...")
+        print(doc.toprettyxml())
         f.write(doc.toprettyxml(indent=' '))
         f.close()
 
@@ -613,7 +618,8 @@ def entry_createxml(ast, endflag, outfile):
     ouitfile:输出文件的名字
     """
     # 定义temp.xml文件
-    temp_xml = './' + "temp.xml"  # 生成的xml存放的临时文件
+    print("entry_createxml start...")
+    temp_xml = './' + "sec_temp.xml"  # 生成的xml存放的临时文件
     # deal_global_variable(ast)  # 处理全局变量
     temp_xml_abs = os.path.abspath(temp_xml)
 
@@ -627,15 +633,15 @@ def entry_createxml(ast, endflag, outfile):
             createxml(ast, curdoc, curroot, curflag, temp_xml_abs)
         else:
             # temp_xml为空，第一次解析ast
-            curflag = "one"
-            curdoc = Document()
-            curroot = curdoc.createElement("root")
-            curdoc.appendChild(curroot)
-            createxml(ast, curdoc, curroot, curflag, temp_xml_abs)
+            twocurflag = "one"
+            twocurdoc = Document()
+            twocurroot = twocurdoc.createElement("root")
+            twocurdoc.appendChild(twocurroot)
+            createxml(ast, twocurdoc, twocurroot, twocurflag, temp_xml_abs)
 
     if endflag:
         # 将temp_xml文件复制到最终位置
-        finally_xmlfile = '../../meta_data/sec_xmlfile/' + outfile[:-1]+".xml"  # 最终生成的xml文件名
+        finally_xmlfile = '../../meta_data/sec_xmlfile/' + outfile  # 最终生成的xml文件名
         copy_fromfile = open(temp_xml_abs, "r", encoding='utf-8')
         copy_tofile = open(finally_xmlfile, 'w', encoding='utf-8')
 
@@ -646,6 +652,8 @@ def entry_createxml(ast, endflag, outfile):
         finally:
             copy_fromfile.close()
             copy_tofile.close()
+        global_decl.clear()
+        globalv_list.clear()
         with open(temp_xml_abs, "r+") as tempfile:
             tempfile.truncate()
 
@@ -656,15 +664,15 @@ if __name__ == "__main__":
     # """
     fake_include = "../../utils/fake_libc_include"
     abs_fake_include = os.path.abspath(fake_include)
-    fpath="" #路径名
-    filename="" #文件名
+    fpath = "/home/raoxue/Desktop/openssl-1.0.1f/ssl"  # 路径名
+    filename = "s2_pkt.c"  # 文件名
     command1 = "cd " + fpath + ";gcc -E " + filename + " -I../crypto -I.. -I../include -I" + abs_fake_include + " " \
-                                                                                                                     "-DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN " \
-                                                                                                                     "-DTERMIO -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM" \
-                                                                                                                     "-DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM >>fun1"
+                                                                                                                "-DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN " \
+                                                                                                                "-DTERMIO -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM" \
+                                                                                                                "-DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM >>fun1"
 
     (status, output) = subprocess.getstatusoutput(command1)
     if status == 0:
         # print(fpath + '/fun1')
         tempast = parse_file(fpath + '/fun1', use_cpp=True)
-        entry_createxml(tempast,True,"test.xml")
+        entry_createxml(tempast, True, "test.xml")

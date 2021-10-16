@@ -1,10 +1,10 @@
 import os
 import sys
 import pydot
-
+sys.path.append("../")
 from con_gen.lib_code_gen import global_funname
 
-sys.path.append("../")
+
 
 from con_gen.cal_path import get_funname_and_funedgs, main_entry
 from xml.dom.minidom import parse
@@ -24,11 +24,11 @@ for f in funele:
     funname = f.getAttribute("name")
     global_funname.append(funname)
 
-srcfile = "t1_reneg.c"
-srcline = "212"
+srcfile = "s2_pkt.c"
+srcline = "610"
 # sink_in=
-sinkfile = "s3_enc.c"
-sinkline = "575"
+sinkfile = "s2_pkt.c"
+sinkline = "490"
 outdir = "../../meta_data/code_gened"
 out_cfile = srcfile[:-2] + srcline + sinkfile[:-2] + sinkline + ".c"
 gen_funname = srcfile[:-2] + srcline + sinkfile[:-2] + sinkline

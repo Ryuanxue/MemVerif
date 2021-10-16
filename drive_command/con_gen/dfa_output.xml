@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <structvar struct_name="ssl2_state_st" mem_name="wnum"/>
+</Root>

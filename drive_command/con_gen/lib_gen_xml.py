@@ -7,8 +7,6 @@ from xml.dom.minidom import Document, parse
 
 from pycparser import c_ast
 
-from con_gen.lib_code_gen import getfunnmae, get_first_lineinfo
-
 
 def deal_sub_ast(subast,dfa_srcline, memcpy_ast_list):
     """
@@ -112,15 +110,23 @@ def get_srcvarname(memcpy_ast, dfa_srcvarname):
     exprs=memcpy_ast.args.exprs #list
 
     len_three=exprs[2]
+    print("memcpy third argment...")
+    print(len_three)
     if type(len_three) == c_ast.Constant:
+        print("const....")
         dfa_srcvarname.append("_const_")
     elif type(len_three) == c_ast.ID:
-        dfa_srcvarname.append(len_three.name)
+        print("ordinary srcname....")
+        varname=len_three.name
+        print(varname)
+        dfa_srcvarname.append(varname)
     elif type(len_three) == c_ast.StructRef:
+        print("strunt srcname....")
         mem_name=len_three.field.name
         dfa_srcvarname.append("struct")
         dfa_srcvarname.append(mem_name)
     elif type(len_three) == c_ast.ArrayRef:
+        print("array srcname....")
         if type(len_three.name)==c_ast.ID:
             dfa_srcvarname.append(len_three.name)
         elif type(len_three.name) == c_ast.StructRef:
@@ -132,23 +138,7 @@ def get_srcvarname(memcpy_ast, dfa_srcvarname):
         print("get_srcvarname continue....2")
 
 
-def get_c_filename(curele):
-    """
-    获得基本块中的c文件名
-    :param curele:基本块
-    :return: string(c文件名）
-    """
-    startline = get_first_lineinfo(curele)  # 取第一行
-    rindex = startline.rfind(":")
-    rslash = startline.rfind("/")
-    temp_cfile = startline[rslash + 1:rindex]
-    return temp_cfile
 
-def get_project_path(ele):
-    startline = get_first_lineinfo(ele)  # 取第一行
-    rslash = startline.rfind("/")
-    temp_path = startline[:rslash]
-    return temp_path
 
 
 def saveinfo_input_xml(dfa_functionlist, dfa_srcfunname,dfa_srcline,dfa_srcvarname):
@@ -165,12 +155,20 @@ def saveinfo_input_xml(dfa_functionlist, dfa_srcfunname,dfa_srcline,dfa_srcvarna
         pass
     else:
         if len(dfa_srcvarname)>1:
-            varname=dfa_srcfunname[1]
+            varname=dfa_srcvarname[1]
         else:
-            varname=dfa_srcfunname[0]
+            rawvarname=dfa_srcvarname[0]
+            rawvarname1=rawvarname[:-1]
+            raw_index=rawvarname1.rindex("_")
+            varname=rawvarname1[raw_index+1:]
+            print("dfa_srcname.....")
+            print(varname)
         dfa_xml = './' + "dfa_input.xml"  # 生成的xml存放的临时文件
         dfa_xml_abs = os.path.abspath(dfa_xml)
-        print(str(os.path.getsize(dfa_xml_abs)) + "ffffffff")
+        # print(str(os.path.getsize(dfa_xml_abs)) + "ffffffff")
+        if os.path.exists(dfa_xml_abs):
+            os.remove(dfa_xml_abs)
+
 
         # temp_xml为空，第一次解析ast
         curflag = "one"
@@ -197,19 +195,20 @@ def saveinfo_input_xml(dfa_functionlist, dfa_srcfunname,dfa_srcline,dfa_srcvarna
 
 def parse_c_to_ll(pro_path,dfa_filelist_c,dfa_filelist_ll):
     for cfile in dfa_filelist_c:
-        llfile = cfile[:-2] + "ll"
-        command = "cd " + pro_path + ";clang -S -c -g -Xclang -disable-O0-optnone -fno-discard-value-names -emit-llvm " + cfile + " -I../crypto -I.. -I../include" + " " \
-                                                                                                                                                                     "-DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN " \
-                                                                                                                                                                     "-DTERMIO -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM" \
-                                                                                                                                                                     "-DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM -o " + llfile
-        (status, output) = subprocess.getstatusoutput(command)
-        if status == 0:
-            dfa_filelist_ll.append(llfile)
+        llfile = pro_path+"/"+ cfile[:-1] + "ll"
+        # command = "cd " + pro_path + ";clang -S -c -g -Xclang -disable-O0-optnone -fno-discard-value-names -emit-llvm " + cfile + " -I../crypto -I.. -I../include" + " " \
+        #                                                                                                                                                              "-DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -m64 -DL_ENDIAN " \
+        #                                                                                                                                                              "-DTERMIO -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM" \
+        #                                                                                                                                                              "-DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM -o " + llfile
+        # (status, output) = subprocess.getstatusoutput(command)
+        # if status == 0:
+        #     dfa_filelist_ll.append(llfile)
+        dfa_filelist_ll.append(llfile)
 
 
 
 def create_xml_function(doc,sec_root,param_list,funname,localnamelist):
-    Type_List = ['size_t', '__int8_t', '__uint8_t', '__int16_t', '__uint16_t', '__int32_t', '__uint32_t',
+    Type_List = ['size_t', '__int8_t', "unsigned', 'int" ,"unsigned', 'char",'__uint8_t', '__int16_t', '__uint16_t', '__int32_t', '__uint32_t',
              '__int64_t', '__uint64_t', 'int', 'float', 'double', 'bool', 'int16_t', 'uint16_t', 'uint32_t',
              'uint8_t', 'int8_t', 'Enum', 'uint64_t', 'char', 'int64_t', 'int32_t']
     node = doc.createElement("function")

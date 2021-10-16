@@ -1,7 +1,7 @@
 import os
 from xml.dom.minidom import parse, Document
 
-dic = "/home/raoxue/Desktop/llvmref/Overread_Detect_Verify/test_c_source/openssl-1.0.1f/ssl"
+dic = "/home/raoxue/Desktop/openssl-1.0.1f/ssl"
 abspath = os.path.abspath(dic)
 dicpath = os.listdir(dic)
 sorce_info = []

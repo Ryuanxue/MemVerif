@@ -5,8 +5,7 @@ import pydot
 from pycparser import parse_file, c_generator, c_ast, c_parser
 
 from con_gen.lib_code_gen import get_classifypath_key, sort_deup1, merge_two_list, \
-    gen_code_entry, get_lineinfo
-from con_gen.main_code_gen import is_gen_xml
+    gen_code_entry, get_lineinfo, is_gen_xml, genxml_dealed_file
 
 sys.setrecursionlimit(1000)
 
@@ -300,6 +299,10 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
 
     for p in Fpath:
         key = get_classifypath_key(p)
+        print("without classify...")
+        for aa in p:
+            print(aa.get_name())
+        print("33333333")
         if key in classify_pathlist.keys():
             classify_pathlist[key].append(p)
         else:
@@ -307,6 +310,8 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
     key_inc = 1
     print("######")
     for key in classify_pathlist.keys():
+        print("key for everytime...")
+        print(key)
         class_path = classify_pathlist[key]
         # print(class_path)
         print(key)
@@ -351,5 +356,9 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
                         blocknamelist.append(bbname)
                         final_list.append(i)
                 return_val = []
+                genxml_dealed_file.clear()
+                print("every time start...")
+                for file in genxml_dealed_file:
+                    print(file)
                 gen_code_entry(final_list, startline, endline, outfile_1, gen_funname1, return_val,srcinfo)
                 key_inc = key_inc + 1

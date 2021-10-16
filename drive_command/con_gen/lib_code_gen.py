@@ -5,10 +5,12 @@ from xml.dom.minidom import parse
 
 from pycparser import parse_file, c_ast, c_generator, c_parser
 from con_gen.deal_return import deal_return, global_return_sta, get_last_linenum, global_return_decl
-from con_gen.lib_gen_xml import get_src_ast, get_srcvarname, get_c_filename, saveinfo_input_xml, get_project_path, \
+from con_gen.lib_gen_xml import get_src_ast, get_srcvarname, saveinfo_input_xml, \
     parse_c_to_ll, create_xml_function
-from con_gen.main_code_gen import is_gen_xml
 from gen_xml.createxml import entry_createxml
+
+is_gen_xml=True
+genxml_dealed_file=[]
 
 dir_ast = {}
 global_dic = {}
@@ -18,6 +20,24 @@ globalv_list = []  # store global varible
 fun_decl_dic = {}
 global_funname = []
 generator = c_generator.CGenerator()
+
+def get_c_filename(curele):
+    """
+    获得基本块中的c文件名
+    :param curele:基本块
+    :return: string(c文件名）
+    """
+    startline = get_first_lineinfo(curele)  # 取第一行
+    rindex = startline.rfind(":")
+    rslash = startline.rfind("/")
+    temp_cfile = startline[rslash + 1:rindex]
+    return temp_cfile
+
+def get_project_path(ele):
+    startline = get_first_lineinfo(ele)  # 取第一行
+    rslash = startline.rfind("/")
+    temp_path = startline[:rslash]
+    return temp_path
 
 
 def find_loop(sta, funname):
@@ -189,9 +209,9 @@ def is_have_funcall(nextfunname, stmt, linenum, funlist):
     """
     if stmt is None:
         return False
-    print("havecall.....")
-    print(stmt)
-    print(generator.visit(stmt))
+    # print("havecall.....")
+    # print(stmt)
+    # print(generator.visit(stmt))
 
     curlinenum = str(stmt.coord)
     print(curlinenum)
@@ -228,7 +248,7 @@ def is_have_funcall(nextfunname, stmt, linenum, funlist):
                     funlist.append("true")
                     funlist.append(s)
                     print("function....")
-                    print(s)
+                    # print(s)
                     return True
                 else:
                     is_have_funcall(nextfunname, s, linenum, funlist)
@@ -807,8 +827,8 @@ def parse_to_ast(ele, return_val):
             判断此文件是否是路径中的最后一个c文件名
             调用entry_createxml()
             """
-            if is_gen_xml:
-                entry_createxml(tempast, False, None)
+            # if is_gen_xml:
+            #     entry_createxml(tempast, False, None)
             deal_global_variable(tempast)
             # 对两个函数进行ssa修改
             fun2_global_list = global_dic[funname]
@@ -818,16 +838,29 @@ def parse_to_ast(ele, return_val):
             Ismodifyloclavarible.append(funname)
             dir_ast[filename] = tempast
             os.remove(fpath + '/fun1')
+    if is_gen_xml:
+        # dealed_file=[]
+        print("filename_c for genxml...")
+        print(filename)
+        print(genxml_dealed_file)
+        if filename in genxml_dealed_file:
+            pass
+        else:
+            entry_createxml(tempast, False, None)
+            genxml_dealed_file.append(filename)
     retast = copy.deepcopy(tempast)
     return retast
 
 
-def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname, is_srcpart, dfa_srcline):
+def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname, is_srcpart, dfa_srcline,dfa_filelist_c,dfa_functionlist):
     """
     不是loop类型的移动，将所有called函数内联到主调函数中相应的位置
     :param linenum: called函数在主调函数中的行号
     :param next_ast: 对应于主调函数的ast
     :param ele: called函数中的一个基本块节点
+    :dfa_srcvarname:list(use to store src's varname)
+    :is_srcpart:bool(use to judge whether block belong to srcpart(oppsite is sinkpart))
+    :dfa_srcline:int (represent the linenume that src in)
     :return:
     """
     tempast = parse_to_ast(ele, return_val)
@@ -836,8 +869,16 @@ def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname,
         if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
             next_ast1 = ext1.body.block_items
             if is_gen_xml and is_srcpart:
-                memcpy_ast = get_src_ast(dfa_srcline, ext1.body)
+                print("reverse loop get dfa_srcname....")
+                memcpy_ast_list=[]
+                get_src_ast(dfa_srcline, ext1.body,memcpy_ast_list)
+                memcpy_ast =memcpy_ast_list[0]
                 get_srcvarname(memcpy_ast, dfa_srcvarname)
+                temp_c_file = get_c_filename(ele)
+                curfunname = getfunnmae(ele)
+                if temp_c_file not in dfa_filelist_c:
+                    dfa_filelist_c.append(temp_c_file)
+                dfa_functionlist.append(curfunname)
             for i in next_ast:
                 rdic = []
                 depth = 1
@@ -942,7 +983,10 @@ def deal_recur(list3, prefunname, param_list, return_val, dfa_srcline, dfa_srcva
                 传递memcpyast获得varname
                 """
                 if is_gen_xml:
-                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    memcpy_ast_list = []
+                    get_src_ast(dfa_srcline, funast.body, memcpy_ast_list)
+                    memcpy_ast = memcpy_ast_list[0]
+                    print("recur get dfa_srcname...")
                     get_srcvarname(memcpy_ast, dfa_srcvarname)
 
                 return funast.body
@@ -986,7 +1030,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
             print(calledfunname)
             print(linenum)
             calledele = pathlist[endind + 1]
-            next_ast = notloop_move(linenum, next_ast, calledele, re_po_flag, return_val)
+            next_ast = notloop_move(linenum, next_ast, calledele, re_po_flag, return_val,None,False,None,None,None)
 
 
 # def loop_move_part_reverse_order(partlist, pathlist, fun_ast_map, re_po_flag, param_list):
@@ -1099,7 +1143,10 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
                 # deal_return(ext1, callerfunname)
                 funast = copy.deepcopy(ext1)
                 if is_gen_xml and callerfunname == dfa_srcfunname:
-                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    memcpy_ast_list = []
+                    get_src_ast(dfa_srcline, funast.body, memcpy_ast_list)
+                    memcpy_ast = memcpy_ast_list[0]
+                    print("endpart no loop get ndfa_srrname...")
                     get_srcvarname(memcpy_ast, ndfa_srcvaname)
                 # if part==split_path[0]:
                 #     print("first ast generater...")
@@ -1520,6 +1567,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
     :param param_list:列表（用来存放生成函数的参数）
     :return: retlist列表（元素为种类，拆分后的列表）
     """
+    print("deal_reverse_loop start...")
     blocknamelist = []
     for pp in pathlist:
         ppname = pp.get_name()
@@ -1531,7 +1579,10 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
     is_first_part = False
     if len(endlist) > 0:  # endlist不为空
         endlist.reverse()  # 逆转endlist
+        len_endlist=len(endlist)
         for part in endlist:
+            index_part=endlist.index(part)
+            len_sub_endlist=len_endlist-index_part
             print("part....")
             print(part)
             '''解析c文件获取ast'''
@@ -1585,7 +1636,12 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
                     bbele = pathlist[start - 2]  # 上一个区间中的元素
                     move_flag = "reverse"
                     find_goto_balel(loop_list[0], gotolabel, labeldefine)
-                    next_ast = loop_move(loop_list[0], linenum, bbele, move_flag, return_val)
+                    if len_sub_endlist==2 and is_gen_xml:
+                        next_ast = loop_move(loop_list[0], linenum, bbele, move_flag, return_val,dfa_srcvarname,dfa_srcline,dfa_filelist_c,dfa_functionlist)
+                        print("srcname in deal_reverse_loop...")
+                        print(dfa_srcvarname[0])
+                    else:
+                        next_ast = loop_move(loop_list[0], linenum, bbele, move_flag, return_val,None,None,None,None)
                     # print("next_ast.....")
                     # for st in next_ast:
                     #     print(generator.visit(st))
@@ -1597,6 +1653,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
 
                         # 非loop移动
                         for t in tunc_list:
+                            print("tunc_list large than one...")
                             if t == tunc_list[-1]:
                                 break
                             print("tunc list...")
@@ -1622,12 +1679,13 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
                                 mvflag = "reverse"
 
                                 if is_gen_xml and t == tunc_list[-2]:
+                                    print("srcpart is true.....")
                                     is_srcpart = True
                                 else:
                                     is_srcpart = False
 
                                 next_ast = notloop_move(linenum, next_ast, bbele, mvflag, return_val,
-                                                        dfa_srcvarname, is_srcpart, dfa_srcline)
+                                                        dfa_srcvarname, is_srcpart, dfa_srcline,dfa_filelist_c,dfa_functionlist)
                     new_start = start + subpart_ele_index + 1
                     newpart_pathlist = pathlist[new_start:end + 1]
 
@@ -1814,9 +1872,11 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 3.判断路径是否应该被排除
                 5.判断路径是否是同一个source同一个sink
                 """
+                print("minmum part call deal_reverse_loop..")
                 rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
                                                dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 if len(rloop_list) > 2:
+                    print("ninmum part...")
                     print(generator.visit(rloop_list[2]))
                 if rloop_list[0] == "one":
                     """is_first_part and split_flag is False"""
@@ -1872,8 +1932,8 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     c_file = open(outfile, "w")
                     c_file.write(generator.visit(fundef))
                     c_file.close()
-
-
+                else:
+                    return
         else:
             """
             判断有没有大loop
@@ -1888,6 +1948,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
             e_end_funname = getfunnmae(e_end_ele)
             if e_start_funname == e_end_funname:
                 """source和sink同一个函数中，且这个函数被一个loop调用"""
+                print("source and sink in a loop...")
                 rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
                                                dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 if len(rloop_list) > 2:
@@ -1945,6 +2006,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     c_file.write(generator.visit(fundef))
                     c_file.close()
             else:
+                print("ordinary source and sink....")
                 rloop_list = deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, dfa_filelist_c,
                                                dfa_functionlist, dfa_srcline, dfa_srcvarname)
                 # if len(rloop_list) > 2:
@@ -2095,19 +2157,23 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
         line_ast.reverse()
         gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine, return_val)
 
-    entry_createxml(None, True, outfile[:-1]+"xml")
+    entry_createxml(None, True, genfunname+".xml")
+    print("srcname in code_gen...")
+
     if is_gen_xml:
+
         """
         需要数据流分析的类型，不需要数据流分析的类型
         """
 
         """解析sec_filename.xml"""
-        finally_xmlfile = '../../meta_data/sec_xmlfile/' + outfile[:-1]+".xml"
+        finally_xmlfile = '../../meta_data/sec_xmlfile/' + genfunname+".xml"
         sec_doc = parse(finally_xmlfile)
         sec_root = sec_doc.documentElement
         sec_decl=sec_root.getElementsByTagName("decl")
 
         if is_dfa:
+            print(dfa_srcvarname[0])
             """
             将srcinfo保存到dfa_input.xml中
             clang 编译 dfa_filelist_c中的文件到.ll
@@ -2121,9 +2187,11 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
             dfa_filelist_ll = []
             parse_c_to_ll(pro_path,dfa_filelist_c,dfa_filelist_ll)
 
-            dfa_command = ". ../../data_flow_analysis/bin/svf-ex"
+            dfa_command = "/home/raoxue/Desktop/binary/svf-ex"
             for llfile in dfa_filelist_ll:
                 dfa_command = dfa_command + " " + llfile
+            print("dfa_command....")
+            print(dfa_command)
 
             (status1, output1) = subprocess.getstatusoutput(dfa_command)
             if status1 == 0:
@@ -2144,7 +2212,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 for ele in locarlist:
                     elename=ele.getAttribute("name")
                     localnamelist.append(elename)
-                create_xml_function(sec_doc,sec_root,param_list, outfile[:-2],localnamelist)
+                create_xml_function(sec_doc,sec_root,param_list, genfunname,localnamelist)
 
                 """检查structlist中的元素修改相应的元素为H"""
                 if len(structlist)>0:
@@ -2191,9 +2259,11 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 if ndfa_srcvarname[0]=="_const_":
                     pass
                 else:
-                    hvarname=dfa_srcfunname+ndfa_srcvarname[1]
+                    hvarname=ndfa_srcvarname[0]
+                    print("ndfa varname have high level.....")
+                    print(hvarname)
                     localnamelist=[hvarname]
-                    create_xml_function(sec_doc,sec_root,param_list, outfile[:-2],localnamelist)
+                    create_xml_function(sec_doc,sec_root,param_list, genfunname,localnamelist)
         """保存修改后的xml文档"""
         with open(finally_xmlfile, 'w') as f:
             f.write(sec_doc.toprettyxml(indent=' '))
@@ -2395,7 +2465,10 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == callerfunname:
                 funast = copy.deepcopy(ext1)
                 if is_gen_xml and callerfunname == dfa_srcfunnme:
-                    memcpy_ast = get_src_ast(dfa_srcline, funast.body)
+                    memcpy_ast_list = []
+                    get_src_ast(dfa_srcline, funast.body, memcpy_ast_list)
+                    memcpy_ast = memcpy_ast_list[0]
+                    print("positive order get ndfa_srcname....")
                     get_srcvarname(memcpy_ast, ndfa_srcvarname)
                 break
         bodyast = funast.body
@@ -2480,7 +2553,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                             tempast.append(loopast)
                             break
                     move_flag = "reverse"
-                    next_ast = loop_move(loopast, called_linenum, called_ele, move_flag, return_val)
+                    next_ast = loop_move(loopast, called_linenum, called_ele, move_flag, return_val,None,None,None,None)
                     if part == split_path[-2]:
                         pass
                     else:
@@ -2503,7 +2576,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                             if len(templist) > 0:
                                 linenum = templist[0]
                                 mvflag = "reverse"
-                                next_ast = notloop_move(linenum, next_ast, next_ele, mvflag, return_val)
+                                next_ast = notloop_move(linenum, next_ast, next_ele, mvflag, return_val,None,False,None,None,None)
                     line_ast.append(fun_ast_map)
                     break
                 else:  # 没有loop
@@ -2841,7 +2914,7 @@ def split_path_pos(pathlist, split_pathlist):
             split_pathlist.append(templist)
 
 
-def loop_move(loopast, linenum, ele, re_po_flat, return_val):
+def loop_move(loopast, linenum, ele, re_po_flat, return_val,dfa_srcvarname,dfa_srcline,dfa_filelist_c,dfa_functionlist):
     """
     loopast是loop所在的区间（不论是不是（正倒序都可以）），将相邻的called函数移动到loop中相应的位置
     :param loopast: 对应与主调函数中loop的ast
@@ -2855,6 +2928,19 @@ def loop_move(loopast, linenum, ele, re_po_flat, return_val):
         if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
             # deal_return(ext1, funname)
             next_ast = ext1.body.block_items
+            if is_gen_xml and dfa_srcline is not None:
+                print("reverse loop endlist have two part get dfa_srcname....")
+                memcpy_ast_list=[]
+                get_src_ast(dfa_srcline, ext1.body,memcpy_ast_list)
+                memcpy_ast =memcpy_ast_list[0]
+                get_srcvarname(memcpy_ast, dfa_srcvarname)
+                print("srcname in loop_move....")
+                print(dfa_srcvarname[0])
+                temp_c_file = get_c_filename(ele)
+                curfunname=getfunnmae(ele)
+                if temp_c_file not in dfa_filelist_c:
+                    dfa_filelist_c.append(temp_c_file)
+                dfa_functionlist.append(curfunname)
 
             rdic = []
             find_called_fun(loopast, linenum, funname, rdic)
@@ -2998,10 +3084,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                             ind = l.iftrue.block_items.index(ele)
                             rdic.append(ind)
                             rdic.append('basic')
-                            print("parent and child.....")
-                            print(generator.visit(l.iftrue))
-                            print("parent and child.....")
-                            print(generator.visit(ele))
+                            # print("parent and child.....")
+                            # print(generator.visit(l.iftrue))
+                            # print("parent and child.....")
+                            # print(generator.visit(ele))
                             get_actual_parm(funcall, rdic)
                             return
         else:
@@ -3032,10 +3118,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                             ind = l.iffalse.block_items.index(ele)
                             rdic.append(ind)
                             rdic.append('basic')
-                            print("parent and child.....1")
-                            print(generator.visit(l.iffalse))
-                            print("parent and child.....1")
-                            print(generator.visit(ele))
+                            # print("parent and child.....1")
+                            # print(generator.visit(l.iffalse))
+                            # print("parent and child.....1")
+                            # print(generator.visit(ele))
                             get_actual_parm(funcall, rdic)
                             return
 
@@ -3116,10 +3202,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                     ind = l.stmt.block_items.index(ele)
                     rdic.append(ind)
                     rdic.append("basic")
-                    print("parent and child.....2")
-                    print(generator.visit(l.stmt))
-                    print("parent and child.....2")
-                    print(generator.visit(ele))
+                    # print("parent and child.....2")
+                    # print(generator.visit(l.stmt))
+                    # print("parent and child.....2")
+                    # print(generator.visit(ele))
                     get_actual_parm(funcall, rdic)
                     return
 
@@ -3137,10 +3223,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                     ind = l.block_items.index(ele)
                     rdic.append(ind)
                     rdic.append("basic")
-                    print("parent and child.....3")
-                    print(generator.visit(l))
-                    print("parent and child.....3")
-                    print(generator.visit(ele))
+                    # print("parent and child.....3")
+                    # print(generator.visit(l))
+                    # print("parent and child.....3")
+                    # print(generator.visit(ele))
                     get_actual_parm(funcall, rdic)
                     return
     elif statetype == c_ast.While or statetype == c_ast.DoWhile:
@@ -3181,10 +3267,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                     ind = l.stmt.block_items.index(ele)
                     rdic.append(ind)
                     rdic.append("basic")
-                    print("parent and child.....4")
-                    print(generator.visit(l.stmt))
-                    print("parent and child.....4")
-                    print(generator.visit(ele))
+                    # print("parent and child.....4")
+                    # print(generator.visit(l.stmt))
+                    # print("parent and child.....4")
+                    # print(generator.visit(ele))
                     get_actual_parm(funcall, rdic)
                     return
 
@@ -3225,10 +3311,10 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                             ind = ele.stmts.index(caseele)
                             rdic.append(ind)
                             rdic.append('basic')
-                            print("parent and child.....5")
-                            print(generator.visit(ele))
-                            print("parent and child.....5")
-                            print(generator.visit(caseele))
+                            # print("parent and child.....5")
+                            # print(generator.visit(ele))
+                            # print("parent and child.....5")
+                            # print(generator.visit(caseele))
                             get_actual_parm(funcall, rdic)
                             return
     else:
@@ -3253,9 +3339,9 @@ def isincludefuncall1(l, nextfunname, rdic, depth, linenum, parent_node):
                 rdic.append(ind)
                 rdic.append('basic')
                 print("parent and child.....6")
-                for st in parent_node:
-                    print(generator.visit(st))
+                # for st in parent_node:
+                #     print(generator.visit(st))
                 print("parent and child.....6")
-                print(generator.visit(l))
+                # print(generator.visit(l))
                 get_actual_parm(funcall, rdic)
                 return

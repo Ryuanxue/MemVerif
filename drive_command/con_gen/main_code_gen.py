@@ -17,8 +17,9 @@ get_funname_and_funedgs(nodes, edges)
 parser = argparse.ArgumentParser()
 
 """它的值为true或者false，true则同时生成xml，false则只生成用户代码"""
-is_gen_xml=True
+
 mainflag=True
+
 if len(sys.argv)==1 or mainflag:
     """生成所有的source和sink组合的diamante"""
     sorce_info = []

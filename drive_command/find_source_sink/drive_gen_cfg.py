@@ -1,7 +1,9 @@
 import os
 
 if __name__ == '__main__':
-    dic = "/home/raoxue/Desktop/llvmref/Overread_Detect_Verify/test_c_source/openssl-1.0.1f/ssl"
+    dic = "/home/raoxue/Desktop/openssl-1.0.1f/ssl"
+    dic ="/home/raoxue/Documents/toy_c"
+    dic="/home/raoxue/Documents/toy_for_slice"
     abspath = os.path.abspath(dic)
     dicpath = os.listdir(dic)
     os.system("cd "+dic+";rm *.dot")
@@ -9,7 +11,7 @@ if __name__ == '__main__':
         filename = os.path.basename(file)
         if filename.endswith(".ll"):
             if "_instrument" not in filename:
-                command="cd "+dic+";opt -load libCFGPass.so -CFG "+filename
+                command="cd "+dic+";opt-10 -load libCFGPass.so -CFG "+filename
                 os.system(command)
 
     os.system("cd ../../meta_data/cfg_dot;rm *.dot")

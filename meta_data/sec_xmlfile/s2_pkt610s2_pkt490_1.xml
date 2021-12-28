@@ -1,0 +1,4643 @@
+<?xml version="1.0" ?>
+<root>
+ 
+ 
+ <decl name="buf_mem_st" type="Struct">
+  
+  
+  <variable name="length" type="size_t" level="L"/>
+  
+  
+  <variable name="data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="max" type="size_t" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="_STACK" type="Struct">
+  
+  
+  <variable name="num" type="int" level="L"/>
+  
+  
+  <variable name="sorted" type="int" level="L"/>
+  
+  
+  <variable name="num_alloc" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="OPENSSL_STRING" type="char">
+  
+  
+  <variable name="OPENSSL_STRING" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="OPENSSL_CSTRING" type="char">
+  
+  
+  <variable name="OPENSSL_CSTRING" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_OPENSSL_STRING" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_OPENSSL_BLOCK" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="OPENSSL_ITEM" type="Struct">
+  
+  
+  <variable name="code" type="int" level="L"/>
+  
+  
+  <variable name="value" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="value_size" type="size_t" level="L"/>
+  
+  
+  <variable name="value_length" type="size_t" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="CRYPTO_dynlock" type="Struct">
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="data" type="CRYPTO_dynlock_value" ptr="*" ref="CRYPTO_dynlock_value"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="crypto_ex_data_st" type="Struct">
+  
+  
+  <variable name="sk" type="stack_st_void" ptr="*" ref="stack_st_void"/>
+  
+  
+  <variable name="dummy" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_void" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="CRYPTO_EX_DATA_FUNCS" type="Struct">
+  
+  
+  <variable name="argl" type="long" ref="long"/>
+  
+  
+  <variable name="argp" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="new_func" type="CRYPTO_EX_new" ptr="*" ref="CRYPTO_EX_new"/>
+  
+  
+  <variable name="free_func" type="CRYPTO_EX_free" ptr="*" ref="CRYPTO_EX_free"/>
+  
+  
+  <variable name="dup_func" type="CRYPTO_EX_dup" ptr="*" ref="CRYPTO_EX_dup"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_CRYPTO_EX_DATA_FUNCS" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="CRYPTO_THREADID" type="Struct">
+  
+  
+  <variable name="ptr" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="val" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="COMP_METHOD" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="comp_ctx_st" type="Struct">
+  
+  
+  <variable name="meth" type="COMP_METHOD" ptr="*" ref="COMP_METHOD"/>
+  
+  
+  <variable name="compress_in" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="compress_out" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="expand_in" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="expand_out" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="BIO_METHOD" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="bio_st" type="Struct">
+  
+  
+  <variable name="method" type="BIO_METHOD" ptr="*" ref="BIO_METHOD"/>
+  
+  
+  <variable name="cb_arg" type="char" ptr="*" level="H"/>
+  
+  
+  <variable name="init" type="int" level="L"/>
+  
+  
+  <variable name="shutdown" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="retry_reason" type="int" level="L"/>
+  
+  
+  <variable name="num" type="int" level="L"/>
+  
+  
+  <variable name="ptr" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="next_bio" type="bio_st" ptr="*" ref="bio_st"/>
+  
+  
+  <variable name="prev_bio" type="bio_st" ptr="*" ref="bio_st"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="num_read" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_write" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_BIO" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="BIO_F_BUFFER_CTX" type="Struct">
+  
+  
+  <variable name="ibuf_size" type="int" level="L"/>
+  
+  
+  <variable name="obuf_size" type="int" level="L"/>
+  
+  
+  <variable name="ibuf" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="ibuf_len" type="int" level="L"/>
+  
+  
+  <variable name="ibuf_off" type="int" level="L"/>
+  
+  
+  <variable name="obuf" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="obuf_len" type="int" level="L"/>
+  
+  
+  <variable name="obuf_off" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="bignum_st" type="Struct">
+  
+  
+  <variable name="d" type="unsigned', 'int" ptr="*" level="L"/>
+  
+  
+  <variable name="top" type="int" level="L"/>
+  
+  
+  <variable name="dmax" type="int" level="L"/>
+  
+  
+  <variable name="neg" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="bn_mont_ctx_st" type="Struct">
+  
+  
+  <variable name="ri" type="int" level="L"/>
+  
+  
+  <variable name="RR" type="BIGNUM" ref="BIGNUM"/>
+  
+  
+  <variable name="N" type="BIGNUM" ref="BIGNUM"/>
+  
+  
+  <variable name="Ni" type="BIGNUM" ref="BIGNUM"/>
+  
+  
+  <variable name="n0" type="unsigned', 'int" arr="2" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="bn_recp_ctx_st" type="Struct">
+  
+  
+  <variable name="N" type="BIGNUM" ref="BIGNUM"/>
+  
+  
+  <variable name="Nr" type="BIGNUM" ref="BIGNUM"/>
+  
+  
+  <variable name="num_bits" type="int" level="L"/>
+  
+  
+  <variable name="shift" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="bn_gencb_st" type="Struct">
+  
+  
+  <variable name="ver" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="arg" type="void" ptr="*" ref="void"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_algor_st" type="Struct"/>
+ 
+ 
+ <decl name="stack_st_X509_ALGOR" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_CTX" type="Struct">
+  
+  
+  <variable name="p" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="eos" type="int" level="L"/>
+  
+  
+  <variable name="error" type="int" level="L"/>
+  
+  
+  <variable name="inf" type="int" level="L"/>
+  
+  
+  <variable name="tag" type="int" level="L"/>
+  
+  
+  <variable name="xclass" type="int" level="L"/>
+  
+  
+  <variable name="slen" type="long" ref="long"/>
+  
+  
+  <variable name="max" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="q" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="line" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_const_CTX" type="Struct">
+  
+  
+  <variable name="p" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="eos" type="int" level="L"/>
+  
+  
+  <variable name="error" type="int" level="L"/>
+  
+  
+  <variable name="inf" type="int" level="L"/>
+  
+  
+  <variable name="tag" type="int" level="L"/>
+  
+  
+  <variable name="xclass" type="int" level="L"/>
+  
+  
+  <variable name="slen" type="long" ref="long"/>
+  
+  
+  <variable name="max" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="q" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="line" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_OBJECT" type="Struct">
+  
+  
+  <variable name="sn" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="ln" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="nid" type="int" level="L"/>
+  
+  
+  <variable name="length" type="int" level="L"/>
+  
+  
+  <variable name="data" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="asn1_string_st" type="Struct">
+  
+  
+  <variable name="length" type="int" level="L"/>
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="flags" type="long" ref="long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_ENCODING" type="Struct">
+  
+  
+  <variable name="enc" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="len" type="long" ref="long"/>
+  
+  
+  <variable name="modified" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_STRING_TABLE" type="Struct">
+  
+  
+  <variable name="nid" type="int" level="L"/>
+  
+  
+  <variable name="minsize" type="long" ref="long"/>
+  
+  
+  <variable name="maxsize" type="long" ref="long"/>
+  
+  
+  <variable name="mask" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_ASN1_STRING_TABLE" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_ASN1_INTEGER" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_ASN1_GENERALSTRING" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_TYPE" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_ASN1_TYPE" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_SEQUENCE_ANY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_SEQUENCE_ANY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_SET_ANY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_SET_ANY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_X509" type="Struct">
+  
+  
+  <variable name="header" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="cert" type="X509" ptr="*" ref="X509"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="BIT_STRING_BITNAME" type="Struct">
+  
+  
+  <variable name="bitnum" type="int" level="L"/>
+  
+  
+  <variable name="lname" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="sname" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_ANY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_ANY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_OBJECT_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_OBJECT_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_ASN1_OBJECT" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_BIT_STRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_BIT_STRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_INTEGER_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_INTEGER_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_ENUMERATED_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_ENUMERATED_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_OCTET_STRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_OCTET_STRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_VISIBLESTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_VISIBLESTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_UNIVERSALSTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_UNIVERSALSTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_UTF8STRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_UTF8STRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_NULL_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_NULL_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_BMPSTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_BMPSTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_PRINTABLE_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_PRINTABLE_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DIRECTORYSTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="DIRECTORYSTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DISPLAYTEXT_it" type="ASN1_ITEM">
+  
+  
+  <variable name="DISPLAYTEXT_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_PRINTABLESTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_PRINTABLESTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_T61STRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_T61STRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_IA5STRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_IA5STRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_GENERALSTRING_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_GENERALSTRING_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_UTCTIME_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_UTCTIME_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_GENERALIZEDTIME_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_GENERALIZEDTIME_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_TIME_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_TIME_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ASN1_OCTET_STRING_NDEF_it" type="ASN1_ITEM">
+  
+  
+  <variable name="ASN1_OCTET_STRING_NDEF_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_X509_it" type="ASN1_ITEM">
+  
+  
+  <variable name="NETSCAPE_X509_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="rsa_meth_st" type="Struct">
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="app_data" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="rsa_st" type="Struct">
+  
+  
+  <variable name="pad" type="int" level="L"/>
+  
+  
+  <variable name="version" type="long" ref="long"/>
+  
+  
+  <variable name="meth" quals="const" type="RSA_METHOD" ptr="*" ref="RSA_METHOD"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+  
+  <variable name="n" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="e" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="d" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="p" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="q" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="dmp1" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="dmq1" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="iqmp" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="_method_mod_n" type="BN_MONT_CTX" ptr="*" ref="BN_MONT_CTX"/>
+  
+  
+  <variable name="_method_mod_p" type="BN_MONT_CTX" ptr="*" ref="BN_MONT_CTX"/>
+  
+  
+  <variable name="_method_mod_q" type="BN_MONT_CTX" ptr="*" ref="BN_MONT_CTX"/>
+  
+  
+  <variable name="bignum_data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="blinding" type="BN_BLINDING" ptr="*" ref="BN_BLINDING"/>
+  
+  
+  <variable name="mt_blinding" type="BN_BLINDING" ptr="*" ref="BN_BLINDING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="RSAPublicKey_it" type="ASN1_ITEM">
+  
+  
+  <variable name="RSAPublicKey_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="RSAPrivateKey_it" type="ASN1_ITEM">
+  
+  
+  <variable name="RSAPrivateKey_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="RSA_PSS_PARAMS" type="Struct">
+  
+  
+  <variable name="hashAlgorithm" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="maskGenAlgorithm" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="saltLength" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="trailerField" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="RSA_PSS_PARAMS_it" type="ASN1_ITEM">
+  
+  
+  <variable name="RSA_PSS_PARAMS_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dh_method" type="Struct">
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="app_data" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dh_st" type="Struct">
+  
+  
+  <variable name="pad" type="int" level="L"/>
+  
+  
+  <variable name="version" type="int" level="L"/>
+  
+  
+  <variable name="p" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="g" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="length" type="long" ref="long"/>
+  
+  
+  <variable name="pub_key" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="priv_key" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="method_mont_p" type="BN_MONT_CTX" ptr="*" ref="BN_MONT_CTX"/>
+  
+  
+  <variable name="q" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="j" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="seed" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="seedlen" type="int" level="L"/>
+  
+  
+  <variable name="counter" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="meth" quals="const" type="DH_METHOD" ptr="*" ref="DH_METHOD"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DSA_SIG" type="Struct">
+  
+  
+  <variable name="r" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="s" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dsa_method" type="Struct">
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="app_data" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dsa_st" type="Struct">
+  
+  
+  <variable name="pad" type="int" level="L"/>
+  
+  
+  <variable name="version" type="long" ref="long"/>
+  
+  
+  <variable name="write_params" type="int" level="L"/>
+  
+  
+  <variable name="p" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="q" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="g" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="pub_key" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="priv_key" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="kinv" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="r" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="method_mont_p" type="BN_MONT_CTX" ptr="*" ref="BN_MONT_CTX"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="meth" quals="const" type="DSA_METHOD" ptr="*" ref="DSA_METHOD"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="LHASH_NODE" type="Struct">
+  
+  
+  <variable name="data" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="next" type="lhash_node_st" ptr="*" ref="lhash_node_st"/>
+  
+  
+  <variable name="hash" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="_LHASH" type="Struct">
+  
+  
+  <variable name="comp" type="LHASH_COMP_FN_TYPE" ref="LHASH_COMP_FN_TYPE"/>
+  
+  
+  <variable name="hash" type="LHASH_HASH_FN_TYPE" ref="LHASH_HASH_FN_TYPE"/>
+  
+  
+  <variable name="num_nodes" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="num_alloc_nodes" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="p" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="pmax" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="up_load" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="down_load" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_items" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_expands" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_expand_reallocs" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_contracts" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_contract_reallocs" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_hash_calls" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_comp_calls" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_insert" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_replace" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_delete" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_no_delete" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_retrieve" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_retrieve_miss" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="num_hash_comps" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="error" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="lhash_st_OPENSSL_STRING" type="Struct">
+  
+  
+  <variable name="dummy" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="lhash_st_OPENSSL_CSTRING" type="Struct">
+  
+  
+  <variable name="dummy" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ERR_STATE" type="Struct">
+  
+  
+  <variable name="tid" type="CRYPTO_THREADID" ref="CRYPTO_THREADID"/>
+  
+  
+  <variable name="err_flags" type="int" arr="16" level="L"/>
+  
+  
+  <variable name="err_buffer" type="unsigned', 'long" arr="16" ref="unsigned', 'long"/>
+  
+  
+  <variable name="err_data" ptr="*" type="char" arr="16" level="L"/>
+  
+  
+  <variable name="err_data_flags" type="int" arr="16" level="L"/>
+  
+  
+  <variable name="err_file" quals="const" ptr="*" type="char" arr="16" level="L"/>
+  
+  
+  <variable name="err_line" type="int" arr="16" level="L"/>
+  
+  
+  <variable name="top" type="int" level="L"/>
+  
+  
+  <variable name="bottom" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ERR_STRING_DATA" type="Struct">
+  
+  
+  <variable name="error" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="string" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="OBJ_NAME" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="alias" type="int" level="L"/>
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="data" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="obj_cleanup_defer" type="int">
+  
+  
+  <variable name="obj_cleanup_defer" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="evp_pkey_st" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="save_type" type="int" level="L"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="ameth" quals="const" type="EVP_PKEY_ASN1_METHOD" ptr="*" ref="EVP_PKEY_ASN1_METHOD"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+  
+  <variable name="save_parameters" type="int" level="L"/>
+  
+  
+  <variable name="attributes" type="stack_st_X509_ATTRIBUTE" ptr="*" ref="stack_st_X509_ATTRIBUTE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="env_md_st" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="pkey_type" type="int" level="L"/>
+  
+  
+  <variable name="md_size" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="required_pkey_type" type="int" arr="5" level="L"/>
+  
+  
+  <variable name="block_size" type="int" level="L"/>
+  
+  
+  <variable name="ctx_size" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="env_md_ctx_st" type="Struct">
+  
+  
+  <variable name="digest" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="md_data" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="pctx" type="EVP_PKEY_CTX" ptr="*" ref="EVP_PKEY_CTX"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="evp_cipher_st" type="Struct">
+  
+  
+  <variable name="nid" type="int" level="L"/>
+  
+  
+  <variable name="block_size" type="int" level="L"/>
+  
+  
+  <variable name="key_len" type="int" level="L"/>
+  
+  
+  <variable name="iv_len" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ctx_size" type="int" level="L"/>
+  
+  
+  <variable name="app_data" type="void" ptr="*" ref="void"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="EVP_CIPHER_INFO" type="Struct">
+  
+  
+  <variable name="cipher" quals="const" type="EVP_CIPHER" ptr="*" ref="EVP_CIPHER"/>
+  
+  
+  <variable name="iv" type="unsigned', 'char" arr="16" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="evp_cipher_ctx_st" type="Struct">
+  
+  
+  <variable name="cipher" quals="const" type="EVP_CIPHER" ptr="*" ref="EVP_CIPHER"/>
+  
+  
+  <variable name="engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+  
+  <variable name="encrypt" type="int" level="L"/>
+  
+  
+  <variable name="buf_len" type="int" level="L"/>
+  
+  
+  <variable name="oiv" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="iv" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="buf" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="num" type="int" level="L"/>
+  
+  
+  <variable name="app_data" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="key_len" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="cipher_data" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="final_used" type="int" level="L"/>
+  
+  
+  <variable name="block_mask" type="int" level="L"/>
+  
+  
+  <variable name="final" type="unsigned', 'char" arr="32" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="EVP_ENCODE_CTX" type="Struct">
+  
+  
+  <variable name="num" type="int" level="L"/>
+  
+  
+  <variable name="length" type="int" level="L"/>
+  
+  
+  <variable name="enc_data" type="unsigned', 'char" arr="80" level="L"/>
+  
+  
+  <variable name="line_num" type="int" level="L"/>
+  
+  
+  <variable name="expect_nl" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ec_key_st" type="Struct"/>
+ 
+ 
+ <decl name="point_conversion_form_t" type="Enum"/>
+ 
+ 
+ <decl name="EC_builtin_curve" type="Struct">
+  
+  
+  <variable name="nid" type="int" level="L"/>
+  
+  
+  <variable name="comment" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ECDSA_SIG" type="Struct">
+  
+  
+  <variable name="r" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="s" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SHA_CTX" type="Struct">
+  
+  
+  <variable name="h0" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="h1" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="h2" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="h3" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="h4" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="Nl" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="Nh" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'int" arr="16" level="L"/>
+  
+  
+  <variable name="num" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SHA256_CTX" type="Struct">
+  
+  
+  <variable name="h" type="unsigned', 'int" arr="8" level="L"/>
+  
+  
+  <variable name="Nl" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="Nh" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'int" arr="16" level="L"/>
+  
+  
+  <variable name="num" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="md_len" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SHA512_CTX" type="Struct">
+  
+  
+  <variable name="h" type="unsigned', 'long', 'long" arr="8" ref="unsigned', 'long', 'long"/>
+  
+  
+  <variable name="Nl" type="unsigned', 'long', 'long" ref="unsigned', 'long', 'long"/>
+  
+  
+  <variable name="Nh" type="unsigned', 'long', 'long" ref="unsigned', 'long', 'long"/>
+  
+  
+  <variable name="num" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="md_len" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_OBJECTS" type="Struct">
+  
+  
+  <variable name="nid" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_VAL" type="Struct">
+  
+  
+  <variable name="notBefore" type="ASN1_TIME" ptr="*" ref="ASN1_TIME"/>
+  
+  
+  <variable name="notAfter" type="ASN1_TIME" ptr="*" ref="ASN1_TIME"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_pubkey_st" type="Struct">
+  
+  
+  <variable name="algor" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="public_key" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="pkey" type="EVP_PKEY" ptr="*" ref="EVP_PKEY"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_SIG" type="Struct">
+  
+  
+  <variable name="algor" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="digest" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_NAME_ENTRY" type="Struct">
+  
+  
+  <variable name="object" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+  
+  <variable name="value" type="ASN1_STRING" ptr="*" ref="ASN1_STRING"/>
+  
+  
+  <variable name="set" type="int" level="L"/>
+  
+  
+  <variable name="size" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_NAME_ENTRY" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_name_st" type="Struct">
+  
+  
+  <variable name="entries" type="stack_st_X509_NAME_ENTRY" ptr="*" ref="stack_st_X509_NAME_ENTRY"/>
+  
+  
+  <variable name="modified" type="int" level="L"/>
+  
+  
+  <variable name="bytes" type="BUF_MEM" ptr="*" ref="BUF_MEM"/>
+  
+  
+  <variable name="canon_enc" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="canon_enclen" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_NAME" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_EXTENSION" type="Struct">
+  
+  
+  <variable name="object" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+  
+  <variable name="critical" type="ASN1_BOOLEAN" ref="ASN1_BOOLEAN"/>
+  
+  
+  <variable name="value" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_EXTENSION" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_ATTRIBUTE" type="Struct">
+  
+  
+  <variable name="object" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+  
+  <variable name="single" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_ATTRIBUTE" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_REQ_INFO" type="Struct">
+  
+  
+  <variable name="enc" type="ASN1_ENCODING" ref="ASN1_ENCODING"/>
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="subject" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="pubkey" type="X509_PUBKEY" ptr="*" ref="X509_PUBKEY"/>
+  
+  
+  <variable name="attributes" type="stack_st_X509_ATTRIBUTE" ptr="*" ref="stack_st_X509_ATTRIBUTE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_REQ" type="Struct">
+  
+  
+  <variable name="req_info" type="X509_REQ_INFO" ptr="*" ref="X509_REQ_INFO"/>
+  
+  
+  <variable name="sig_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="signature" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CINF" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="serialNumber" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="signature" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="issuer" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="validity" type="X509_VAL" ptr="*" ref="X509_VAL"/>
+  
+  
+  <variable name="subject" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="key" type="X509_PUBKEY" ptr="*" ref="X509_PUBKEY"/>
+  
+  
+  <variable name="issuerUID" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="subjectUID" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="extensions" type="stack_st_X509_EXTENSION" ptr="*" ref="stack_st_X509_EXTENSION"/>
+  
+  
+  <variable name="enc" type="ASN1_ENCODING" ref="ASN1_ENCODING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CERT_AUX" type="Struct">
+  
+  
+  <variable name="trust" type="stack_st_ASN1_OBJECT" ptr="*" ref="stack_st_ASN1_OBJECT"/>
+  
+  
+  <variable name="reject" type="stack_st_ASN1_OBJECT" ptr="*" ref="stack_st_ASN1_OBJECT"/>
+  
+  
+  <variable name="alias" type="ASN1_UTF8STRING" ptr="*" ref="ASN1_UTF8STRING"/>
+  
+  
+  <variable name="keyid" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="other" type="stack_st_X509_ALGOR" ptr="*" ref="stack_st_X509_ALGOR"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="x509_st" type="Struct">
+  
+  
+  <variable name="cert_info" type="X509_CINF" ptr="*" ref="X509_CINF"/>
+  
+  
+  <variable name="sig_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="signature" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="valid" type="int" level="L"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="name" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="ex_pathlen" type="long" ref="long"/>
+  
+  
+  <variable name="ex_pcpathlen" type="long" ref="long"/>
+  
+  
+  <variable name="ex_flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ex_kusage" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ex_xkusage" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ex_nscert" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="skid" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="akid" type="AUTHORITY_KEYID" ptr="*" ref="AUTHORITY_KEYID"/>
+  
+  
+  <variable name="policy_cache" type="X509_POLICY_CACHE" ptr="*" ref="X509_POLICY_CACHE"/>
+  
+  
+  <variable name="crldp" type="stack_st_DIST_POINT" ptr="*" ref="stack_st_DIST_POINT"/>
+  
+  
+  <variable name="altname" type="stack_st_GENERAL_NAME" ptr="*" ref="stack_st_GENERAL_NAME"/>
+  
+  
+  <variable name="nc" type="NAME_CONSTRAINTS" ptr="*" ref="NAME_CONSTRAINTS"/>
+  
+  
+  <variable name="sha1_hash" type="unsigned', 'char" arr="20" level="L"/>
+  
+  
+  <variable name="aux" type="X509_CERT_AUX" ptr="*" ref="X509_CERT_AUX"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_TRUST" type="Struct">
+  
+  
+  <variable name="trust" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="name" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="arg1" type="int" level="L"/>
+  
+  
+  <variable name="arg2" type="void" ptr="*" ref="void"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_TRUST" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CERT_PAIR" type="Struct">
+  
+  
+  <variable name="forward" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="reverse" type="X509" ptr="*" ref="X509"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="x509_revoked_st" type="Struct">
+  
+  
+  <variable name="serialNumber" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="revocationDate" type="ASN1_TIME" ptr="*" ref="ASN1_TIME"/>
+  
+  
+  <variable name="extensions" type="stack_st_X509_EXTENSION" ptr="*" ref="stack_st_X509_EXTENSION"/>
+  
+  
+  <variable name="issuer" type="stack_st_GENERAL_NAME" ptr="*" ref="stack_st_GENERAL_NAME"/>
+  
+  
+  <variable name="reason" type="int" level="L"/>
+  
+  
+  <variable name="sequence" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_REVOKED" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CRL_INFO" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="sig_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="issuer" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="lastUpdate" type="ASN1_TIME" ptr="*" ref="ASN1_TIME"/>
+  
+  
+  <variable name="nextUpdate" type="ASN1_TIME" ptr="*" ref="ASN1_TIME"/>
+  
+  
+  <variable name="revoked" type="stack_st_X509_REVOKED" ptr="*" ref="stack_st_X509_REVOKED"/>
+  
+  
+  <variable name="extensions" type="stack_st_X509_EXTENSION" ptr="*" ref="stack_st_X509_EXTENSION"/>
+  
+  
+  <variable name="enc" type="ASN1_ENCODING" ref="ASN1_ENCODING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_crl_st" type="Struct">
+  
+  
+  <variable name="crl" type="X509_CRL_INFO" ptr="*" ref="X509_CRL_INFO"/>
+  
+  
+  <variable name="sig_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="signature" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="flags" type="int" level="L"/>
+  
+  
+  <variable name="akid" type="AUTHORITY_KEYID" ptr="*" ref="AUTHORITY_KEYID"/>
+  
+  
+  <variable name="idp" type="ISSUING_DIST_POINT" ptr="*" ref="ISSUING_DIST_POINT"/>
+  
+  
+  <variable name="idp_flags" type="int" level="L"/>
+  
+  
+  <variable name="idp_reasons" type="int" level="L"/>
+  
+  
+  <variable name="crl_number" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="base_crl_number" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="sha1_hash" type="unsigned', 'char" arr="20" level="L"/>
+  
+  
+  <variable name="issuers" type="stack_st_GENERAL_NAMES" ptr="*" ref="stack_st_GENERAL_NAMES"/>
+  
+  
+  <variable name="meth" quals="const" type="X509_CRL_METHOD" ptr="*" ref="X509_CRL_METHOD"/>
+  
+  
+  <variable name="meth_data" type="void" ptr="*" ref="void"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_CRL" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_PKEY" type="Struct">
+  
+  
+  <variable name="version" type="int" level="L"/>
+  
+  
+  <variable name="enc_algor" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="enc_pkey" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="dec_pkey" type="EVP_PKEY" ptr="*" ref="EVP_PKEY"/>
+  
+  
+  <variable name="key_length" type="int" level="L"/>
+  
+  
+  <variable name="key_data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="key_free" type="int" level="L"/>
+  
+  
+  <variable name="cipher" type="EVP_CIPHER_INFO" ref="EVP_CIPHER_INFO"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_INFO" type="Struct">
+  
+  
+  <variable name="x509" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="crl" type="X509_CRL" ptr="*" ref="X509_CRL"/>
+  
+  
+  <variable name="x_pkey" type="X509_PKEY" ptr="*" ref="X509_PKEY"/>
+  
+  
+  <variable name="enc_cipher" type="EVP_CIPHER_INFO" ref="EVP_CIPHER_INFO"/>
+  
+  
+  <variable name="enc_len" type="int" level="L"/>
+  
+  
+  <variable name="enc_data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_INFO" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_SPKAC" type="Struct">
+  
+  
+  <variable name="pubkey" type="X509_PUBKEY" ptr="*" ref="X509_PUBKEY"/>
+  
+  
+  <variable name="challenge" type="ASN1_IA5STRING" ptr="*" ref="ASN1_IA5STRING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_SPKI" type="Struct">
+  
+  
+  <variable name="spkac" type="NETSCAPE_SPKAC" ptr="*" ref="NETSCAPE_SPKAC"/>
+  
+  
+  <variable name="sig_algor" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="signature" type="ASN1_BIT_STRING" ptr="*" ref="ASN1_BIT_STRING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_CERT_SEQUENCE" type="Struct">
+  
+  
+  <variable name="type" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+  
+  <variable name="certs" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBEPARAM" type="Struct">
+  
+  
+  <variable name="salt" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="iter" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBE2PARAM" type="Struct">
+  
+  
+  <variable name="keyfunc" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="encryption" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBKDF2PARAM" type="Struct">
+  
+  
+  <variable name="salt" type="ASN1_TYPE" ptr="*" ref="ASN1_TYPE"/>
+  
+  
+  <variable name="iter" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="keylength" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="prf" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="pkcs8_priv_key_info_st" type="Struct">
+  
+  
+  <variable name="broken" type="int" level="L"/>
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="pkeyalg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="pkey" type="ASN1_TYPE" ptr="*" ref="ASN1_TYPE"/>
+  
+  
+  <variable name="attributes" type="stack_st_X509_ATTRIBUTE" ptr="*" ref="stack_st_X509_ATTRIBUTE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CERT_FILE_CTX" type="Struct">
+  
+  
+  <variable name="num_paths" type="int" level="L"/>
+  
+  
+  <variable name="num_alloced" type="int" level="L"/>
+  
+  
+  <variable name="path_type" type="int" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_OBJECT" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_LOOKUP" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_OBJECT" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_LOOKUP_METHOD" type="Struct">
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_VERIFY_PARAM" type="Struct">
+  
+  
+  <variable name="name" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="check_time" type="time_t" ref="time_t"/>
+  
+  
+  <variable name="inh_flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="flags" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="purpose" type="int" level="L"/>
+  
+  
+  <variable name="trust" type="int" level="L"/>
+  
+  
+  <variable name="depth" type="int" level="L"/>
+  
+  
+  <variable name="policies" type="stack_st_ASN1_OBJECT" ptr="*" ref="stack_st_ASN1_OBJECT"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_X509_VERIFY_PARAM" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="x509_store_st" type="Struct">
+  
+  
+  <variable name="cache" type="int" level="L"/>
+  
+  
+  <variable name="objs" type="stack_st_X509_OBJECT" ptr="*" ref="stack_st_X509_OBJECT"/>
+  
+  
+  <variable name="get_cert_methods" type="stack_st_X509_LOOKUP" ptr="*" ref="stack_st_X509_LOOKUP"/>
+  
+  
+  <variable name="param" type="X509_VERIFY_PARAM" ptr="*" ref="X509_VERIFY_PARAM"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="x509_lookup_st" type="Struct">
+  
+  
+  <variable name="init" type="int" level="L"/>
+  
+  
+  <variable name="skip" type="int" level="L"/>
+  
+  
+  <variable name="method" type="X509_LOOKUP_METHOD" ptr="*" ref="X509_LOOKUP_METHOD"/>
+  
+  
+  <variable name="method_data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="store_ctx" type="X509_STORE" ptr="*" ref="X509_STORE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="x509_store_ctx_st" type="Struct">
+  
+  
+  <variable name="ctx" type="X509_STORE" ptr="*" ref="X509_STORE"/>
+  
+  
+  <variable name="current_method" type="int" level="L"/>
+  
+  
+  <variable name="cert" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="untrusted" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="crls" type="stack_st_X509_CRL" ptr="*" ref="stack_st_X509_CRL"/>
+  
+  
+  <variable name="param" type="X509_VERIFY_PARAM" ptr="*" ref="X509_VERIFY_PARAM"/>
+  
+  
+  <variable name="other_ctx" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="valid" type="int" level="L"/>
+  
+  
+  <variable name="last_untrusted" type="int" level="L"/>
+  
+  
+  <variable name="chain" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="tree" type="X509_POLICY_TREE" ptr="*" ref="X509_POLICY_TREE"/>
+  
+  
+  <variable name="explicit_policy" type="int" level="L"/>
+  
+  
+  <variable name="error_depth" type="int" level="L"/>
+  
+  
+  <variable name="error" type="int" level="L"/>
+  
+  
+  <variable name="current_cert" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="current_issuer" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="current_crl" type="X509_CRL" ptr="*" ref="X509_CRL"/>
+  
+  
+  <variable name="current_crl_score" type="int" level="L"/>
+  
+  
+  <variable name="current_reasons" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="parent" type="X509_STORE_CTX" ptr="*" ref="X509_STORE_CTX"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ISSUER_AND_SERIAL" type="Struct">
+  
+  
+  <variable name="issuer" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="serial" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGNER_INFO" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="issuer_and_serial" type="PKCS7_ISSUER_AND_SERIAL" ptr="*" ref="PKCS7_ISSUER_AND_SERIAL"/>
+  
+  
+  <variable name="digest_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="auth_attr" type="stack_st_X509_ATTRIBUTE" ptr="*" ref="stack_st_X509_ATTRIBUTE"/>
+  
+  
+  <variable name="digest_enc_alg" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="enc_digest" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="unauth_attr" type="stack_st_X509_ATTRIBUTE" ptr="*" ref="stack_st_X509_ATTRIBUTE"/>
+  
+  
+  <variable name="pkey" type="EVP_PKEY" ptr="*" ref="EVP_PKEY"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_PKCS7_SIGNER_INFO" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_RECIP_INFO" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="issuer_and_serial" type="PKCS7_ISSUER_AND_SERIAL" ptr="*" ref="PKCS7_ISSUER_AND_SERIAL"/>
+  
+  
+  <variable name="key_enc_algor" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="enc_key" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="cert" type="X509" ptr="*" ref="X509"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_PKCS7_RECIP_INFO" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGNED" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="md_algs" type="stack_st_X509_ALGOR" ptr="*" ref="stack_st_X509_ALGOR"/>
+  
+  
+  <variable name="cert" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="crl" type="stack_st_X509_CRL" ptr="*" ref="stack_st_X509_CRL"/>
+  
+  
+  <variable name="signer_info" type="stack_st_PKCS7_SIGNER_INFO" ptr="*" ref="stack_st_PKCS7_SIGNER_INFO"/>
+  
+  
+  <variable name="contents" type="pkcs7_st" ptr="*" ref="pkcs7_st"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENC_CONTENT" type="Struct">
+  
+  
+  <variable name="content_type" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+  
+  <variable name="algorithm" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="enc_data" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+  
+  <variable name="cipher" quals="const" type="EVP_CIPHER" ptr="*" ref="EVP_CIPHER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENVELOPE" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="recipientinfo" type="stack_st_PKCS7_RECIP_INFO" ptr="*" ref="stack_st_PKCS7_RECIP_INFO"/>
+  
+  
+  <variable name="enc_data" type="PKCS7_ENC_CONTENT" ptr="*" ref="PKCS7_ENC_CONTENT"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGN_ENVELOPE" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="md_algs" type="stack_st_X509_ALGOR" ptr="*" ref="stack_st_X509_ALGOR"/>
+  
+  
+  <variable name="cert" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="crl" type="stack_st_X509_CRL" ptr="*" ref="stack_st_X509_CRL"/>
+  
+  
+  <variable name="signer_info" type="stack_st_PKCS7_SIGNER_INFO" ptr="*" ref="stack_st_PKCS7_SIGNER_INFO"/>
+  
+  
+  <variable name="enc_data" type="PKCS7_ENC_CONTENT" ptr="*" ref="PKCS7_ENC_CONTENT"/>
+  
+  
+  <variable name="recipientinfo" type="stack_st_PKCS7_RECIP_INFO" ptr="*" ref="stack_st_PKCS7_RECIP_INFO"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_DIGEST" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="md" type="X509_ALGOR" ptr="*" ref="X509_ALGOR"/>
+  
+  
+  <variable name="contents" type="pkcs7_st" ptr="*" ref="pkcs7_st"/>
+  
+  
+  <variable name="digest" type="ASN1_OCTET_STRING" ptr="*" ref="ASN1_OCTET_STRING"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENCRYPT" type="Struct">
+  
+  
+  <variable name="version" type="ASN1_INTEGER" ptr="*" ref="ASN1_INTEGER"/>
+  
+  
+  <variable name="enc_data" type="PKCS7_ENC_CONTENT" ptr="*" ref="PKCS7_ENC_CONTENT"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7" type="Struct">
+  
+  
+  <variable name="asn1" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="length" type="long" ref="long"/>
+  
+  
+  <variable name="state" type="int" level="L"/>
+  
+  
+  <variable name="detached" type="int" level="L"/>
+  
+  
+  <variable name="type" type="ASN1_OBJECT" ptr="*" ref="ASN1_OBJECT"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_PKCS7" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ISSUER_AND_SERIAL_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ISSUER_AND_SERIAL_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGNER_INFO_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_SIGNER_INFO_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_RECIP_INFO_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_RECIP_INFO_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGNED_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_SIGNED_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENC_CONTENT_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ENC_CONTENT_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENVELOPE_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ENVELOPE_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_SIGN_ENVELOPE_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_SIGN_ENVELOPE_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_DIGEST_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_DIGEST_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ENCRYPT_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ENCRYPT_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ATTR_SIGN_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ATTR_SIGN_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS7_ATTR_VERIFY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS7_ATTR_VERIFY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_ALGOR_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_ALGOR_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_ALGORS_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_ALGORS_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_VAL_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_VAL_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_PUBKEY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_PUBKEY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_SIG_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_SIG_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_REQ_INFO_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_REQ_INFO_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_REQ_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_REQ_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_ATTRIBUTE_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_ATTRIBUTE_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_EXTENSION_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_EXTENSION_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_EXTENSIONS_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_EXTENSIONS_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_NAME_ENTRY_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_NAME_ENTRY_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_NAME_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_NAME_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CINF_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_CINF_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CERT_AUX_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_CERT_AUX_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CERT_PAIR_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_CERT_PAIR_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_REVOKED_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_REVOKED_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CRL_INFO_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_CRL_INFO_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="X509_CRL_it" type="ASN1_ITEM">
+  
+  
+  <variable name="X509_CRL_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_SPKI_it" type="ASN1_ITEM">
+  
+  
+  <variable name="NETSCAPE_SPKI_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_SPKAC_it" type="ASN1_ITEM">
+  
+  
+  <variable name="NETSCAPE_SPKAC_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="NETSCAPE_CERT_SEQUENCE_it" type="ASN1_ITEM">
+  
+  
+  <variable name="NETSCAPE_CERT_SEQUENCE_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBEPARAM_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PBEPARAM_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBE2PARAM_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PBE2PARAM_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PBKDF2PARAM_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PBKDF2PARAM_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PKCS8_PRIV_KEY_INFO_it" type="ASN1_ITEM">
+  
+  
+  <variable name="PKCS8_PRIV_KEY_INFO_it" type="ASN1_ITEM" ref="ASN1_ITEM"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PEM_ENCODE_SEAL_CTX" type="Struct">
+  
+  
+  <variable name="encode" type="EVP_ENCODE_CTX" ref="EVP_ENCODE_CTX"/>
+  
+  
+  <variable name="md" type="EVP_MD_CTX" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="cipher" type="EVP_CIPHER_CTX" ref="EVP_CIPHER_CTX"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PEM_USER" type="Struct">
+  
+  
+  <variable name="name" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="dn" type="X509_NAME" ptr="*" ref="X509_NAME"/>
+  
+  
+  <variable name="cipher" type="int" level="L"/>
+  
+  
+  <variable name="key_enc" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="PEM_CTX" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="domain" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="originator" type="PEM_USER" ptr="*" ref="PEM_USER"/>
+  
+  
+  <variable name="num_recipient" type="int" level="L"/>
+  
+  
+  <variable name="md" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="md_enc" type="int" level="L"/>
+  
+  
+  <variable name="md_len" type="int" level="L"/>
+  
+  
+  <variable name="md_data" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="dec" type="EVP_CIPHER" ptr="*" ref="EVP_CIPHER"/>
+  
+  
+  <variable name="key_len" type="int" level="L"/>
+  
+  
+  <variable name="key" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="data_enc" type="int" level="L"/>
+  
+  
+  <variable name="data_len" type="int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="HMAC_CTX" type="Struct">
+  
+  
+  <variable name="md" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="md_ctx" type="EVP_MD_CTX" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="i_ctx" type="EVP_MD_CTX" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="o_ctx" type="EVP_MD_CTX" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="key_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="key" type="unsigned', 'char" arr="128" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_crock_st" type="ssl_st">
+  
+  
+  <variable name="ssl_crock_st" type="ssl_st" ptr="*" ref="ssl_st"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_SSL_CIPHER" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SRTP_PROTECTION_PROFILE" type="Struct">
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="id" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_SRTP_PROTECTION_PROFILE" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_cipher_st" type="Struct">
+  
+  
+  <variable name="valid" type="int" level="L"/>
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="id" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm_mkey" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm_auth" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm_enc" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm_mac" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm_ssl" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algo_strength" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="algorithm2" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="strength_bits" type="int" level="L"/>
+  
+  
+  <variable name="alg_bits" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_method_st" type="Struct">
+  
+  
+  <variable name="version" type="int" level="L"/>
+  
+  
+  <variable name="ssl3_enc" type="ssl3_enc_method" ptr="*" ref="ssl3_enc_method"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_session_st" type="Struct">
+  
+  
+  <variable name="ssl_version" type="int" level="L"/>
+  
+  
+  <variable name="key_arg_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="key_arg" type="unsigned', 'char" arr="8" level="L"/>
+  
+  
+  <variable name="master_key_length" type="int" level="L"/>
+  
+  
+  <variable name="master_key" type="unsigned', 'char" arr="48" level="L"/>
+  
+  
+  <variable name="session_id_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="session_id" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="sid_ctx_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="sid_ctx" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="psk_identity_hint" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="psk_identity" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="not_resumable" type="int" level="L"/>
+  
+  
+  <variable name="sess_cert" type="sess_cert_st" ptr="*" ref="sess_cert_st"/>
+  
+  
+  <variable name="peer" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="verify_result" type="long" ref="long"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="timeout" type="long" ref="long"/>
+  
+  
+  <variable name="time" type="long" ref="long"/>
+  
+  
+  <variable name="compress_meth" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="cipher" quals="const" type="SSL_CIPHER" ptr="*" ref="SSL_CIPHER"/>
+  
+  
+  <variable name="cipher_id" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="ciphers" type="stack_st_SSL_CIPHER" ptr="*" ref="stack_st_SSL_CIPHER"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="prev" type="ssl_session_st" ptr="*" ref="ssl_session_st"/>
+  
+  
+  <variable name="next" type="ssl_session_st" ptr="*" ref="ssl_session_st"/>
+  
+  
+  <variable name="tlsext_hostname" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_ecpointformatlist_length" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_ecpointformatlist" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_ellipticcurvelist_length" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_ellipticcurvelist" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_tick" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_ticklen" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_tick_lifetime_hint" type="long" ref="long"/>
+  
+  
+  <variable name="srp_username" type="char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SRP_CTX" type="Struct">
+  
+  
+  <variable name="SRP_cb_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="login" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="N" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="g" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="s" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="B" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="A" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="a" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="b" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="v" type="BIGNUM" ptr="*" ref="BIGNUM"/>
+  
+  
+  <variable name="info" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="strength" type="int" level="L"/>
+  
+  
+  <variable name="srp_Mask" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_comp_st" type="Struct">
+  
+  
+  <variable name="id" type="int" level="L"/>
+  
+  
+  <variable name="name" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="method" type="COMP_METHOD" ptr="*" ref="COMP_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="stack_st_SSL_COMP" type="Struct">
+  
+  
+  <variable name="stack" type="_STACK" ref="_STACK"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="lhash_st_SSL_SESSION" type="Struct">
+  
+  
+  <variable name="dummy" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_ctx_st" type="Struct">
+  
+  
+  <variable name="method" quals="const" type="SSL_METHOD" ptr="*" ref="SSL_METHOD"/>
+  
+  
+  <variable name="cipher_list" type="stack_st_SSL_CIPHER" ptr="*" ref="stack_st_SSL_CIPHER"/>
+  
+  
+  <variable name="cipher_list_by_id" type="stack_st_SSL_CIPHER" ptr="*" ref="stack_st_SSL_CIPHER"/>
+  
+  
+  <variable name="cert_store" type="x509_store_st" ptr="*" ref="x509_store_st"/>
+  
+  
+  <variable name="sessions" type="lhash_st_SSL_SESSION" ptr="*" ref="lhash_st_SSL_SESSION"/>
+  
+  
+  <variable name="session_cache_size" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="session_cache_head" type="ssl_session_st" ptr="*" ref="ssl_session_st"/>
+  
+  
+  <variable name="session_cache_tail" type="ssl_session_st" ptr="*" ref="ssl_session_st"/>
+  
+  
+  <variable name="session_cache_mode" type="int" level="L"/>
+  
+  
+  <variable name="session_timeout" type="long" ref="long"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="app_verify_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="default_passwd_callback" type="pem_password_cb" ptr="*" ref="pem_password_cb"/>
+  
+  
+  <variable name="default_passwd_callback_userdata" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="rsa_md5" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="md5" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="sha1" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+  
+  <variable name="extra_certs" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="comp_methods" type="stack_st_SSL_COMP" ptr="*" ref="stack_st_SSL_COMP"/>
+  
+  
+  <variable name="client_CA" type="stack_st_X509_NAME" ptr="*" ref="stack_st_X509_NAME"/>
+  
+  
+  <variable name="options" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="mode" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="max_cert_list" type="long" ref="long"/>
+  
+  
+  <variable name="cert" type="cert_st" ptr="*" ref="cert_st"/>
+  
+  
+  <variable name="read_ahead" type="int" level="L"/>
+  
+  
+  <variable name="msg_callback_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="verify_mode" type="int" level="L"/>
+  
+  
+  <variable name="sid_ctx_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="sid_ctx" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="generate_session_id" type="GEN_SESSION_CB" ref="GEN_SESSION_CB"/>
+  
+  
+  <variable name="param" type="X509_VERIFY_PARAM" ptr="*" ref="X509_VERIFY_PARAM"/>
+  
+  
+  <variable name="quiet_shutdown" type="int" level="L"/>
+  
+  
+  <variable name="max_send_fragment" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="client_cert_engine" type="ENGINE" ptr="*" ref="ENGINE"/>
+  
+  
+  <variable name="tlsext_servername_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="tlsext_tick_key_name" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="tlsext_tick_hmac_key" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="tlsext_tick_aes_key" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="tlsext_status_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="tlsext_opaque_prf_input_callback_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="psk_identity_hint" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="freelist_max_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="wbuf_freelist" type="ssl3_buf_freelist_st" ptr="*" ref="ssl3_buf_freelist_st"/>
+  
+  
+  <variable name="rbuf_freelist" type="ssl3_buf_freelist_st" ptr="*" ref="ssl3_buf_freelist_st"/>
+  
+  
+  <variable name="srp_ctx" type="SRP_CTX" ref="SRP_CTX"/>
+  
+  
+  <variable name="next_protos_advertised_cb_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="next_proto_select_cb_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="srtp_profiles" type="stack_st_SRTP_PROTECTION_PROFILE" ptr="*" ref="stack_st_SRTP_PROTECTION_PROFILE"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl_st" type="Struct">
+  
+  
+  <variable name="version" type="int" level="L"/>
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="method" quals="const" type="SSL_METHOD" ptr="*" ref="SSL_METHOD"/>
+  
+  
+  <variable name="rbio" type="BIO" ptr="*" ref="BIO"/>
+  
+  
+  <variable name="wbio" type="BIO" ptr="*" ref="BIO"/>
+  
+  
+  <variable name="bbio" type="BIO" ptr="*" ref="BIO"/>
+  
+  
+  <variable name="rwstate" type="int" level="L"/>
+  
+  
+  <variable name="in_handshake" type="int" level="L"/>
+  
+  
+  <variable name="server" type="int" level="L"/>
+  
+  
+  <variable name="new_session" type="int" level="L"/>
+  
+  
+  <variable name="quiet_shutdown" type="int" level="L"/>
+  
+  
+  <variable name="shutdown" type="int" level="L"/>
+  
+  
+  <variable name="state" type="int" level="L"/>
+  
+  
+  <variable name="rstate" type="int" level="L"/>
+  
+  
+  <variable name="init_buf" type="BUF_MEM" ptr="*" ref="BUF_MEM"/>
+  
+  
+  <variable name="init_msg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="init_num" type="int" level="L"/>
+  
+  
+  <variable name="init_off" type="int" level="L"/>
+  
+  
+  <variable name="packet" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="packet_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="s2" type="ssl2_state_st" ptr="*" ref="ssl2_state_st"/>
+  
+  
+  <variable name="s3" type="ssl3_state_st" ptr="*" ref="ssl3_state_st"/>
+  
+  
+  <variable name="d1" type="dtls1_state_st" ptr="*" ref="dtls1_state_st"/>
+  
+  
+  <variable name="read_ahead" type="int" level="L"/>
+  
+  
+  <variable name="msg_callback_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="hit" type="int" level="L"/>
+  
+  
+  <variable name="param" type="X509_VERIFY_PARAM" ptr="*" ref="X509_VERIFY_PARAM"/>
+  
+  
+  <variable name="cipher_list" type="stack_st_SSL_CIPHER" ptr="*" ref="stack_st_SSL_CIPHER"/>
+  
+  
+  <variable name="cipher_list_by_id" type="stack_st_SSL_CIPHER" ptr="*" ref="stack_st_SSL_CIPHER"/>
+  
+  
+  <variable name="mac_flags" type="int" level="L"/>
+  
+  
+  <variable name="enc_read_ctx" type="EVP_CIPHER_CTX" ptr="*" ref="EVP_CIPHER_CTX"/>
+  
+  
+  <variable name="read_hash" type="EVP_MD_CTX" ptr="*" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="expand" type="COMP_CTX" ptr="*" ref="COMP_CTX"/>
+  
+  
+  <variable name="enc_write_ctx" type="EVP_CIPHER_CTX" ptr="*" ref="EVP_CIPHER_CTX"/>
+  
+  
+  <variable name="write_hash" type="EVP_MD_CTX" ptr="*" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="compress" type="COMP_CTX" ptr="*" ref="COMP_CTX"/>
+  
+  
+  <variable name="cert" type="cert_st" ptr="*" ref="cert_st"/>
+  
+  
+  <variable name="sid_ctx_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="sid_ctx" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="session" type="SSL_SESSION" ptr="*" ref="SSL_SESSION"/>
+  
+  
+  <variable name="generate_session_id" type="GEN_SESSION_CB" ref="GEN_SESSION_CB"/>
+  
+  
+  <variable name="verify_mode" type="int" level="L"/>
+  
+  
+  <variable name="error" type="int" level="L"/>
+  
+  
+  <variable name="error_code" type="int" level="L"/>
+  
+  
+  <variable name="ctx" type="SSL_CTX" ptr="*" ref="SSL_CTX"/>
+  
+  
+  <variable name="debug" type="int" level="L"/>
+  
+  
+  <variable name="verify_result" type="long" ref="long"/>
+  
+  
+  <variable name="ex_data" type="CRYPTO_EX_DATA" ref="CRYPTO_EX_DATA"/>
+  
+  
+  <variable name="client_CA" type="stack_st_X509_NAME" ptr="*" ref="stack_st_X509_NAME"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+  
+  <variable name="options" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="mode" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="max_cert_list" type="long" ref="long"/>
+  
+  
+  <variable name="first_packet" type="int" level="L"/>
+  
+  
+  <variable name="client_version" type="int" level="L"/>
+  
+  
+  <variable name="max_send_fragment" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="tlsext_debug_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="tlsext_hostname" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="servername_done" type="int" level="L"/>
+  
+  
+  <variable name="tlsext_status_type" type="int" level="L"/>
+  
+  
+  <variable name="tlsext_status_expected" type="int" level="L"/>
+  
+  
+  <variable name="tlsext_ocsp_ids" type="stack_st_OCSP_RESPID" ptr="*" ref="stack_st_OCSP_RESPID"/>
+  
+  
+  <variable name="tlsext_ocsp_exts" type="X509_EXTENSIONS" ptr="*" ref="X509_EXTENSIONS"/>
+  
+  
+  <variable name="tlsext_ocsp_resp" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_ocsp_resplen" type="int" level="L"/>
+  
+  
+  <variable name="tlsext_ticket_expected" type="int" level="L"/>
+  
+  
+  <variable name="tlsext_ecpointformatlist_length" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_ecpointformatlist" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_ellipticcurvelist_length" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_ellipticcurvelist" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="tlsext_opaque_prf_input" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="tlsext_opaque_prf_input_len" type="size_t" level="L"/>
+  
+  
+  <variable name="tlsext_session_ticket" type="TLS_SESSION_TICKET_EXT" ptr="*" ref="TLS_SESSION_TICKET_EXT"/>
+  
+  
+  <variable name="tls_session_ticket_ext_cb" type="tls_session_ticket_ext_cb_fn" ref="tls_session_ticket_ext_cb_fn"/>
+  
+  
+  <variable name="tls_session_ticket_ext_cb_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="tls_session_secret_cb" type="tls_session_secret_cb_fn" ref="tls_session_secret_cb_fn"/>
+  
+  
+  <variable name="tls_session_secret_cb_arg" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="initial_ctx" type="SSL_CTX" ptr="*" ref="SSL_CTX"/>
+  
+  
+  <variable name="next_proto_negotiated" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="next_proto_negotiated_len" type="unsigned', 'char" level="L"/>
+  
+  
+  <variable name="srtp_profiles" type="stack_st_SRTP_PROTECTION_PROFILE" ptr="*" ref="stack_st_SRTP_PROTECTION_PROFILE"/>
+  
+  
+  <variable name="srtp_profile" type="SRTP_PROTECTION_PROFILE" ptr="*" ref="SRTP_PROTECTION_PROFILE"/>
+  
+  
+  <variable name="tlsext_heartbeat" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="tlsext_hb_pending" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="tlsext_hb_seq" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="renegotiate" type="int" level="L"/>
+  
+  
+  <variable name="srp_ctx" type="SRP_CTX" ref="SRP_CTX"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL2_STATE" type="Struct">
+  
+  
+  <variable name="three_byte_header" type="int" level="L"/>
+  
+  
+  <variable name="clear_text" type="int" level="L"/>
+  
+  
+  <variable name="escape" type="int" level="L"/>
+  
+  
+  <variable name="ssl2_rollback" type="int" level="L"/>
+  
+  
+  <variable name="wnum" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="wpend_tot" type="int" level="L"/>
+  
+  
+  <variable name="wpend_buf" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="wpend_off" type="int" level="L"/>
+  
+  
+  <variable name="wpend_len" type="int" level="L"/>
+  
+  
+  <variable name="wpend_ret" type="int" level="L"/>
+  
+  
+  <variable name="rbuf_left" type="int" level="L"/>
+  
+  
+  <variable name="rbuf_offs" type="int" level="L"/>
+  
+  
+  <variable name="rbuf" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="wbuf" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="write_ptr" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="padding" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="rlength" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="ract_data_length" type="int" level="L"/>
+  
+  
+  <variable name="wlength" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="wact_data_length" type="int" level="L"/>
+  
+  
+  <variable name="ract_data" type="unsigned', 'char" ptr="*" level="H"/>
+  
+  
+  <variable name="wact_data" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="mac_data" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="read_key" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="write_key" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="challenge_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="challenge" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="conn_id_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="conn_id" type="unsigned', 'char" arr="16" level="L"/>
+  
+  
+  <variable name="key_material_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="key_material" type="unsigned', 'char" arr="24 * 2" level="L"/>
+  
+  
+  <variable name="read_sequence" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="write_sequence" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_RECORD" type="Struct">
+  
+  
+  <variable name="type" type="int" level="L"/>
+  
+  
+  <variable name="length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="off" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="input" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="comp" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="epoch" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="seq_num" type="unsigned', 'char" arr="8" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_BUFFER" type="Struct">
+  
+  
+  <variable name="buf" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="len" type="size_t" level="L"/>
+  
+  
+  <variable name="offset" type="int" level="L"/>
+  
+  
+  <variable name="left" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_STATE" type="Struct">
+  
+  
+  <variable name="flags" type="long" ref="long"/>
+  
+  
+  <variable name="delay_buf_pop_ret" type="int" level="L"/>
+  
+  
+  <variable name="read_sequence" type="unsigned', 'char" arr="8" level="L"/>
+  
+  
+  <variable name="read_mac_secret_size" type="int" level="L"/>
+  
+  
+  <variable name="read_mac_secret" type="unsigned', 'char" arr="64" level="L"/>
+  
+  
+  <variable name="write_sequence" type="unsigned', 'char" arr="8" level="L"/>
+  
+  
+  <variable name="write_mac_secret_size" type="int" level="L"/>
+  
+  
+  <variable name="write_mac_secret" type="unsigned', 'char" arr="64" level="L"/>
+  
+  
+  <variable name="server_random" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="client_random" type="unsigned', 'char" arr="32" level="L"/>
+  
+  
+  <variable name="need_empty_fragments" type="int" level="L"/>
+  
+  
+  <variable name="empty_fragment_done" type="int" level="L"/>
+  
+  
+  <variable name="init_extra" type="int" level="L"/>
+  
+  
+  <variable name="rbuf" type="SSL3_BUFFER" ref="SSL3_BUFFER"/>
+  
+  
+  <variable name="wbuf" type="SSL3_BUFFER" ref="SSL3_BUFFER"/>
+  
+  
+  <variable name="rrec" type="SSL3_RECORD" ref="SSL3_RECORD"/>
+  
+  
+  <variable name="wrec" type="SSL3_RECORD" ref="SSL3_RECORD"/>
+  
+  
+  <variable name="alert_fragment" type="unsigned', 'char" arr="2" level="L"/>
+  
+  
+  <variable name="alert_fragment_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="handshake_fragment" type="unsigned', 'char" arr="4" level="L"/>
+  
+  
+  <variable name="handshake_fragment_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="wnum" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="wpend_tot" type="int" level="L"/>
+  
+  
+  <variable name="wpend_type" type="int" level="L"/>
+  
+  
+  <variable name="wpend_ret" type="int" level="L"/>
+  
+  
+  <variable name="wpend_buf" quals="const" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="handshake_buffer" type="BIO" ptr="*" ref="BIO"/>
+  
+  
+  <variable name="change_cipher_spec" type="int" level="L"/>
+  
+  
+  <variable name="warn_alert" type="int" level="L"/>
+  
+  
+  <variable name="fatal_alert" type="int" level="L"/>
+  
+  
+  <variable name="alert_dispatch" type="int" level="L"/>
+  
+  
+  <variable name="send_alert" type="unsigned', 'char" arr="2" level="L"/>
+  
+  
+  <variable name="renegotiate" type="int" level="L"/>
+  
+  
+  <variable name="total_renegotiations" type="int" level="L"/>
+  
+  
+  <variable name="num_renegotiations" type="int" level="L"/>
+  
+  
+  <variable name="in_read_app_data" type="int" level="L"/>
+  
+  
+  <variable name="client_opaque_prf_input" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="client_opaque_prf_input_len" type="size_t" level="L"/>
+  
+  
+  <variable name="server_opaque_prf_input" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="server_opaque_prf_input_len" type="size_t" level="L"/>
+  
+  
+  <variable name="previous_client_finished" type="unsigned', 'char" arr="64" level="L"/>
+  
+  
+  <variable name="previous_client_finished_len" type="unsigned', 'char" level="L"/>
+  
+  
+  <variable name="previous_server_finished" type="unsigned', 'char" arr="64" level="L"/>
+  
+  
+  <variable name="previous_server_finished_len" type="unsigned', 'char" level="L"/>
+  
+  
+  <variable name="send_connection_binding" type="int" level="L"/>
+  
+  
+  <variable name="next_proto_neg_seen" type="int" level="L"/>
+  
+  
+  <variable name="is_probably_safari" type="char" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="tls_session_ticket_ext_st" type="Struct">
+  
+  
+  <variable name="length" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="data" type="void" ptr="*" ref="void"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="pqueue" type="_pqueue">
+  
+  
+  <variable name="pqueue" type="_pqueue" ptr="*" ref="_pqueue"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="pitem" type="Struct">
+  
+  
+  <variable name="priority" type="unsigned', 'char" arr="8" level="L"/>
+  
+  
+  <variable name="data" type="void" ptr="*" ref="void"/>
+  
+  
+  <variable name="next" type="_pitem" ptr="*" ref="_pitem"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="piterator" type="_pitem">
+  
+  
+  <variable name="piterator" type="_pitem" ptr="*" ref="_pitem"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DTLS1_BITMAP" type="Struct">
+  
+  
+  <variable name="map" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="max_seq_num" type="unsigned', 'char" arr="8" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dtls1_retransmit_state" type="Struct">
+  
+  
+  <variable name="enc_write_ctx" type="EVP_CIPHER_CTX" ptr="*" ref="EVP_CIPHER_CTX"/>
+  
+  
+  <variable name="write_hash" type="EVP_MD_CTX" ptr="*" ref="EVP_MD_CTX"/>
+  
+  
+  <variable name="compress" type="COMP_CTX" ptr="*" ref="COMP_CTX"/>
+  
+  
+  <variable name="session" type="SSL_SESSION" ptr="*" ref="SSL_SESSION"/>
+  
+  
+  <variable name="epoch" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="hm_header_st" type="Struct">
+  
+  
+  <variable name="type" type="unsigned', 'char" level="L"/>
+  
+  
+  <variable name="msg_len" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="seq" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="frag_off" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="frag_len" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="is_ccs" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ccs_header_st" type="Struct">
+  
+  
+  <variable name="type" type="unsigned', 'char" level="L"/>
+  
+  
+  <variable name="seq" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="dtls1_timeout_st" type="Struct">
+  
+  
+  <variable name="read_timeouts" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="write_timeouts" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="num_alerts" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="record_pqueue" type="Struct">
+  
+  
+  <variable name="epoch" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="q" type="pqueue" ref="pqueue"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="hm_fragment" type="Struct">
+  
+  
+  <variable name="fragment" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="reassembly" type="unsigned', 'char" ptr="*" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DTLS1_STATE" type="Struct">
+  
+  
+  <variable name="send_cookie" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="cookie" type="unsigned', 'char" arr="256" level="L"/>
+  
+  
+  <variable name="rcvd_cookie" type="unsigned', 'char" arr="256" level="L"/>
+  
+  
+  <variable name="cookie_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="r_epoch" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="w_epoch" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="bitmap" type="DTLS1_BITMAP" ref="DTLS1_BITMAP"/>
+  
+  
+  <variable name="next_bitmap" type="DTLS1_BITMAP" ref="DTLS1_BITMAP"/>
+  
+  
+  <variable name="handshake_write_seq" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="next_handshake_write_seq" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="handshake_read_seq" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="last_write_sequence" type="unsigned', 'char" arr="8" level="L"/>
+  
+  
+  <variable name="unprocessed_rcds" type="record_pqueue" ref="record_pqueue"/>
+  
+  
+  <variable name="processed_rcds" type="record_pqueue" ref="record_pqueue"/>
+  
+  
+  <variable name="buffered_messages" type="pqueue" ref="pqueue"/>
+  
+  
+  <variable name="sent_messages" type="pqueue" ref="pqueue"/>
+  
+  
+  <variable name="buffered_app_data" type="record_pqueue" ref="record_pqueue"/>
+  
+  
+  <variable name="listen" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="mtu" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="timeout_duration" type="unsigned', 'short" ref="unsigned', 'short"/>
+  
+  
+  <variable name="alert_fragment" type="unsigned', 'char" arr="2" level="L"/>
+  
+  
+  <variable name="alert_fragment_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="handshake_fragment" type="unsigned', 'char" arr="12" level="L"/>
+  
+  
+  <variable name="handshake_fragment_len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="retransmitting" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="change_cipher_spec_ok" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DTLS1_RECORD_DATA" type="Struct">
+  
+  
+  <variable name="packet" type="unsigned', 'char" ptr="*" level="L"/>
+  
+  
+  <variable name="packet_length" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="rbuf" type="SSL3_BUFFER" ref="SSL3_BUFFER"/>
+  
+  
+  <variable name="rrec" type="SSL3_RECORD" ref="SSL3_RECORD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="CERT_PKEY" type="Struct">
+  
+  
+  <variable name="x509" type="X509" ptr="*" ref="X509"/>
+  
+  
+  <variable name="privatekey" type="EVP_PKEY" ptr="*" ref="EVP_PKEY"/>
+  
+  
+  <variable name="digest" quals="const" type="EVP_MD" ptr="*" ref="EVP_MD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="CERT" type="Struct">
+  
+  
+  <variable name="key" type="CERT_PKEY" ptr="*" ref="CERT_PKEY"/>
+  
+  
+  <variable name="valid" type="int" level="L"/>
+  
+  
+  <variable name="mask_k" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="mask_a" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="export_mask_k" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="export_mask_a" type="unsigned', 'long" ref="unsigned', 'long"/>
+  
+  
+  <variable name="rsa_tmp" type="RSA" ptr="*" ref="RSA"/>
+  
+  
+  <variable name="dh_tmp" type="DH" ptr="*" ref="DH"/>
+  
+  
+  <variable name="ecdh_tmp" type="EC_KEY" ptr="*" ref="EC_KEY"/>
+  
+  
+  <variable name="pkeys" type="CERT_PKEY" arr="8" ref="CERT_PKEY"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SESS_CERT" type="Struct">
+  
+  
+  <variable name="cert_chain" type="stack_st_X509" ptr="*" ref="stack_st_X509"/>
+  
+  
+  <variable name="peer_cert_type" type="int" level="L"/>
+  
+  
+  <variable name="peer_key" type="CERT_PKEY" ptr="*" ref="CERT_PKEY"/>
+  
+  
+  <variable name="peer_pkeys" type="CERT_PKEY" arr="8" ref="CERT_PKEY"/>
+  
+  
+  <variable name="peer_rsa_tmp" type="RSA" ptr="*" ref="RSA"/>
+  
+  
+  <variable name="peer_dh_tmp" type="DH" ptr="*" ref="DH"/>
+  
+  
+  <variable name="peer_ecdh_tmp" type="EC_KEY" ptr="*" ref="EC_KEY"/>
+  
+  
+  <variable name="references" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_ENC_METHOD" type="Struct">
+  
+  
+  <variable name="finish_mac_length" type="int" level="L"/>
+  
+  
+  <variable name="client_finished_label" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="client_finished_label_len" type="int" level="L"/>
+  
+  
+  <variable name="server_finished_label" quals="const" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="server_finished_label_len" type="int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_COMP" type="Struct">
+  
+  
+  <variable name="comp_id" type="int" level="L"/>
+  
+  
+  <variable name="name" type="char" ptr="*" level="L"/>
+  
+  
+  <variable name="method" type="COMP_METHOD" ptr="*" ref="COMP_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_BUF_FREELIST" type="Struct">
+  
+  
+  <variable name="chunklen" type="size_t" level="L"/>
+  
+  
+  <variable name="len" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="head" type="ssl3_buf_freelist_entry_st" ptr="*" ref="ssl3_buf_freelist_entry_st"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSL3_BUF_FREELIST_ENTRY" type="Struct">
+  
+  
+  <variable name="next" type="ssl3_buf_freelist_entry_st" ptr="*" ref="ssl3_buf_freelist_entry_st"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl3_undef_enc_method" type="SSL3_ENC_METHOD">
+  
+  
+  <variable name="ssl3_undef_enc_method" type="SSL3_ENC_METHOD" ref="SSL3_ENC_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl2_ciphers" type="SSL_CIPHER">
+  
+  
+  <variable name="ssl2_ciphers" type="SSL_CIPHER" ref="SSL_CIPHER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl3_ciphers" type="SSL_CIPHER">
+  
+  
+  <variable name="ssl3_ciphers" type="SSL_CIPHER" ref="SSL_CIPHER"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="TLSv1_enc_data" type="SSL3_ENC_METHOD">
+  
+  
+  <variable name="TLSv1_enc_data" type="SSL3_ENC_METHOD" ref="SSL3_ENC_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="SSLv3_enc_data" type="SSL3_ENC_METHOD">
+  
+  
+  <variable name="SSLv3_enc_data" type="SSL3_ENC_METHOD" ref="SSL3_ENC_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="DTLSv1_enc_data" type="SSL3_ENC_METHOD">
+  
+  
+  <variable name="DTLSv1_enc_data" type="SSL3_ENC_METHOD" ref="SSL3_ENC_METHOD"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="MD5_CTX" type="Struct">
+  
+  
+  <variable name="A" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="B" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="C" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="D" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="Nl" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="Nh" type="unsigned', 'int" level="L"/>
+  
+  
+  <variable name="data" type="unsigned', 'int" arr="64 / 4" level="L"/>
+  
+  
+  <variable name="num" type="unsigned', 'int" level="L"/>
+  
+ 
+ </decl>
+ 
+ 
+ <decl name="ssl2_version_str" type="char">
+  
+  
+  <variable name="ssl2_version_str" type="char" level="L"/>
+  
+ 
+ </decl>
+ 
+
+ <function name="s2_pkt610s2_pkt490_1" Returntype="void">
+  <params name="_n_do_ssl_write_s_" ptr="*" type="SSL" ref="SSL"/>
+  <params name="_n_do_ssl_write_buf_" quals="const" ptr="*" type="unsigned', 'char" level="L"/>
+  <params name="_n_do_ssl_write_len_" type="unsigned', 'int" level="H"/>
+  <params name="_n_do_ssl_write_p_" type="unsigned', 'int" level="L"/>
+  <params name="_n_do_ssl_write_mac_size_" type="int" level="L"/>
+  <params name="_n_do_ssl_write_pp_" ptr="*" type="unsigned', 'char" level="L"/>
+  <params name="_n_do_ssl_write_olen_" type="unsigned', 'int" level="L"/>
+ </function>
+</root>

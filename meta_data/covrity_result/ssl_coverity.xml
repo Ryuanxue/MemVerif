@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <item type="other" file="s3_clnt.c" linenum="2589"/>
+    <item type="other" file="d1_clnt.c" linenum="1372"/>
+    <item type="other" file="s3_pkt.c" linenum="207"/>
+    <item type="other" file="bio_ssl.c" linenum="135"/>
+    <item type="other" file="ssl_asn1.c" linenum="486"/>
+    <item type="other" file="t1_enc.c" linenum="267"/>
+    <item type="other" file="d1_srvr.c" linenum="1472"/>
+    <item type="other" file="d1_pkt.c" linenum="679"/>
+    <item type="other" file="t1_lib.c" linenum="2321"/>
+    <item type="other" file="d1_srvr.c" linenum="1683"/>
+    <item type="other" file="ssl_sess.c" linenum="508"/>
+    <item type="other" file="s23_clnt.c" linenum="465"/>
+    <item type="other" file="s23_clnt.c" linenum="658"/>
+    <item type="read" file="s3_srvr.c" linenum="1869"/>
+    <item type="read" file="s3_cbc.c" linenum="681"/>
+    <item type="mem_ill" file="s3_clnt.c" linenum="2968"/>
+    <item type="res_leak" file="d1_both.c" linenum="647"/>
+    <item type="res_leak" file="d1_srtp.c" linenum="217"/>
+    <item type="res_leak" file="d1_srtp.c" linenum="372"/>
+    <item type="res_leak" file="d1_srvr.c" linenum="858"/>
+    <item type="res_leak" file="ssl_cert.c" linenum="356"/>
+    <item type="res_leak" file="s3_srvr.c" linenum="845"/>
+    <item type="res_leak" file="s23_srvr.c" linenum="234"/>
+    <item type="res_leak" file="s2_srvr.c" linenum="361"/>
+    <item type="other" file="d1_both.c" linenum="678"/>
+    <item type="other" file="tls_srp.c" linenum="422"/>
+    <item type="other" file="s3_clnt.c" linenum="2722"/>
+    <item type="other" file="t1_enc.c" linenum="502"/>
+    <item type="other" file="d1_both.c" linenum="866"/>
+    <item type="other" file="t1_lib.c" linenum="2228"/>
+    <item type="other" file="s3_clnt.c" linenum="1965"/>
+    <item type="other" file="t1_lib.c" linenum="1531"/>
+    <item type="other" file="s2_clnt.c" linenum="461"/>
+    <item type="other" file="s2_srvr.c" linenum="640"/>
+    <item type="other" file="s2_srvr.c" linenum="449"/>
+    <item type="other" file="t1_lib.c" linenum="2586"/>
+    <item type="other" file="d1_both.c" linenum="1487"/>
+    <item type="other" file="s3_srvr.c" linenum="376"/>
+</Root>

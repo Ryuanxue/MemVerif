@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<root>
+ 
+ 
+ <decl name="test" type="Struct">
+  
+  <variable name="high" type="int" level="H"/>
+  <variable name="b" type="int" ptr="*" level="L"/>
+  <variable name="str1" type="char" ptr="*" level="H"/>
+  <variable name="str2" type="char" ptr="*" level="L"/>
+  <variable name="stu" type="struct subtest" ptr="*" ref="subtest" level="L"/>
+ </decl>
+
+  <decl name="subtest" type="Struct">
+  
+  <variable name="sub1" type="int" level="L"/>
+  <variable name="sub2" type="long" level="L"/>
+  <variable name="substr1" type="char" ptr="*" level="H"/>
+  <variable name="str2" type="char" ptr="*" level="L"/>
+  <variable name="stu" type="struct subtest" ptr="*" ref="subtest" level="L"/>
+ </decl>
+ 
+ <function name="fuzztest" Returntype="void">
+  <params name="arg1" ptr="*" type="struct test" ref="test"/>
+  <params name="arg2" quals="const" ptr="" type="int" level="L"/>
+  
+ </function>
+</root>

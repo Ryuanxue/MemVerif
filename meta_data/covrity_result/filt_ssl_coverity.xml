@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <item type="read" cs="arr" file="s3_srvr.c" linenum="1869"/>
+    <item type="read" cs="arr" file="s3_cbc.c" linenum="681"/>
+    <item type="other" cs="memmove" file="s3_pkt.c" linenum="207"/>
+    <item type="other" cs="memcpy" file="d1_srvr.c" linenum="1683"/>
+    <item type="untrust" cs="memcpy" file="t1_lib.c" linenum="2586"/>
+    <item type="untrust" cs="memcpy" file="d1_both.c" linenum="1487"/>
+</Root>

@@ -1,0 +1,41 @@
+digraph "CFG for'main' function" {
+	BBmain_start[shape=record,label="{main_start}"];
+	BBmain_start-> mainBB9;
+	mainBB9 [shape=record, label="{BB9:\l\l/:0\l
+  %3 = alloca i32, align 4\l
+/:0\l
+  %4 = alloca i32, align 4\l
+/:0\l
+  %5 = alloca i8**, align 8\l
+/:0\l
+  store i32 0, i32* %3, align 4\l
+/:0\l
+  store i32 %0, i32* %4, align 4\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:20\l
+  call void @llvm.dbg.declare(metadata i32* %4, metadata !49, metadata !DIExpression()), !dbg !50\l
+/:20\l
+  store i8** %1, i8*** %5, align 8\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:20\l
+  call void @llvm.dbg.declare(metadata i8*** %5, metadata !51, metadata !DIExpression()), !dbg !52\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:21\l
+  %6 = load i8**, i8*** %5, align 8, !dbg !24\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:21\l
+  %7 = getelementptr inbounds i8*, i8** %6, i64 1, !dbg !24\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:21\l
+  %8 = load i8*, i8** %7, align 8, !dbg !24\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:21\l
+  call void @op(i8* (i8*, i8*)* @strcpy, i8* %8), !dbg !25\l
+}"];
+	mainBB9-> mainBB10;
+	mainBB10 [shape=record, label="{BB10:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:22\l
+  call void @dump(), !dbg !26\l
+}"];
+	mainBB10-> mainBB11;
+	mainBB11 [shape=record, label="{BB11:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:23\l
+  call void @sink_mtd(), !dbg !27\l
+}"];
+	mainBB11-> mainBB12;
+	mainBB12 [shape=record, label="{BB12:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:24\l
+  ret i32 0, !dbg !28\l
+}"];
+}

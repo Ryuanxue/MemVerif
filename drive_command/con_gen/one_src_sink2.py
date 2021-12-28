@@ -23,11 +23,11 @@ for f in funele:
     funname = f.getAttribute("name")
     global_funname.append(funname)
 
-srcfile = "t1_lib.c"
-srcline = "546"
+srcfile = "path_key_demo2.c"
+srcline = "19"
 # sink_in=
-sinkfile = "s23_pkt.c"
-sinkline = "77"
+sinkfile = "path_key_demo2.c"
+sinkline = "7"
 outdir = "../../meta_data/code_gened"
 out_cfile = srcfile[:-2] + srcline + sinkfile[:-2] + sinkline + ".c"
 gen_funname = srcfile[:-2] + srcline + sinkfile[:-2] + sinkline

@@ -1,0 +1,7 @@
+<root>
+<function name="test_overread" Returntype="void">
+  <params name="dest" ptr="*" type="unsigned', 'char" level="L"/>
+  <params name="src" ptr="*" type="unsigned', 'char" level="L"/>
+  <params name="len" type="unsigned', 'int" level="H"/>
+ </function>
+</root>

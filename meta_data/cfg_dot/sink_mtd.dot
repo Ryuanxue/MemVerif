@@ -1,0 +1,11 @@
+digraph "CFG for'sink_mtd' function" {
+	BBsink_mtd_start[shape=record,label="{sink_mtd_start}"];
+	BBsink_mtd_start-> sink_mtdBB0;
+	sink_mtdBB0 [shape=record, label="{BB0:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:7\l
+  %1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str, i64 0, i64 0), i8* getelementptr inbounds ([20 x i8], [20 x i8]* @sink_data, i64 0, i64 0)), !dbg !17\l
+}"];
+	sink_mtdBB0-> sink_mtdBB1;
+	sink_mtdBB1 [shape=record, label="{BB1:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:8\l
+  ret void, !dbg !18\l
+}"];
+}

@@ -1,0 +1,42 @@
+digraph "CFG for'op' function" {
+	BBop_start[shape=record,label="{op_start}"];
+	BBop_start-> opBB2;
+	opBB2 [shape=record, label="{BB2:\l\l/:0\l
+  %3 = alloca i8* (i8*, i8*)*, align 8\l
+/:0\l
+  %4 = alloca i8*, align 8\l
+/:0\l
+  store i8* (i8*, i8*)* %0, i8* (i8*, i8*)** %3, align 8\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:10\l
+  call void @llvm.dbg.declare(metadata i8* (i8*, i8*)** %3, metadata !28, metadata !DIExpression()), !dbg !29\l
+/:10\l
+  store i8* %1, i8** %4, align 8\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:10\l
+  call void @llvm.dbg.declare(metadata i8** %4, metadata !30, metadata !DIExpression()), !dbg !31\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:11\l
+  %5 = load i8*, i8** %4, align 8, !dbg !27\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:11\l
+  %6 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1, i64 0, i64 0)) #5, !dbg !29\l
+}"];
+	opBB2-> opBB3;
+	opBB3 [shape=record, label="{BB3:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:11\l
+  %7 = icmp ne i32 %6, 0, !dbg !29\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:11\l
+  br i1 %7, label %11, label %8, !dbg !30\l
+}"];
+	opBB3-> opBB4;
+	opBB3-> opBB5;
+	opBB5 [shape=record, label="{BB5:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:12\l
+  %9 = load i8* (i8*, i8*)*, i8* (i8*, i8*)** %3, align 8, !dbg !31\l
+/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:12\l
+  %10 = call i8* %9(i8* getelementptr inbounds ([20 x i8], [20 x i8]* @sink_data, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.2, i64 0, i64 0)), !dbg !33\l
+}"];
+	opBB5-> opBB6;
+	opBB6 [shape=record, label="{BB6:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:13\l
+  br label %11, !dbg !34\l
+}"];
+	opBB6-> opBB4;
+	opBB4 [shape=record, label="{BB4:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:14\l
+  ret void, !dbg !35\l
+}"];
+}

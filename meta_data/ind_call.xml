@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <ind_loc info="/home/raoxue/Documents/toy_for_slice/motivating_ex3.c:16">
+        <ind_callee funname="copy" />
+        <ind_callee funname="strcpy" size="4"/>
+    </ind_loc>
+
+</Root>

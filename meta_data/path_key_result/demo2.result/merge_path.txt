@@ -1,0 +1,36 @@
+mainBB9
+mainBB10
+mainBB11
+BBf_start
+fBB4
+BBh_start
+hBB2
+key:main_1_f_2_h_3
+
+mainBB9
+mainBB10
+mainBB12
+BBg_start
+gBB6
+BBh_start
+hBB2
+key:main_1_g_2_h_3
+
+merged path...
+mainBB9
+mainBB10
+mainBB11
+BBf_start
+fBB4
+BBh_start
+hBB2
+
+merged path...
+mainBB9
+mainBB10
+mainBB12
+BBg_start
+gBB6
+BBh_start
+hBB2
+

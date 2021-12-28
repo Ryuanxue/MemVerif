@@ -9,6 +9,6 @@ if __name__ == '__main__':
         filename = os.path.basename(file)
         if filename.endswith(".ll"):
             if "_instrument" not in filename:
-                command="cd "+dic+";opt -load libfindsinkpass.so -find-sink "+filename+" -xmlfile sink.xml"
+                command="cd "+dic+";opt-10 -load libfindsinkpass.so -find-sink "+filename+" -xmlfile sink.xml"
                 os.system(command)
 

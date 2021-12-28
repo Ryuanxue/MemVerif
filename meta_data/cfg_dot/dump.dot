@@ -1,0 +1,11 @@
+digraph "CFG for'dump' function" {
+	BBdump_start[shape=record,label="{dump_start}"];
+	BBdump_start-> dumpBB7;
+	dumpBB7 [shape=record, label="{BB7:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:17\l
+  %1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0)), !dbg !17\l
+}"];
+	dumpBB7-> dumpBB8;
+	dumpBB8 [shape=record, label="{BB8:\l\l/home/raoxue/Documents/toy_for_slice/motivating_ex2.c:18\l
+  ret void, !dbg !18\l
+}"];
+}

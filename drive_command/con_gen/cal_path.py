@@ -5,7 +5,7 @@ import pydot
 from pycparser import parse_file, c_generator, c_ast, c_parser
 
 from con_gen.lib_code_gen import get_classifypath_key, sort_deup1, merge_two_list, \
-    gen_code_entry, get_lineinfo, is_gen_xml, genxml_dealed_file
+    gen_code_entry, get_lineinfo, is_gen_xml, genxml_dealed_file, getfunname
 
 sys.setrecursionlimit(1000)
 
@@ -17,7 +17,7 @@ line_code_ast = []
 
 # sys.setrecursionlimit(5)
 fun_edges = {}
-maxrecurdepth = 50
+maxrecurdepth = 1024
 
 last_num = -1
 recur_depth = 0
@@ -84,6 +84,104 @@ def get_two_layer_node(source):
 loop_recur_node = []
 
 
+def printAllPathsUtil_v1(gra, u, d, visited, path, tempstack, n, Apath):
+    """
+    递归在icfg上遍历出从source点u到sink点d的所有路径
+    :param gra:利用pydot解析icfg所生成的dot对象
+    :param u:source节点（pydot的Node对象）
+    :param d:sink节点（pydot的Node对象）
+    :param visited:列表(用于标识所有节点是否被访问过）
+    :param path:列表(代表一条路径），将路径append到Apath
+    :param tempstack: 影子栈，用于判断called函数是否需要被展开（也即是否要记录called函数的展示节点）
+    :param n: 整数，代表当前的递归深度
+    :param Apath: 列表（用来存放遍历到的所有路径，其元素是一条路径列表）
+    :return: 无
+    """
+
+
+    lineinfo = get_lineinfo(u)
+    fflags = False
+    if len(lineinfo) > 0:
+        lastline = lineinfo[-1]
+        index = lastline.rindex(":")
+        line = lastline[index + 1:-2]
+        adjnodes = get_two_layer_node(u.get_name())  # get src's two layer adjnode
+        for adj in adjnodes:
+            adjnode = gra.get_node(adj)
+            adjlineinfo = get_lineinfo(adjnode[0])  # adjlineinfo maybe empty
+            if (len(adjlineinfo) == 0):
+                continue
+            aindex = adjlineinfo[0].rindex(":")
+            firstline = adjlineinfo[0][aindex + 1:-2]
+            if int(firstline) > int(line):
+                fflags = True
+                break
+    if fflags and u.get_name() in loop_recur_node:
+        visited[u.get_name()][0] = True
+
+    elif fflags and u.get_name() not in loop_recur_node:
+        loop_recur_node.append(u.get_name())
+        pass
+    else:
+        visited[u.get_name()][0] = True
+    n = n + 1
+    if n > maxrecurdepth:
+        n = n - 1
+        return
+
+    path.append(u)
+    print("entry....")
+    for p in path:
+        print(p.get_name())
+    print()
+    if u.get_name() == d.get_name():
+        Apath.append(path.copy())
+        path.pop()
+        visited[u.get_name()][0] = False
+
+    else:
+        ede = get_to_edges(u.get_name())
+        for i in ede:
+            dest = i.get_destination()
+            dest_node = gra.get_node(dest)
+            if tempstack[0]==True:
+                if getfunname(dest_node[0])!=tempstack[-1][2:-4]:
+                    tempstack[0]=False
+                    tempstack.pop()
+                else:
+                    path.pop()
+                    n = n - 1
+                    visited[u.get_name()][0] = False
+                    # print("exit111...")
+                    # for p in path:
+                    #     print(p.get_name())
+                    # print()
+                    return
+            if dest.endswith("_start"):
+                tempstack.append(dest[:-5] + 'end')
+            if dest==tempstack[-1]:
+                path.pop()
+                n = n - 1
+                tempstack[0]=True
+                visited[u.get_name()][0] = False
+                # print("exit222...")
+                # for p in path:
+                #     print(p.get_name())
+                # print()
+                return
+            if not visited[dest][0]:
+                printAllPathsUtil_v1(gra, dest_node[0], d, visited, path, tempstack, n, Apath)
+        path.pop()
+        visited[u.get_name()][0] = False
+        # print("exit...")
+        # for p in path:
+        #     print(p.get_name())
+        # print()
+
+
+
+
+
 def printAllPathsUtil(gra, u, d, visited, path, tempstack, n, Apath):
     """
     递归在icfg上遍历出从source点u到sink点d的所有路径
@@ -97,6 +195,7 @@ def printAllPathsUtil(gra, u, d, visited, path, tempstack, n, Apath):
     :param Apath: 列表（用来存放遍历到的所有路径，其元素是一条路径列表）
     :return: 无
     """
+
 
     lineinfo = get_lineinfo(u)
     fflags = False
@@ -143,6 +242,10 @@ def printAllPathsUtil(gra, u, d, visited, path, tempstack, n, Apath):
         for i in ede:
             dest = i.get_destination()
             dest_node = gra.get_node(dest)
+            print("entry........")
+            for p in path:
+                print(p.get_name())
+            print()
 
             if dest.endswith("_start"):
                 tempstack.append(dest[:-5] + 'end')
@@ -152,7 +255,12 @@ def printAllPathsUtil(gra, u, d, visited, path, tempstack, n, Apath):
                 n = n - 1
                 return
             if not visited[dest][0]:
+
                 printAllPathsUtil(gra, dest_node[0], d, visited, path, tempstack, n, Apath)
+                print("exit....")
+                for p in path:
+                    print(p.get_name())
+                print()
     plen = len(path)
     if plen > 0:
         path.pop()
@@ -176,9 +284,9 @@ def printAllPaths(filedot, nodes, edges, s, d, Apath):
         visited[n.get_name()] = []
         visited[n.get_name()].append(False)
     path = []
-    tempstack = []
+    tempstack = [False]
     n = 0
-    printAllPathsUtil(filedot, s, d, visited, path, tempstack, n, Apath)
+    printAllPathsUtil_v1(filedot, s, d, visited, path, tempstack, n, Apath)
 
 
 def get_funname_and_funedgs(nodes, edges):
@@ -223,7 +331,7 @@ def judge_path(flist):
             flag = True
         elif flag is True and tempname.endswith("_end"):
             flag = False
-    return flag
+    return True
 
 
 def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, outfile, gen_funname):
@@ -256,6 +364,15 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
     for n in nodes:
         nlabel = n.get("label")[2:-2]
         if src in nlabel:
+            # adjedgs=get_to_edges(n)
+            # is_end=False
+            # # for adj in adjedgs:
+            #     destname=adj.get_destination()
+            #     if destname.endswith("_end"):
+            #         is_end=True
+            #         break
+            if srcflag:
+                continue
             srcnode = n
             srcflag = True
         if sink in nlabel:
@@ -295,10 +412,25 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
     """一个source到sink可能有多种不同的路径
     对路径进行分类，按行号进行排序，合并，得到最终的路径"""
 
+    merge_path="../../meta_data/merge_path.txt"
+    merge_file=open(merge_path,'w')
     classify_pathlist = {}
+    print(Fpath)
+    # for pa in Fpath:
+    #     for p in pa:
+    #         print(p.get_name())
+    #         merge_file.write(p.get_name()+"\n")
+    #     print("#####")
+    #     merge_file.write("\n")
 
     for p in Fpath:
+        for pp in p:
+            merge_file.write(pp.get_name()+"\n")
         key = get_classifypath_key(p)
+        merge_file.write("key:"+key+"\n")
+        merge_file.write("\n")
+
+        print(key)
         print("without classify...")
         for aa in p:
             print(aa.get_name())
@@ -325,12 +457,18 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
         if len(class_path) > 0:
             list1 = class_path[0]
             sortlist1 = sort_deup1(list1)
+            print("sortlist1..")
+            for s in sortlist1:
+                print(s.get_name())
             flen = len(class_path)
             flist = sortlist1
             """sort_pa是升序后的路径"""
             for pth in range(1, flen):
                 list2 = class_path[pth]
                 sortlist2 = sort_deup1(list2)
+                print("sortlist2")
+                for s in sortlist2:
+                    print(s.get_name())
                 templist = merge_two_list(flist, sortlist2)
                 flist = templist
 
@@ -355,6 +493,13 @@ def main_entry(src_fun, src_line, sink_fun, sink_line, filedot, nodes, edges, ou
                     else:
                         blocknamelist.append(bbname)
                         final_list.append(i)
+
+                # merge_file.write("merged path...\n")
+                # for fe in final_list:
+                #     merge_file.write(fe.get_name()+"\n")
+                # merge_file.write("\n")
+
+
                 return_val = []
                 genxml_dealed_file.clear()
                 print("every time start...")

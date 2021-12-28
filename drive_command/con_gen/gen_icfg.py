@@ -1,7 +1,10 @@
 import os
-from xml.dom.minidom import Document
+import sys
+from xml.dom.minidom import Document, parse
 
 import pydot
+sys.path.append("../")
+from con_gen.lib_code_gen import get_last_lineinfo
 
 
 def isend(node_name, edges):
@@ -12,6 +15,25 @@ def isend(node_name, edges):
             Flag = False
             break
     return Flag
+
+
+
+indcall_dict={}
+ind_call_xml="../../meta_data/ind_call.xml"
+indcall_doc = parse(ind_call_xml)
+indcall_root = indcall_doc.documentElement
+ind_locs= indcall_root.getElementsByTagName("ind_loc")
+for ind_loc in ind_locs:
+    ind_loc_info=ind_loc.getAttribute("info")
+    ind_callees=ind_loc.getElementsByTagName("ind_callee")
+    callee_funnames=[]
+    for ind_callee in ind_callees:
+        callee_funname=ind_callee.getAttribute("funname")
+        callee_funnames.append(callee_funname)
+    indcall_dict[ind_loc_info]=callee_funnames
+
+print(indcall_dict.keys())
+
 
 
 Dir = "../../meta_data/cfg_dot"
@@ -101,6 +123,19 @@ for f in fn_list:
         if "call " in nodelabel:
             labellist = nodelabel.split("\n")
             endline = labellist[-2]
+            lastline=get_last_lineinfo(ele)[:-2]
+            print(lastline)
+            if lastline in indcall_dict.keys():
+                print("*********")
+                callee_funnames=indcall_dict[lastline]
+                for fun in callee_funnames:
+                    if fun in fun_entry_end.keys():
+                        edge1 = pydot.Edge(ele, fun_entry_end[fun][0])
+                        edge2 = pydot.Edge(fun_entry_end[fun][1], ele)
+                        Edges.append(edge1)
+                        Edges.append(edge2)
+                continue
+
             print(endline)
             if "call" not in endline:
                 continue

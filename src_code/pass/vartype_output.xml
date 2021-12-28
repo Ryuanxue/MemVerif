@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <arg name="s" size="8" ptr="*" type="SSL" ref="ssl_st"/>
+    <typedecl name="ssl_st" size="808">
+        <filed name="version" size="4" type="int" const="" ptr=""/>
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="method" size="8" ptr="*" const="const" type="SSL_METHOD" ref="ssl_method_st"/>
+        <filed name="rbio" size="8" ptr="*" type="BIO" ref="bio_st"/>
+        <filed name="wbio" size="8" ptr="*" type="BIO" ref="bio_st"/>
+        <filed name="bbio" size="8" ptr="*" type="BIO" ref="bio_st"/>
+        <filed name="rwstate" size="4" type="int" const="" ptr=""/>
+        <filed name="in_handshake" size="4" type="int" const="" ptr=""/>
+        <filed name="handshake_func" size="8" ptr="*" funptr="true"/>
+        <filed name="server" size="4" type="int" const="" ptr=""/>
+        <filed name="new_session" size="4" type="int" const="" ptr=""/>
+        <filed name="quiet_shutdown" size="4" type="int" const="" ptr=""/>
+        <filed name="shutdown" size="4" type="int" const="" ptr=""/>
+        <filed name="state" size="4" type="int" const="" ptr=""/>
+        <filed name="rstate" size="4" type="int" const="" ptr=""/>
+        <filed name="init_buf" size="8" ptr="*" type="BUF_MEM" ref="buf_mem_st"/>
+        <filed name="init_msg" size="8" ptr="*" type="void"/>
+        <filed name="init_num" size="4" type="int" const="" ptr=""/>
+        <filed name="init_off" size="4" type="int" const="" ptr=""/>
+        <filed name="packet" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="packet_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="s2" size="8" ptr="*" ref="ssl2_state_st" type="struct ssl2_state_st"/>
+        <filed name="s3" size="8" ptr="*" ref="ssl3_state_st" type="struct ssl3_state_st"/>
+        <filed name="d1" size="8" ptr="*" ref="dtls1_state_st" type="struct dtls1_state_st"/>
+        <filed name="read_ahead" size="4" type="int" const="" ptr=""/>
+        <filed name="msg_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="msg_callback_arg" size="8" ptr="*" type="void"/>
+        <filed name="hit" size="4" type="int" const="" ptr=""/>
+        <filed name="param" size="8" ptr="*" type="X509_VERIFY_PARAM" ref="X509_VERIFY_PARAM_st"/>
+        <filed name="cipher_list" size="8" ptr="*" ref="stack_st_SSL_CIPHER" type="struct stack_st_SSL_CIPHER"/>
+        <filed name="cipher_list_by_id" size="8" ptr="*" ref="stack_st_SSL_CIPHER" type="struct stack_st_SSL_CIPHER"/>
+        <filed name="mac_flags" size="4" type="int" const="" ptr=""/>
+        <filed name="enc_read_ctx" size="8" ptr="*" type="EVP_CIPHER_CTX" ref="evp_cipher_ctx_st"/>
+        <filed name="read_hash" size="8" ptr="*" type="EVP_MD_CTX" ref="env_md_ctx_st"/>
+        <filed name="expand" size="8" ptr="*" type="COMP_CTX" ref="comp_ctx_st"/>
+        <filed name="enc_write_ctx" size="8" ptr="*" type="EVP_CIPHER_CTX" ref="evp_cipher_ctx_st"/>
+        <filed name="write_hash" size="8" ptr="*" type="EVP_MD_CTX" ref="env_md_ctx_st"/>
+        <filed name="compress" size="8" ptr="*" type="COMP_CTX" ref="comp_ctx_st"/>
+        <filed name="cert" size="8" ptr="*" ref="cert_st" type="struct cert_st"/>
+        <filed name="sid_ctx_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="sid_ctx" size="32" type="array"/>
+        <filed name="session" size="8" ptr="*" type="SSL_SESSION" ref="ssl_session_st"/>
+        <filed name="generate_session_id" size="8" type="GEN_SESSION_CB" ptr="" funptr="true"/>
+        <filed name="verify_mode" size="4" type="int" const="" ptr=""/>
+        <filed name="verify_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="info_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="error" size="4" type="int" const="" ptr=""/>
+        <filed name="error_code" size="4" type="int" const="" ptr=""/>
+        <filed name="psk_client_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="psk_server_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="ctx" size="8" ptr="*" type="SSL_CTX" ref="ssl_ctx_st"/>
+        <filed name="debug" size="4" type="int" const="" ptr=""/>
+        <filed name="verify_result" size="8" type="long int" const="" ptr=""/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="client_CA" size="8" ptr="*" ref="stack_st_X509_NAME" type="struct stack_st_X509_NAME"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="options" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="mode" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="max_cert_list" size="8" type="long int" const="" ptr=""/>
+        <filed name="first_packet" size="4" type="int" const="" ptr=""/>
+        <filed name="client_version" size="4" type="int" const="" ptr=""/>
+        <filed name="max_send_fragment" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="tlsext_debug_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="tlsext_debug_arg" size="8" ptr="*" type="void"/>
+        <filed name="tlsext_hostname" size="8" ptr="*" type="char" const=""/>
+        <filed name="servername_done" size="4" type="int" const="" ptr=""/>
+        <filed name="tlsext_status_type" size="4" type="int" const="" ptr=""/>
+        <filed name="tlsext_status_expected" size="4" type="int" const="" ptr=""/>
+        <filed name="tlsext_ocsp_ids" size="8" ptr="*" ref="stack_st_OCSP_RESPID" type="struct stack_st_OCSP_RESPID"/>
+        <filed name="tlsext_ocsp_exts" size="8" ptr="*" type="X509_EXTENSIONS" ref="stack_st_X509_EXTENSION"/>
+        <filed name="tlsext_ocsp_resp" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_ocsp_resplen" size="4" type="int" const="" ptr=""/>
+        <filed name="tlsext_ticket_expected" size="4" type="int" const="" ptr=""/>
+        <filed name="tlsext_ecpointformatlist_length" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_ecpointformatlist" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_ellipticcurvelist_length" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_ellipticcurvelist" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_opaque_prf_input" size="8" ptr="*" type="void"/>
+        <filed name="tlsext_opaque_prf_input_len" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_session_ticket" size="8" ptr="*" type="TLS_SESSION_TICKET_EXT" ref="tls_session_ticket_ext_st"/>
+        <filed name="tls_session_ticket_ext_cb" size="8" type="tls_session_ticket_ext_cb_fn" ptr="" funptr="true"/>
+        <filed name="tls_session_ticket_ext_cb_arg" size="8" ptr="*" type="void"/>
+        <filed name="tls_session_secret_cb" size="8" type="tls_session_secret_cb_fn" ptr="" funptr="true"/>
+        <filed name="tls_session_secret_cb_arg" size="8" ptr="*" type="void"/>
+        <filed name="initial_ctx" size="8" ptr="*" type="SSL_CTX" ref="ssl_ctx_st"/>
+        <filed name="next_proto_negotiated" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="next_proto_negotiated_len" size="1" type="unsigned char" const="" ptr=""/>
+        <filed name="srtp_profiles" size="8" ptr="*" ref="stack_st_SRTP_PROTECTION_PROFILE" type="struct stack_st_SRTP_PROTECTION_PROFILE"/>
+        <filed name="srtp_profile" size="8" ptr="*" type="SRTP_PROTECTION_PROFILE" ref="srtp_protection_profile_st"/>
+        <filed name="tlsext_heartbeat" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="tlsext_hb_pending" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="tlsext_hb_seq" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="renegotiate" size="4" type="int" const="" ptr=""/>
+        <filed name="srp_ctx" size="128" type="SRP_CTX" ref="srp_ctx_st"/>
+    </typedecl>
+    <typedecl name="ssl_method_st" size="232">
+        <filed name="version" size="4" type="int" const="" ptr=""/>
+        <filed name="ssl_new" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_clear" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_free" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_accept" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_connect" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_read" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_peek" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_write" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_shutdown" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_renegotiate" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_renegotiate_check" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_get_message" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_read_bytes" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_write_bytes" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_dispatch_alert" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_ctx_ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="get_cipher_by_char" size="8" ptr="*" funptr="true"/>
+        <filed name="put_cipher_by_char" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_pending" size="8" ptr="*" funptr="true"/>
+        <filed name="num_ciphers" size="8" ptr="*" funptr="true"/>
+        <filed name="get_cipher" size="8" ptr="*" funptr="true"/>
+        <filed name="get_ssl_method" size="8" ptr="*" funptr="true"/>
+        <filed name="get_timeout" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl3_enc" size="8" ptr="*" ref="ssl3_enc_method" type="struct ssl3_enc_method"/>
+        <filed name="ssl_version" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_callback_ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="ssl_ctx_callback_ctrl" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="ssl3_enc_method" size="112">
+        <filed name="enc" size="8" ptr="*" funptr="true"/>
+        <filed name="mac" size="8" ptr="*" funptr="true"/>
+        <filed name="setup_key_block" size="8" ptr="*" funptr="true"/>
+        <filed name="generate_master_secret" size="8" ptr="*" funptr="true"/>
+        <filed name="change_cipher_state" size="8" ptr="*" funptr="true"/>
+        <filed name="final_finish_mac" size="8" ptr="*" funptr="true"/>
+        <filed name="finish_mac_length" size="4" type="int" const="" ptr=""/>
+        <filed name="cert_verify_mac" size="8" ptr="*" funptr="true"/>
+        <filed name="client_finished_label" size="8" ptr="*" const="const" type="char"/>
+        <filed name="client_finished_label_len" size="4" type="int" const="" ptr=""/>
+        <filed name="server_finished_label" size="8" ptr="*" const="const" type="char"/>
+        <filed name="server_finished_label_len" size="4" type="int" const="" ptr=""/>
+        <filed name="alert_value" size="8" ptr="*" funptr="true"/>
+        <filed name="export_keying_material" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="bio_st" size="112">
+        <filed name="method" size="8" ptr="*" type="BIO_METHOD" ref="bio_method_st"/>
+        <filed name="callback" size="8" ptr="*" funptr="true"/>
+        <filed name="cb_arg" size="8" ptr="*" type="char" const=""/>
+        <filed name="init" size="4" type="int" const="" ptr=""/>
+        <filed name="shutdown" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+        <filed name="retry_reason" size="4" type="int" const="" ptr=""/>
+        <filed name="num" size="4" type="int" const="" ptr=""/>
+        <filed name="ptr" size="8" ptr="*" type="void"/>
+        <filed name="next_bio" size="8" ptr="*" ref="bio_st" type="struct bio_st"/>
+        <filed name="prev_bio" size="8" ptr="*" ref="bio_st" type="struct bio_st"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="num_read" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="num_write" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+    </typedecl>
+    <typedecl name="bio_method_st" size="80">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="bwrite" size="8" ptr="*" funptr="true"/>
+        <filed name="bread" size="8" ptr="*" funptr="true"/>
+        <filed name="bputs" size="8" ptr="*" funptr="true"/>
+        <filed name="bgets" size="8" ptr="*" funptr="true"/>
+        <filed name="ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="create" size="8" ptr="*" funptr="true"/>
+        <filed name="destroy" size="8" ptr="*" funptr="true"/>
+        <filed name="callback_ctrl" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="crypto_ex_data_st" size="16">
+        <filed name="sk" size="8" ptr="*" ref="stack_st_void" type="struct stack_st_void"/>
+        <filed name="dummy" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_void" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="stack_st" size="32">
+        <filed name="num" size="4" type="int" const="" ptr=""/>
+        <filed name="data" size="8" ptr="**" type="char" const=""/>
+        <filed name="sorted" size="4" type="int" const="" ptr=""/>
+        <filed name="num_alloc" size="4" type="int" const="" ptr=""/>
+        <filed name="comp" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="buf_mem_st" size="24">
+        <filed name="length" size="8" type="size_t" const="" ptr=""/>
+        <filed name="data" size="8" ptr="*" type="char" const=""/>
+        <filed name="max" size="8" type="size_t" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl2_state_st" size="344">
+        <filed name="three_byte_header" size="4" type="int" const="" ptr=""/>
+        <filed name="clear_text" size="4" type="int" const="" ptr=""/>
+        <filed name="escape" size="4" type="int" const="" ptr=""/>
+        <filed name="ssl2_rollback" size="4" type="int" const="" ptr=""/>
+        <filed name="wnum" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="wpend_tot" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_buf" size="8" ptr="*" const="const" type="unsigned char"/>
+        <filed name="wpend_off" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_len" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_ret" size="4" type="int" const="" ptr=""/>
+        <filed name="rbuf_left" size="4" type="int" const="" ptr=""/>
+        <filed name="rbuf_offs" size="4" type="int" const="" ptr=""/>
+        <filed name="rbuf" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="wbuf" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="write_ptr" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="padding" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="rlength" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="ract_data_length" size="4" type="int" const="" ptr=""/>
+        <filed name="wlength" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="wact_data_length" size="4" type="int" const="" ptr=""/>
+        <filed name="ract_data" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="wact_data" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="mac_data" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="read_key" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="write_key" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="challenge_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="challenge" size="32" type="array"/>
+        <filed name="conn_id_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="conn_id" size="16" type="array"/>
+        <filed name="key_material_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="key_material" size="48" type="array"/>
+        <filed name="read_sequence" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="write_sequence" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="tmp" size="72" ref="_self_creat_0" type="struct "/>
+    </typedecl>
+    <typedecl name="_self_creat_0" size="72">
+        <filed name="conn_id_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="cert_type" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="cert_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="csl" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="clear" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="enc" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="ccl" size="32" type="array"/>
+        <filed name="cipher_spec_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="session_id_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="clen" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="rlen" size="4" type="unsigned int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl3_state_st" size="1200">
+        <filed name="flags" size="8" type="long int" const="" ptr=""/>
+        <filed name="delay_buf_pop_ret" size="4" type="int" const="" ptr=""/>
+        <filed name="read_sequence" size="8" type="array"/>
+        <filed name="read_mac_secret_size" size="4" type="int" const="" ptr=""/>
+        <filed name="read_mac_secret" size="64" type="array"/>
+        <filed name="write_sequence" size="8" type="array"/>
+        <filed name="write_mac_secret_size" size="4" type="int" const="" ptr=""/>
+        <filed name="write_mac_secret" size="64" type="array"/>
+        <filed name="server_random" size="32" type="array"/>
+        <filed name="client_random" size="32" type="array"/>
+        <filed name="need_empty_fragments" size="4" type="int" const="" ptr=""/>
+        <filed name="empty_fragment_done" size="4" type="int" const="" ptr=""/>
+        <filed name="init_extra" size="4" type="int" const="" ptr=""/>
+        <filed name="rbuf" size="24" type="SSL3_BUFFER" ref="ssl3_buffer_st"/>
+        <filed name="wbuf" size="24" type="SSL3_BUFFER" ref="ssl3_buffer_st"/>
+        <filed name="rrec" size="56" type="SSL3_RECORD" ref="ssl3_record_st"/>
+        <filed name="wrec" size="56" type="SSL3_RECORD" ref="ssl3_record_st"/>
+        <filed name="alert_fragment" size="2" type="array"/>
+        <filed name="alert_fragment_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="handshake_fragment" size="4" type="array"/>
+        <filed name="handshake_fragment_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="wnum" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="wpend_tot" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_type" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_ret" size="4" type="int" const="" ptr=""/>
+        <filed name="wpend_buf" size="8" ptr="*" const="const" type="unsigned char"/>
+        <filed name="handshake_buffer" size="8" ptr="*" type="BIO" ref="bio_st"/>
+        <filed name="handshake_dgst" size="8" ptr="**" type="EVP_MD_CTX" ref="env_md_ctx_st"/>
+        <filed name="change_cipher_spec" size="4" type="int" const="" ptr=""/>
+        <filed name="warn_alert" size="4" type="int" const="" ptr=""/>
+        <filed name="fatal_alert" size="4" type="int" const="" ptr=""/>
+        <filed name="alert_dispatch" size="4" type="int" const="" ptr=""/>
+        <filed name="send_alert" size="2" type="array"/>
+        <filed name="renegotiate" size="4" type="int" const="" ptr=""/>
+        <filed name="total_renegotiations" size="4" type="int" const="" ptr=""/>
+        <filed name="num_renegotiations" size="4" type="int" const="" ptr=""/>
+        <filed name="in_read_app_data" size="4" type="int" const="" ptr=""/>
+        <filed name="client_opaque_prf_input" size="8" ptr="*" type="void"/>
+        <filed name="client_opaque_prf_input_len" size="8" type="size_t" const="" ptr=""/>
+        <filed name="server_opaque_prf_input" size="8" ptr="*" type="void"/>
+        <filed name="server_opaque_prf_input_len" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tmp" size="528" ref="_self_creat_1" type="struct "/>
+        <filed name="previous_client_finished" size="64" type="array"/>
+        <filed name="previous_client_finished_len" size="1" type="unsigned char" const="" ptr=""/>
+        <filed name="previous_server_finished" size="64" type="array"/>
+        <filed name="previous_server_finished_len" size="1" type="unsigned char" const="" ptr=""/>
+        <filed name="send_connection_binding" size="4" type="int" const="" ptr=""/>
+        <filed name="next_proto_neg_seen" size="4" type="int" const="" ptr=""/>
+        <filed name="is_probably_safari" size="1" type="char" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl3_buffer_st" size="24">
+        <filed name="buf" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="len" size="8" type="size_t" const="" ptr=""/>
+        <filed name="offset" size="4" type="int" const="" ptr=""/>
+        <filed name="left" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl3_record_st" size="56">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="off" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="data" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="input" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="comp" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="epoch" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="seq_num" size="8" type="array"/>
+    </typedecl>
+    <typedecl name="env_md_ctx_st" size="48">
+        <filed name="digest" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+        <filed name="engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+        <filed name="flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="md_data" size="8" ptr="*" type="void"/>
+        <filed name="pctx" size="8" ptr="*" type="EVP_PKEY_CTX" ref="evp_pkey_ctx_st"/>
+        <filed name="update" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="env_md_st" size="120">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="pkey_type" size="4" type="int" const="" ptr=""/>
+        <filed name="md_size" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="init" size="8" ptr="*" funptr="true"/>
+        <filed name="update" size="8" ptr="*" funptr="true"/>
+        <filed name="final" size="8" ptr="*" funptr="true"/>
+        <filed name="copy" size="8" ptr="*" funptr="true"/>
+        <filed name="cleanup" size="8" ptr="*" funptr="true"/>
+        <filed name="sign" size="8" ptr="*" funptr="true"/>
+        <filed name="verify" size="8" ptr="*" funptr="true"/>
+        <filed name="required_pkey_type" size="20" type="array"/>
+        <filed name="block_size" size="4" type="int" const="" ptr=""/>
+        <filed name="ctx_size" size="4" type="int" const="" ptr=""/>
+        <filed name="md_ctrl" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="engine_st" size="0"/>
+    <typedecl name="evp_pkey_ctx_st" size="0"/>
+    <typedecl name="_self_creat_1" size="528">
+        <filed name="cert_verify_md" size="128" type="array"/>
+        <filed name="finish_md" size="128" type="array"/>
+        <filed name="finish_md_len" size="4" type="int" const="" ptr=""/>
+        <filed name="peer_finish_md" size="128" type="array"/>
+        <filed name="peer_finish_md_len" size="4" type="int" const="" ptr=""/>
+        <filed name="message_size" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="message_type" size="4" type="int" const="" ptr=""/>
+        <filed name="new_cipher" size="8" ptr="*" const="const" type="SSL_CIPHER" ref="ssl_cipher_st"/>
+        <filed name="dh" size="8" ptr="*" type="DH" ref="dh_st"/>
+        <filed name="ecdh" size="8" ptr="*" type="EC_KEY" ref="ec_key_st"/>
+        <filed name="next_state" size="4" type="int" const="" ptr=""/>
+        <filed name="reuse_message" size="4" type="int" const="" ptr=""/>
+        <filed name="cert_req" size="4" type="int" const="" ptr=""/>
+        <filed name="ctype_num" size="4" type="int" const="" ptr=""/>
+        <filed name="ctype" size="9" type="array"/>
+        <filed name="ca_names" size="8" ptr="*" ref="stack_st_X509_NAME" type="struct stack_st_X509_NAME"/>
+        <filed name="use_rsa_tmp" size="4" type="int" const="" ptr=""/>
+        <filed name="key_block_length" size="4" type="int" const="" ptr=""/>
+        <filed name="key_block" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="new_sym_enc" size="8" ptr="*" const="const" type="EVP_CIPHER" ref="evp_cipher_st"/>
+        <filed name="new_hash" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+        <filed name="new_mac_pkey_type" size="4" type="int" const="" ptr=""/>
+        <filed name="new_mac_secret_size" size="4" type="int" const="" ptr=""/>
+        <filed name="new_compression" size="8" ptr="*" const="const" type="SSL_COMP" ref="ssl_comp_st"/>
+        <filed name="cert_request" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl_cipher_st" size="88">
+        <filed name="valid" size="4" type="int" const="" ptr=""/>
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="id" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm_mkey" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm_auth" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm_enc" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm_mac" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm_ssl" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algo_strength" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="algorithm2" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="strength_bits" size="4" type="int" const="" ptr=""/>
+        <filed name="alg_bits" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="dh_st" size="144">
+        <filed name="pad" size="4" type="int" const="" ptr=""/>
+        <filed name="version" size="4" type="int" const="" ptr=""/>
+        <filed name="p" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="g" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="length" size="8" type="long int" const="" ptr=""/>
+        <filed name="pub_key" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="priv_key" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+        <filed name="method_mont_p" size="8" ptr="*" type="BN_MONT_CTX" ref="bn_mont_ctx_st"/>
+        <filed name="q" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="j" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="seed" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="seedlen" size="4" type="int" const="" ptr=""/>
+        <filed name="counter" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="meth" size="8" ptr="*" const="const" type="DH_METHOD" ref="dh_method"/>
+        <filed name="engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+    </typedecl>
+    <typedecl name="bignum_st" size="24">
+        <filed name="d" size="8" ptr="*" type="unsigned long" const=""/>
+        <filed name="top" size="4" type="int" const="" ptr=""/>
+        <filed name="dmax" size="4" type="int" const="" ptr=""/>
+        <filed name="neg" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="bn_mont_ctx_st" size="96">
+        <filed name="ri" size="4" type="int" const="" ptr=""/>
+        <filed name="RR" size="24" type="BIGNUM" ref="bignum_st"/>
+        <filed name="N" size="24" type="BIGNUM" ref="bignum_st"/>
+        <filed name="Ni" size="24" type="BIGNUM" ref="bignum_st"/>
+        <filed name="n0" size="8" type="array"/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="dh_method" size="72">
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="generate_key" size="8" ptr="*" funptr="true"/>
+        <filed name="compute_key" size="8" ptr="*" funptr="true"/>
+        <filed name="bn_mod_exp" size="8" ptr="*" funptr="true"/>
+        <filed name="init" size="8" ptr="*" funptr="true"/>
+        <filed name="finish" size="8" ptr="*" funptr="true"/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+        <filed name="app_data" size="8" ptr="*" type="char" const=""/>
+        <filed name="generate_params" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="ec_key_st" size="0"/>
+    <typedecl name="stack_st_X509_NAME" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="evp_cipher_st" size="88">
+        <filed name="nid" size="4" type="int" const="" ptr=""/>
+        <filed name="block_size" size="4" type="int" const="" ptr=""/>
+        <filed name="key_len" size="4" type="int" const="" ptr=""/>
+        <filed name="iv_len" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="init" size="8" ptr="*" funptr="true"/>
+        <filed name="do_cipher" size="8" ptr="*" funptr="true"/>
+        <filed name="cleanup" size="8" ptr="*" funptr="true"/>
+        <filed name="ctx_size" size="4" type="int" const="" ptr=""/>
+        <filed name="set_asn1_parameters" size="8" ptr="*" funptr="true"/>
+        <filed name="get_asn1_parameters" size="8" ptr="*" funptr="true"/>
+        <filed name="ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="app_data" size="8" ptr="*" type="void"/>
+    </typedecl>
+    <typedecl name="ssl_comp_st" size="24">
+        <filed name="id" size="4" type="int" const="" ptr=""/>
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="method" size="8" ptr="*" type="COMP_METHOD" ref="comp_method_st"/>
+    </typedecl>
+    <typedecl name="comp_method_st" size="64">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="init" size="8" ptr="*" funptr="true"/>
+        <filed name="finish" size="8" ptr="*" funptr="true"/>
+        <filed name="compress" size="8" ptr="*" funptr="true"/>
+        <filed name="expand" size="8" ptr="*" funptr="true"/>
+        <filed name="ctrl" size="8" ptr="*" funptr="true"/>
+        <filed name="callback_ctrl" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="dtls1_state_st" size="888">
+        <filed name="send_cookie" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="cookie" size="256" type="array"/>
+        <filed name="rcvd_cookie" size="256" type="array"/>
+        <filed name="cookie_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="r_epoch" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="w_epoch" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="bitmap" size="16" type="DTLS1_BITMAP" ref="dtls1_bitmap_st"/>
+        <filed name="next_bitmap" size="16" type="DTLS1_BITMAP" ref="dtls1_bitmap_st"/>
+        <filed name="handshake_write_seq" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="next_handshake_write_seq" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="handshake_read_seq" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="last_write_sequence" size="8" type="array"/>
+        <filed name="unprocessed_rcds" size="16" type="record_pqueue" ref="record_pqueue_st"/>
+        <filed name="processed_rcds" size="16" type="record_pqueue" ref="record_pqueue_st"/>
+        <filed name="buffered_messages" size="8" type="pqueue" ptr="" ref="_pqueue"/>
+        <filed name="sent_messages" size="8" type="pqueue" ptr="" ref="_pqueue"/>
+        <filed name="buffered_app_data" size="16" type="record_pqueue" ref="record_pqueue_st"/>
+        <filed name="listen" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="mtu" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="w_msg_hdr" size="88" ref="hm_header_st" type="struct hm_header_st"/>
+        <filed name="r_msg_hdr" size="88" ref="hm_header_st" type="struct hm_header_st"/>
+        <filed name="timeout" size="12" ref="dtls1_timeout_st" type="struct dtls1_timeout_st"/>
+        <filed name="next_timeout" size="16" ref="timeval" type="struct timeval"/>
+        <filed name="timeout_duration" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="alert_fragment" size="2" type="array"/>
+        <filed name="alert_fragment_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="handshake_fragment" size="12" type="array"/>
+        <filed name="handshake_fragment_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="retransmitting" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="change_cipher_spec_ok" size="4" type="unsigned int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="dtls1_bitmap_st" size="16">
+        <filed name="map" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="max_seq_num" size="8" type="array"/>
+    </typedecl>
+    <typedecl name="record_pqueue_st" size="16">
+        <filed name="epoch" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="q" size="8" type="pqueue" ptr="" ref="_pqueue"/>
+    </typedecl>
+    <typedecl name="_pqueue" size="0"/>
+    <typedecl name="hm_header_st" size="88">
+        <filed name="type" size="1" type="unsigned char" const="" ptr=""/>
+        <filed name="msg_len" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="seq" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="frag_off" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="frag_len" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="is_ccs" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="saved_retransmit_state" size="40" ref="dtls1_retransmit_state" type="struct dtls1_retransmit_state"/>
+    </typedecl>
+    <typedecl name="dtls1_retransmit_state" size="40">
+        <filed name="enc_write_ctx" size="8" ptr="*" type="EVP_CIPHER_CTX" ref="evp_cipher_ctx_st"/>
+        <filed name="write_hash" size="8" ptr="*" type="EVP_MD_CTX" ref="env_md_ctx_st"/>
+        <filed name="compress" size="8" ptr="*" type="COMP_CTX" ref="comp_ctx_st"/>
+        <filed name="session" size="8" ptr="*" type="SSL_SESSION" ref="ssl_session_st"/>
+        <filed name="epoch" size="2" type="unsigned short" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="evp_cipher_ctx_st" size="168">
+        <filed name="cipher" size="8" ptr="*" const="const" type="EVP_CIPHER" ref="evp_cipher_st"/>
+        <filed name="engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+        <filed name="encrypt" size="4" type="int" const="" ptr=""/>
+        <filed name="buf_len" size="4" type="int" const="" ptr=""/>
+        <filed name="oiv" size="16" type="array"/>
+        <filed name="iv" size="16" type="array"/>
+        <filed name="buf" size="32" type="array"/>
+        <filed name="num" size="4" type="int" const="" ptr=""/>
+        <filed name="app_data" size="8" ptr="*" type="void"/>
+        <filed name="key_len" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="cipher_data" size="8" ptr="*" type="void"/>
+        <filed name="final_used" size="4" type="int" const="" ptr=""/>
+        <filed name="block_mask" size="4" type="int" const="" ptr=""/>
+        <filed name="final" size="32" type="array"/>
+    </typedecl>
+    <typedecl name="comp_ctx_st" size="56">
+        <filed name="meth" size="8" ptr="*" type="COMP_METHOD" ref="comp_method_st"/>
+        <filed name="compress_in" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="compress_out" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="expand_in" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="expand_out" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+    </typedecl>
+    <typedecl name="ssl_session_st" size="352">
+        <filed name="ssl_version" size="4" type="int" const="" ptr=""/>
+        <filed name="key_arg_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="key_arg" size="8" type="array"/>
+        <filed name="master_key_length" size="4" type="int" const="" ptr=""/>
+        <filed name="master_key" size="48" type="array"/>
+        <filed name="session_id_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="session_id" size="32" type="array"/>
+        <filed name="sid_ctx_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="sid_ctx" size="32" type="array"/>
+        <filed name="psk_identity_hint" size="8" ptr="*" type="char" const=""/>
+        <filed name="psk_identity" size="8" ptr="*" type="char" const=""/>
+        <filed name="not_resumable" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_cert" size="8" ptr="*" ref="sess_cert_st" type="struct sess_cert_st"/>
+        <filed name="peer" size="8" ptr="*" type="X509" ref="x509_st"/>
+        <filed name="verify_result" size="8" type="long int" const="" ptr=""/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="timeout" size="8" type="long int" const="" ptr=""/>
+        <filed name="time" size="8" type="long int" const="" ptr=""/>
+        <filed name="compress_meth" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="cipher" size="8" ptr="*" const="const" type="SSL_CIPHER" ref="ssl_cipher_st"/>
+        <filed name="cipher_id" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ciphers" size="8" ptr="*" ref="stack_st_SSL_CIPHER" type="struct stack_st_SSL_CIPHER"/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="prev" size="8" ptr="*" ref="ssl_session_st" type="struct ssl_session_st"/>
+        <filed name="next" size="8" ptr="*" ref="ssl_session_st" type="struct ssl_session_st"/>
+        <filed name="tlsext_hostname" size="8" ptr="*" type="char" const=""/>
+        <filed name="tlsext_ecpointformatlist_length" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_ecpointformatlist" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_ellipticcurvelist_length" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_ellipticcurvelist" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_tick" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="tlsext_ticklen" size="8" type="size_t" const="" ptr=""/>
+        <filed name="tlsext_tick_lifetime_hint" size="8" type="long int" const="" ptr=""/>
+        <filed name="srp_username" size="8" ptr="*" type="char" const=""/>
+    </typedecl>
+    <typedecl name="sess_cert_st" size="248">
+        <filed name="cert_chain" size="8" ptr="*" ref="stack_st_X509" type="struct stack_st_X509"/>
+        <filed name="peer_cert_type" size="4" type="int" const="" ptr=""/>
+        <filed name="peer_key" size="8" ptr="*" type="CERT_PKEY" ref="cert_pkey_st"/>
+        <filed name="peer_pkeys" size="192" type="array"/>
+        <filed name="peer_rsa_tmp" size="8" ptr="*" type="RSA" ref="rsa_st"/>
+        <filed name="peer_dh_tmp" size="8" ptr="*" type="DH" ref="dh_st"/>
+        <filed name="peer_ecdh_tmp" size="8" ptr="*" type="EC_KEY" ref="ec_key_st"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_X509" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="cert_pkey_st" size="24">
+        <filed name="x509" size="8" ptr="*" type="X509" ref="x509_st"/>
+        <filed name="privatekey" size="8" ptr="*" type="EVP_PKEY" ref="evp_pkey_st"/>
+        <filed name="digest" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+    </typedecl>
+    <typedecl name="x509_st" size="184">
+        <filed name="cert_info" size="8" ptr="*" type="X509_CINF" ref="x509_cinf_st"/>
+        <filed name="sig_alg" size="8" ptr="*" type="X509_ALGOR" ref="X509_algor_st"/>
+        <filed name="signature" size="8" ptr="*" type="ASN1_BIT_STRING" ref="asn1_string_st"/>
+        <filed name="valid" size="4" type="int" const="" ptr=""/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="name" size="8" ptr="*" type="char" const=""/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="ex_pathlen" size="8" type="long int" const="" ptr=""/>
+        <filed name="ex_pcpathlen" size="8" type="long int" const="" ptr=""/>
+        <filed name="ex_flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ex_kusage" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ex_xkusage" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="ex_nscert" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="skid" size="8" ptr="*" type="ASN1_OCTET_STRING" ref="asn1_string_st"/>
+        <filed name="akid" size="8" ptr="*" type="AUTHORITY_KEYID" ref="AUTHORITY_KEYID_st"/>
+        <filed name="policy_cache" size="8" ptr="*" type="X509_POLICY_CACHE" ref="X509_POLICY_CACHE_st"/>
+        <filed name="crldp" size="8" ptr="*" ref="stack_st_DIST_POINT" type="struct stack_st_DIST_POINT"/>
+        <filed name="altname" size="8" ptr="*" ref="stack_st_GENERAL_NAME" type="struct stack_st_GENERAL_NAME"/>
+        <filed name="nc" size="8" ptr="*" type="NAME_CONSTRAINTS" ref="NAME_CONSTRAINTS_st"/>
+        <filed name="sha1_hash" size="20" type="array"/>
+        <filed name="aux" size="8" ptr="*" type="X509_CERT_AUX" ref="x509_cert_aux_st"/>
+    </typedecl>
+    <typedecl name="x509_cinf_st" size="104">
+        <filed name="version" size="8" ptr="*" type="ASN1_INTEGER" ref="asn1_string_st"/>
+        <filed name="serialNumber" size="8" ptr="*" type="ASN1_INTEGER" ref="asn1_string_st"/>
+        <filed name="signature" size="8" ptr="*" type="X509_ALGOR" ref="X509_algor_st"/>
+        <filed name="issuer" size="8" ptr="*" type="X509_NAME" ref="X509_name_st"/>
+        <filed name="validity" size="8" ptr="*" type="X509_VAL" ref="X509_val_st"/>
+        <filed name="subject" size="8" ptr="*" type="X509_NAME" ref="X509_name_st"/>
+        <filed name="key" size="8" ptr="*" type="X509_PUBKEY" ref="X509_pubkey_st"/>
+        <filed name="issuerUID" size="8" ptr="*" type="ASN1_BIT_STRING" ref="asn1_string_st"/>
+        <filed name="subjectUID" size="8" ptr="*" type="ASN1_BIT_STRING" ref="asn1_string_st"/>
+        <filed name="extensions" size="8" ptr="*" ref="stack_st_X509_EXTENSION" type="struct stack_st_X509_EXTENSION"/>
+        <filed name="enc" size="24" type="ASN1_ENCODING" ref="ASN1_ENCODING_st"/>
+    </typedecl>
+    <typedecl name="asn1_string_st" size="24">
+        <filed name="length" size="4" type="int" const="" ptr=""/>
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="data" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="flags" size="8" type="long int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="X509_algor_st" size="16">
+        <filed name="algorithm" size="8" ptr="*" type="ASN1_OBJECT" ref="asn1_object_st"/>
+        <filed name="parameter" size="8" ptr="*" type="ASN1_TYPE" ref="asn1_type_st"/>
+    </typedecl>
+    <typedecl name="asn1_object_st" size="40">
+        <filed name="sn" size="8" ptr="*" const="const" type="char"/>
+        <filed name="ln" size="8" ptr="*" const="const" type="char"/>
+        <filed name="nid" size="4" type="int" const="" ptr=""/>
+        <filed name="length" size="4" type="int" const="" ptr=""/>
+        <filed name="data" size="8" ptr="*" const="const" type="unsigned char"/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="asn1_type_st" size="16">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="value" size="8" ref="_self_creat_2" type="struct "/>
+    </typedecl>
+    <typedecl name="_self_creat_2" size="8">
+        <filed name="ptr" size="8" ptr="*" type="char" const=""/>
+    </typedecl>
+    <typedecl name="X509_name_st" size="40">
+        <filed name="entries" size="8" ptr="*" ref="stack_st_X509_NAME_ENTRY" type="struct stack_st_X509_NAME_ENTRY"/>
+        <filed name="modified" size="4" type="int" const="" ptr=""/>
+        <filed name="bytes" size="8" ptr="*" type="BUF_MEM" ref="buf_mem_st"/>
+        <filed name="canon_enc" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="canon_enclen" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_X509_NAME_ENTRY" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="X509_val_st" size="16">
+        <filed name="notBefore" size="8" ptr="*" type="ASN1_TIME" ref="asn1_string_st"/>
+        <filed name="notAfter" size="8" ptr="*" type="ASN1_TIME" ref="asn1_string_st"/>
+    </typedecl>
+    <typedecl name="X509_pubkey_st" size="24">
+        <filed name="algor" size="8" ptr="*" type="X509_ALGOR" ref="X509_algor_st"/>
+        <filed name="public_key" size="8" ptr="*" type="ASN1_BIT_STRING" ref="asn1_string_st"/>
+        <filed name="pkey" size="8" ptr="*" type="EVP_PKEY" ref="evp_pkey_st"/>
+    </typedecl>
+    <typedecl name="evp_pkey_st" size="56">
+        <filed name="type" size="4" type="int" const="" ptr=""/>
+        <filed name="save_type" size="4" type="int" const="" ptr=""/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="ameth" size="8" ptr="*" const="const" type="EVP_PKEY_ASN1_METHOD" ref="evp_pkey_asn1_method_st"/>
+        <filed name="engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+        <filed name="pkey" size="8" ref="_self_creat_3" type="struct "/>
+        <filed name="save_parameters" size="4" type="int" const="" ptr=""/>
+        <filed name="attributes" size="8" ptr="*" ref="stack_st_X509_ATTRIBUTE" type="struct stack_st_X509_ATTRIBUTE"/>
+    </typedecl>
+    <typedecl name="evp_pkey_asn1_method_st" size="0"/>
+    <typedecl name="_self_creat_3" size="8">
+        <filed name="ptr" size="8" ptr="*" type="char" const=""/>
+    </typedecl>
+    <typedecl name="stack_st_X509_ATTRIBUTE" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="stack_st_X509_EXTENSION" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="ASN1_ENCODING_st" size="24">
+        <filed name="enc" size="8" ptr="*" type="unsigned char" const=""/>
+        <filed name="len" size="8" type="long int" const="" ptr=""/>
+        <filed name="modified" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="AUTHORITY_KEYID_st" size="0"/>
+    <typedecl name="X509_POLICY_CACHE_st" size="0"/>
+    <typedecl name="stack_st_DIST_POINT" size="0"/>
+    <typedecl name="stack_st_GENERAL_NAME" size="0"/>
+    <typedecl name="NAME_CONSTRAINTS_st" size="0"/>
+    <typedecl name="x509_cert_aux_st" size="40">
+        <filed name="trust" size="8" ptr="*" ref="stack_st_ASN1_OBJECT" type="struct stack_st_ASN1_OBJECT"/>
+        <filed name="reject" size="8" ptr="*" ref="stack_st_ASN1_OBJECT" type="struct stack_st_ASN1_OBJECT"/>
+        <filed name="alias" size="8" ptr="*" type="ASN1_UTF8STRING" ref="asn1_string_st"/>
+        <filed name="keyid" size="8" ptr="*" type="ASN1_OCTET_STRING" ref="asn1_string_st"/>
+        <filed name="other" size="8" ptr="*" ref="stack_st_X509_ALGOR" type="struct stack_st_X509_ALGOR"/>
+    </typedecl>
+    <typedecl name="stack_st_ASN1_OBJECT" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="stack_st_X509_ALGOR" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="rsa_st" size="168">
+        <filed name="pad" size="4" type="int" const="" ptr=""/>
+        <filed name="version" size="8" type="long int" const="" ptr=""/>
+        <filed name="meth" size="8" ptr="*" const="const" type="RSA_METHOD" ref="rsa_meth_st"/>
+        <filed name="engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+        <filed name="n" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="e" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="d" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="p" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="q" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="dmp1" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="dmq1" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="iqmp" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+        <filed name="_method_mod_n" size="8" ptr="*" type="BN_MONT_CTX" ref="bn_mont_ctx_st"/>
+        <filed name="_method_mod_p" size="8" ptr="*" type="BN_MONT_CTX" ref="bn_mont_ctx_st"/>
+        <filed name="_method_mod_q" size="8" ptr="*" type="BN_MONT_CTX" ref="bn_mont_ctx_st"/>
+        <filed name="bignum_data" size="8" ptr="*" type="char" const=""/>
+        <filed name="blinding" size="8" ptr="*" type="BN_BLINDING" ref="bn_blinding_st"/>
+        <filed name="mt_blinding" size="8" ptr="*" type="BN_BLINDING" ref="bn_blinding_st"/>
+    </typedecl>
+    <typedecl name="rsa_meth_st" size="112">
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="rsa_pub_enc" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_pub_dec" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_priv_enc" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_priv_dec" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_mod_exp" size="8" ptr="*" funptr="true"/>
+        <filed name="bn_mod_exp" size="8" ptr="*" funptr="true"/>
+        <filed name="init" size="8" ptr="*" funptr="true"/>
+        <filed name="finish" size="8" ptr="*" funptr="true"/>
+        <filed name="flags" size="4" type="int" const="" ptr=""/>
+        <filed name="app_data" size="8" ptr="*" type="char" const=""/>
+        <filed name="rsa_sign" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_verify" size="8" ptr="*" funptr="true"/>
+        <filed name="rsa_keygen" size="8" ptr="*" funptr="true"/>
+    </typedecl>
+    <typedecl name="bn_blinding_st" size="0"/>
+    <typedecl name="stack_st_SSL_CIPHER" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="dtls1_timeout_st" size="12">
+        <filed name="read_timeouts" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="write_timeouts" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="num_alerts" size="4" type="unsigned int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="timeval" size="16">
+        <filed name="tv_sec" size="8" type="__time_t" const="" ptr=""/>
+        <filed name="tv_usec" size="8" type="__suseconds_t" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="X509_VERIFY_PARAM_st" size="56">
+        <filed name="name" size="8" ptr="*" type="char" const=""/>
+        <filed name="check_time" size="8" type="__time_t" const="" ptr=""/>
+        <filed name="inh_flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="flags" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="purpose" size="4" type="int" const="" ptr=""/>
+        <filed name="trust" size="4" type="int" const="" ptr=""/>
+        <filed name="depth" size="4" type="int" const="" ptr=""/>
+        <filed name="policies" size="8" ptr="*" ref="stack_st_ASN1_OBJECT" type="struct stack_st_ASN1_OBJECT"/>
+    </typedecl>
+    <typedecl name="cert_st" size="296">
+        <filed name="key" size="8" ptr="*" type="CERT_PKEY" ref="cert_pkey_st"/>
+        <filed name="valid" size="4" type="int" const="" ptr=""/>
+        <filed name="mask_k" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="mask_a" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="export_mask_k" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="export_mask_a" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="rsa_tmp" size="8" ptr="*" type="RSA" ref="rsa_st"/>
+        <filed name="rsa_tmp_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="dh_tmp" size="8" ptr="*" type="DH" ref="dh_st"/>
+        <filed name="dh_tmp_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="ecdh_tmp" size="8" ptr="*" type="EC_KEY" ref="ec_key_st"/>
+        <filed name="ecdh_tmp_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="pkeys" size="192" type="array"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="ssl_ctx_st" size="736">
+        <filed name="method" size="8" ptr="*" const="const" type="SSL_METHOD" ref="ssl_method_st"/>
+        <filed name="cipher_list" size="8" ptr="*" ref="stack_st_SSL_CIPHER" type="struct stack_st_SSL_CIPHER"/>
+        <filed name="cipher_list_by_id" size="8" ptr="*" ref="stack_st_SSL_CIPHER" type="struct stack_st_SSL_CIPHER"/>
+        <filed name="cert_store" size="8" ptr="*" ref="x509_store_st" type="struct x509_store_st"/>
+        <filed name="sessions" size="8" ptr="*" ref="lhash_st_SSL_SESSION" type="struct lhash_st_SSL_SESSION"/>
+        <filed name="session_cache_size" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="session_cache_head" size="8" ptr="*" ref="ssl_session_st" type="struct ssl_session_st"/>
+        <filed name="session_cache_tail" size="8" ptr="*" ref="ssl_session_st" type="struct ssl_session_st"/>
+        <filed name="session_cache_mode" size="4" type="int" const="" ptr=""/>
+        <filed name="session_timeout" size="8" type="long int" const="" ptr=""/>
+        <filed name="new_session_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="remove_session_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="get_session_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="stats" size="44" ref="_self_creat_4" type="struct "/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+        <filed name="app_verify_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="app_verify_arg" size="8" ptr="*" type="void"/>
+        <filed name="default_passwd_callback" size="8" ptr="*" type="pem_password_cb" funptr="true"/>
+        <filed name="default_passwd_callback_userdata" size="8" ptr="*" type="void"/>
+        <filed name="client_cert_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="app_gen_cookie_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="app_verify_cookie_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="rsa_md5" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+        <filed name="md5" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+        <filed name="sha1" size="8" ptr="*" const="const" type="EVP_MD" ref="env_md_st"/>
+        <filed name="extra_certs" size="8" ptr="*" ref="stack_st_X509" type="struct stack_st_X509"/>
+        <filed name="comp_methods" size="8" ptr="*" ref="stack_st_SSL_COMP" type="struct stack_st_SSL_COMP"/>
+        <filed name="info_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="client_CA" size="8" ptr="*" ref="stack_st_X509_NAME" type="struct stack_st_X509_NAME"/>
+        <filed name="options" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="mode" size="8" type="long unsigned int" const="" ptr=""/>
+        <filed name="max_cert_list" size="8" type="long int" const="" ptr=""/>
+        <filed name="cert" size="8" ptr="*" ref="cert_st" type="struct cert_st"/>
+        <filed name="read_ahead" size="4" type="int" const="" ptr=""/>
+        <filed name="msg_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="msg_callback_arg" size="8" ptr="*" type="void"/>
+        <filed name="verify_mode" size="4" type="int" const="" ptr=""/>
+        <filed name="sid_ctx_length" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="sid_ctx" size="32" type="array"/>
+        <filed name="default_verify_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="generate_session_id" size="8" type="GEN_SESSION_CB" ptr="" funptr="true"/>
+        <filed name="param" size="8" ptr="*" type="X509_VERIFY_PARAM" ref="X509_VERIFY_PARAM_st"/>
+        <filed name="quiet_shutdown" size="4" type="int" const="" ptr=""/>
+        <filed name="max_send_fragment" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="client_cert_engine" size="8" ptr="*" type="ENGINE" ref="engine_st"/>
+        <filed name="tlsext_servername_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="tlsext_servername_arg" size="8" ptr="*" type="void"/>
+        <filed name="tlsext_tick_key_name" size="16" type="array"/>
+        <filed name="tlsext_tick_hmac_key" size="16" type="array"/>
+        <filed name="tlsext_tick_aes_key" size="16" type="array"/>
+        <filed name="tlsext_ticket_key_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="tlsext_status_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="tlsext_status_arg" size="8" ptr="*" type="void"/>
+        <filed name="tlsext_opaque_prf_input_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="tlsext_opaque_prf_input_callback_arg" size="8" ptr="*" type="void"/>
+        <filed name="psk_identity_hint" size="8" ptr="*" type="char" const=""/>
+        <filed name="psk_client_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="psk_server_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="freelist_max_len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="wbuf_freelist" size="8" ptr="*" ref="ssl3_buf_freelist_st" type="struct ssl3_buf_freelist_st"/>
+        <filed name="rbuf_freelist" size="8" ptr="*" ref="ssl3_buf_freelist_st" type="struct ssl3_buf_freelist_st"/>
+        <filed name="srp_ctx" size="128" type="SRP_CTX" ref="srp_ctx_st"/>
+        <filed name="next_protos_advertised_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="next_protos_advertised_cb_arg" size="8" ptr="*" type="void"/>
+        <filed name="next_proto_select_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="next_proto_select_cb_arg" size="8" ptr="*" type="void"/>
+        <filed name="srtp_profiles" size="8" ptr="*" ref="stack_st_SRTP_PROTECTION_PROFILE" type="struct stack_st_SRTP_PROTECTION_PROFILE"/>
+    </typedecl>
+    <typedecl name="x509_store_st" size="144">
+        <filed name="cache" size="4" type="int" const="" ptr=""/>
+        <filed name="objs" size="8" ptr="*" ref="stack_st_X509_OBJECT" type="struct stack_st_X509_OBJECT"/>
+        <filed name="get_cert_methods" size="8" ptr="*" ref="stack_st_X509_LOOKUP" type="struct stack_st_X509_LOOKUP"/>
+        <filed name="param" size="8" ptr="*" type="X509_VERIFY_PARAM" ref="X509_VERIFY_PARAM_st"/>
+        <filed name="verify" size="8" ptr="*" funptr="true"/>
+        <filed name="verify_cb" size="8" ptr="*" funptr="true"/>
+        <filed name="get_issuer" size="8" ptr="*" funptr="true"/>
+        <filed name="check_issued" size="8" ptr="*" funptr="true"/>
+        <filed name="check_revocation" size="8" ptr="*" funptr="true"/>
+        <filed name="get_crl" size="8" ptr="*" funptr="true"/>
+        <filed name="check_crl" size="8" ptr="*" funptr="true"/>
+        <filed name="cert_crl" size="8" ptr="*" funptr="true"/>
+        <filed name="lookup_certs" size="8" ptr="*" funptr="true"/>
+        <filed name="lookup_crls" size="8" ptr="*" funptr="true"/>
+        <filed name="cleanup" size="8" ptr="*" funptr="true"/>
+        <filed name="ex_data" size="16" type="CRYPTO_EX_DATA" ref="crypto_ex_data_st"/>
+        <filed name="references" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_X509_OBJECT" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="stack_st_X509_LOOKUP" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="lhash_st_SSL_SESSION" size="4">
+        <filed name="dummy" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="_self_creat_4" size="44">
+        <filed name="sess_connect" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_connect_renegotiate" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_connect_good" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_accept" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_accept_renegotiate" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_accept_good" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_miss" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_timeout" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_cache_full" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_hit" size="4" type="int" const="" ptr=""/>
+        <filed name="sess_cb_hit" size="4" type="int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_SSL_COMP" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="ssl3_buf_freelist_st" size="24">
+        <filed name="chunklen" size="8" type="size_t" const="" ptr=""/>
+        <filed name="len" size="4" type="unsigned int" const="" ptr=""/>
+        <filed name="head" size="8" ptr="*" ref="ssl3_buf_freelist_entry_st" type="struct ssl3_buf_freelist_entry_st"/>
+    </typedecl>
+    <typedecl name="ssl3_buf_freelist_entry_st" size="8">
+        <filed name="next" size="8" ptr="*" ref="ssl3_buf_freelist_entry_st" type="struct ssl3_buf_freelist_entry_st"/>
+    </typedecl>
+    <typedecl name="srp_ctx_st" size="128">
+        <filed name="SRP_cb_arg" size="8" ptr="*" type="void"/>
+        <filed name="TLS_ext_srp_username_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="SRP_verify_param_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="SRP_give_srp_client_pwd_callback" size="8" ptr="*" funptr="true"/>
+        <filed name="login" size="8" ptr="*" type="char" const=""/>
+        <filed name="N" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="g" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="s" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="B" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="A" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="a" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="b" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="v" size="8" ptr="*" type="BIGNUM" ref="bignum_st"/>
+        <filed name="info" size="8" ptr="*" type="char" const=""/>
+        <filed name="strength" size="4" type="int" const="" ptr=""/>
+        <filed name="srp_Mask" size="8" type="long unsigned int" const="" ptr=""/>
+    </typedecl>
+    <typedecl name="stack_st_SRTP_PROTECTION_PROFILE" size="32">
+        <filed name="stack" size="32" type="_STACK" ref="stack_st"/>
+    </typedecl>
+    <typedecl name="stack_st_OCSP_RESPID" size="0"/>
+    <typedecl name="tls_session_ticket_ext_st" size="16">
+        <filed name="length" size="2" type="unsigned short" const="" ptr=""/>
+        <filed name="data" size="8" ptr="*" type="void"/>
+    </typedecl>
+    <typedecl name="srtp_protection_profile_st" size="16">
+        <filed name="name" size="8" ptr="*" const="const" type="char"/>
+        <filed name="id" size="8" type="long unsigned int" const="" ptr=""/>
+    </typedecl>
+</Root>

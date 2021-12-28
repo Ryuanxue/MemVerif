@@ -137,10 +137,6 @@ def get_srcvarname(memcpy_ast, dfa_srcvarname):
     else:
         print("get_srcvarname continue....2")
 
-
-
-
-
 def saveinfo_input_xml(dfa_functionlist, dfa_srcfunname,dfa_srcline,dfa_srcvarname):
     """
     将srcinfo保存到dfa_input.xml文件中

@@ -20,5 +20,5 @@ if __name__ == '__main__':
             """
             generate xml file accoreding to process
             """
-            command = "cd " + abspath + ";opt -load libpprocesspass.so -process " + filename + " -xmlfile " + xmlfile
+            command = "cd " + abspath + ";opt-10 -load libpprocesspass.so -process " + filename + " -xmlfile " + xmlfile
             os.system(command)

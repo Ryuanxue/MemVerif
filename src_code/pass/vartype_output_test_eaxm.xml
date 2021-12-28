@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <arg name="arg1" ptr="*" size="8" ref="test" type="struct test"/>
+    <typedecl name="test" size="32">
+        <filed name="high" type="int" const="" ptr="" size="4"/>
+        <filed name="b" type="int" const="" ptr="" size="4"/>
+        <filed name="str1" ptr="**" size="8" type="char" const="const"/>
+        <filed name="str2" ptr="*" size="8" type="char" const=""/>
+        <filed name="stu" ptr="*" size="8" ref="subtest" const="const" type="struct subtest"/>
+    </typedecl>
+    <typedecl name="subtest" size="24">
+        <filed name="sub1" type="int" const="" ptr="" size="4"/>
+        <filed name="sub2" type="long int" const="" ptr="" size="8"/>
+        <filed name="substr1" ptr="*" size="8" type="char" const=""/>
+    </typedecl>
+    <arg name="arg2" type="int" const="" ptr="" size="4"/>
+</Root>

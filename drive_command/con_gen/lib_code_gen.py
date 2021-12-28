@@ -9,13 +9,14 @@ from con_gen.lib_gen_xml import get_src_ast, get_srcvarname, saveinfo_input_xml,
     parse_c_to_ll, create_xml_function
 from gen_xml.createxml import entry_createxml
 
-is_gen_xml=True
+is_gen_xml=False
 genxml_dealed_file=[]
 
 dir_ast = {}
 global_dic = {}
 Ismodifyloclavarible = []
 fun_loop = {}
+# fun_if= {}
 globalv_list = []  # store global varible
 fun_decl_dic = {}
 global_funname = []
@@ -40,12 +41,13 @@ def get_project_path(ele):
     return temp_path
 
 
-def find_loop(sta, funname):
+def find_loop_if(sta, funname):
     for s in sta:
         if s is None:
             continue
         else:
-            if type(s) == c_ast.For or type(s) == c_ast.While or type(s) == c_ast.DoWhile:
+            if type(s) == c_ast.For or type(s) == c_ast.While or type(s) == c_ast.DoWhile \
+                    or type(s) == c_ast.If or type(s)==c_ast.Switch:
                 startline = int(str(s.coord).split(":")[1])
                 last_num = -1
                 linenum_list = []
@@ -55,28 +57,41 @@ def find_loop(sta, funname):
                 tempdic = {}
                 tempkeyname = str(startline) + ":" + str(lastline)
                 tempdic[tempkeyname] = s
-                if funname in fun_loop.keys():
-                    flag = True
-                    for loop in fun_loop[funname]:
-                        loopkeylist = list(loop.keys())[0].split(":")
-                        start_line = int(loopkeylist[0])
-                        end_line = int(loopkeylist[1])
-                        list1 = list(range(start_line, end_line))
-                        if len(list2) > len(list1):
-                            if list1[0] in list2:
-                                fun_loop[funname].append(tempdic)
-                                fun_loop[funname].remove(loop)
-                                flag = False
-                                break
-                        else:
-                            if list2[0] in list1:
-                                flag = False
-                                break
-                    if flag:
-                        fun_loop[funname].append(tempdic)
-                else:
-                    fun_loop[funname] = []
-                    fun_loop[funname].append(tempdic)
+                fun_loop[funname].append(tempdic)
+            # if type(s) == c_ast.If or type(s) == c_ast.Switch:
+            #     startline = int(str(s.coord).split(":")[1])
+            #     last_num = -1
+            #     linenum_list = []
+            #     get_last_linenum(s, last_num, linenum_list)
+            #     lastline = linenum_list[0]
+            #     list2 = list(range(startline, lastline))
+            #     tempdic = {}
+            #     tempkeyname = str(startline) + ":" + str(lastline)
+            #     tempdic[tempkeyname] = s
+            #     fun_if[funname].append(tempdic)
+                # if funname in fun_loop.keys():
+
+                    # flag = True
+                    # for loop in fun_loop[funname]:
+                    #     loopkeylist = list(loop.keys())[0].split(":")
+                    #     start_line = int(loopkeylist[0])
+                    #     end_line = int(loopkeylist[1])
+                    #     list1 = list(range(start_line, end_line))
+                    #     if len(list2) > len(list1):
+                    #         if list1[0] in list2:
+                    #             fun_loop[funname].append(tempdic)
+                    #             fun_loop[funname].remove(loop)
+                    #             flag = False
+                    #             break
+                    #     else:
+                    #         if list2[0] in list1:
+                    #             flag = False
+                    #             break
+                    # if flag:
+                    #     fun_loop[funname].append(tempdic)
+                # else:
+                #     fun_loop[funname] = []
+                #     fun_loop[funname].append(tempdic)
 
 
 def getfundef():
@@ -381,10 +396,17 @@ def modifyid(st, funname, fun_global_list, localval):
                         pass
                     else:
                         i.type.type.declname = newname
+            elif type(i.type) == c_ast.FuncDecl:
+                    if oldname in fun_global_list:
+                        pass
+                    else:
+                        i.type.type.type.declname = newname
+                    modifyid(i.type.args.params, funname, fun_global_list, localval)
             else:
                 if oldname in fun_global_list:
                     pass
                 else:
+                    print(i)
                     i.type.declname = newname
             if type(i.init) == c_ast.FuncCall:
                 modifyid(i.init, funname, fun_global_list, localval)
@@ -519,7 +541,7 @@ def modifyid(st, funname, fun_global_list, localval):
             modifyid(i, funname, fun_global_list, localval)
 
 
-def find_fun_loop(fst, funname):
+def find_fun_loop_if(fst, funname):
     """
     识别出函数中所有的loop，并记录每个loop的起始行号和结束行号
     :param fst: c_ast.FileAST(函数所在的c文件的翻译单元对应的ast)
@@ -530,9 +552,12 @@ def find_fun_loop(fst, funname):
         st = fst.ext[i]
         if type(st) == c_ast.FuncDef and st.decl.name == funname:
             child = st.body
+            fun_loop[funname] = []
+            # fun_if[funname]=[]
             for sta in child.block_items:
                 statype = type(sta)
-                if statype == c_ast.For or statype == c_ast.While or statype == c_ast.DoWhile:
+                if statype == c_ast.For or statype == c_ast.While or statype == c_ast.DoWhile \
+                        or type(sta) == c_ast.If or type(sta) == c_ast.Switch:
                     startline = int(str(sta.coord).split(":")[1])
                     last_num = -1
                     line_list = []
@@ -540,10 +565,18 @@ def find_fun_loop(fst, funname):
                     lastline = line_list[0]
                     keyname = str(startline) + ":" + str(lastline)
                     tempdic = {keyname: sta}
-                    fun_loop[funname] = []
                     fun_loop[funname].append(tempdic)
-                elif statype == c_ast.If or statype == c_ast.Switch or statype == c_ast.Compound:
-                    find_loop(sta, funname)
+                # elif statype == c_ast.If or statype == c_ast.Switch:
+                #     startline = int(str(sta.coord).split(":")[1])
+                #     last_num = -1
+                #     line_list = []
+                #     get_last_linenum(sta, last_num, line_list)
+                #     lastline = line_list[0]
+                #     keyname = str(startline) + ":" + str(lastline)
+                #     tempdic = {keyname: sta}
+                #     fun_if[funname].append(tempdic)
+                elif statype == c_ast.Compound:
+                    find_loop_if(sta,funname)
                 else:
                     pass
             break
@@ -575,10 +608,13 @@ def move_code_endpart(line_ast):
                 if t == ast_list[0]:
                     continue
                 elif t == ast_list[1]:
+                    if type(t)==c_ast.FuncCall:
+                        continue
                     rdic = []
                     depth = 0
                     linenum = ast_list[0]
                     isincludefuncall1(t, nextfunname, rdic, depth, linenum, t)
+                    print(rdic)
                     if len(rdic) > 0:
                         condtype = rdic[2]
                         ret_name = nextfunname + "_return_"
@@ -697,7 +733,7 @@ def re_move_code(rdic, nextfunname, temp_ast, re_po_flag):
 
 def find_called_fun(loopast, linenum, funname, rdic):
     '''
-    在主调函数的loop对应的ast中查找是否包含被调called函数
+    在主调函数的loop or if对应的ast中查找是否包含被调called函数
     :param loopast: 主调函数中某一个语句对应的ast
     :param linenum: called函数所在的行号
     :param funname: 被掉clled函数的函数名
@@ -706,24 +742,28 @@ def find_called_fun(loopast, linenum, funname, rdic):
     '''
     # 获得callend函数的被调用位置pos,被插入的父节点，如何进行插入
     typeloopast = type(loopast)
+    print(typeloopast)
     if typeloopast == c_ast.For:
         forinit = loopast.init
         funlist = []
         is_have_funcall(funname, forinit, linenum, funlist)
         if len(funlist) > 0:
             print(forinit)
+            return
 
         forcond = loopast.cond
         funlist = []
         is_have_funcall(funname, forcond, linenum, funlist)
         if len(funlist) > 0:
             print(forcond)
+            return
 
         fornext = loopast.next
         funlist = []
         is_have_funcall(funname, fornext, linenum, funlist)
         if len(funlist) > 0:
             print(fornext)
+            return
 
         forstmt = loopast.stmt
         if type(forstmt) == c_ast.Compound:
@@ -735,11 +775,27 @@ def find_called_fun(loopast, linenum, funname, rdic):
             depth = 1
             isincludefuncall1(sta, funname, rdic, depth, linenum, newforstmt.block_items)
 
-    elif typeloopast == c_ast.While or c_ast.DoWhile:
+    elif typeloopast == c_ast.While or typeloopast==c_ast.DoWhile:
         whstmt = loopast.stmt
         for sta in whstmt.block_items:
             depth = 1
             isincludefuncall1(sta, funname, rdic, depth, linenum, whstmt.block_items)
+    elif typeloopast == c_ast.If:
+
+        forstmt = loopast.stmt
+        if type(forstmt) == c_ast.Compound:
+            pass
+        else:
+            loopast.stmt = c_ast.Compound(block_items=forstmt)
+        newforstmt = loopast.stmt
+        for sta in newforstmt.block_items:
+            depth = 1
+            isincludefuncall1(sta, funname, rdic, depth, linenum, newforstmt.block_items)
+
+
+        pass
+    elif typeloopast == c_ast.Switch:
+        pass
 
 
 def deal_global_variable(ast):
@@ -791,7 +847,7 @@ def parse_to_ast(ele, return_val):
     # relabel_list = ele.get("label")[2:-2]
     # relabellist_list = relabel_list.split("\n")
     # print(ele.get_name())
-    funname = getfunnmae(ele)
+    funname = getfunname(ele)
     startline = get_first_lineinfo(ele)  # 取第一行
     rindex = startline.rfind(":")
     rslash = startline.rfind("/")
@@ -809,7 +865,7 @@ def parse_to_ast(ele, return_val):
         else:
             fun_global_list = global_dic[funname]
             modifylocalvarible(tempast, funname, fun_global_list, return_val)
-            find_fun_loop(tempast, funname)
+            find_fun_loop_if(tempast, funname)
             Ismodifyloclavarible.append(funname)
     else:
         command1 = "cd " + fpath + ";gcc -E " + pathname1 + " -I../crypto -I.. -I../include -I" + abs_fake_include + " " \
@@ -834,7 +890,7 @@ def parse_to_ast(ele, return_val):
             fun2_global_list = global_dic[funname]
 
             modifylocalvarible(tempast, funname, fun2_global_list, return_val)
-            find_fun_loop(tempast, funname)
+            find_fun_loop_if(tempast, funname)
             Ismodifyloclavarible.append(funname)
             dir_ast[filename] = tempast
             os.remove(fpath + '/fun1')
@@ -864,7 +920,7 @@ def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname,
     :return:
     """
     tempast = parse_to_ast(ele, return_val)
-    funname = getfunnmae(ele)
+    funname = getfunname(ele)
     for ext1 in tempast.ext:
         if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
             next_ast1 = ext1.body.block_items
@@ -875,7 +931,7 @@ def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname,
                 memcpy_ast =memcpy_ast_list[0]
                 get_srcvarname(memcpy_ast, dfa_srcvarname)
                 temp_c_file = get_c_filename(ele)
-                curfunname = getfunnmae(ele)
+                curfunname = getfunname(ele)
                 if temp_c_file not in dfa_filelist_c:
                     dfa_filelist_c.append(temp_c_file)
                 dfa_functionlist.append(curfunname)
@@ -886,6 +942,24 @@ def notloop_move(linenum, next_ast, ele, re_po_flag, return_val, dfa_srcvarname,
                 if len(rdic) > 0:
                     compundst = re_move_code(rdic, funname, next_ast1, re_po_flag)
                     return compundst
+
+
+def parse_indcall_xml():
+    indcall_dict = {}
+    ind_call_xml = "../../meta_data/ind_call.xml"
+    indcall_doc = parse(ind_call_xml)
+    indcall_root = indcall_doc.documentElement
+    ind_locs = indcall_root.getElementsByTagName("ind_loc")
+    for ind_loc in ind_locs:
+        ind_loc_info = ind_loc.getAttribute("info")
+        ind_callees = ind_loc.getElementsByTagName("ind_callee")
+        callee_funnames = []
+        for ind_callee in ind_callees:
+            callee_funname = ind_callee.getAttribute("funname")
+            callee_funnames.append(callee_funname)
+        indcall_dict[ind_loc_info] = callee_funnames
+    return indcall_dict
+
 
 
 def get_bb_last_num(bbnode, funname):
@@ -899,9 +973,15 @@ def get_bb_last_num(bbnode, funname):
     bblabel_linenum = 0
     callinst = bblabel_list[-2]
     lineinfo = bblabel_list[-3]
-    if 'call' in callinst and funname in callinst:
+    if 'call' in callinst:
+        infoind=lineinfo.index("/home")
+        lineinfo=lineinfo[infoind:]
         ind = lineinfo.index(":")
-        bblabel_linenum = int(lineinfo[ind + 1:-2])
+        indcall_dict=parse_indcall_xml()
+        if lineinfo[:-2] in indcall_dict.keys():
+            bblabel_linenum = int(lineinfo[ind + 1:-2])
+        if funname in callinst:
+            bblabel_linenum = int(lineinfo[ind + 1:-2])
     return bblabel_linenum
 
 
@@ -961,14 +1041,14 @@ def split_path_end(blocknamelist, split_pathlist):
 
 def deal_recur(list3, prefunname, param_list, return_val, dfa_srcline, dfa_srcvarname):
     firstele = list3[0]
-    firsfunname = getfunnmae(firstele)
+    firsfunname = getfunname(firstele)
     if firsfunname != prefunname:
         print("recur continue....")
         for ele in list3:
             print(ele.get_name())
     else:
         tempast = parse_to_ast(firstele, return_val)
-        funname = getfunnmae(firstele)
+        funname = getfunname(firstele)
         for ext1 in tempast.ext:
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
                 # deal_return(ext1, funname)
@@ -1008,7 +1088,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
     part = partlist[0]
     start1 = part[0]
     callerele = pathlist[start1]
-    callerfunname = getfunnmae(callerele)
+    callerfunname = getfunname(callerele)
     if type(callerast) == c_ast.Compound:
         next_ast = callerast.block_items
     else:
@@ -1021,7 +1101,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
         endind = t[1]
         part_path1 = pathlist[startind:endind + 1]
         next_ele1 = pathlist[endind + 1]
-        calledfunname = getfunnmae(next_ele1)
+        calledfunname = getfunname(next_ele1)
         templist = []
         get_bb_linenum(part_path1, calledfunname, templist, blocknamelist)
         if len(templist) > 0:
@@ -1053,7 +1133,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
 #         end = part[1]
 #         part_path = pathlist[start: end+1]
 #         pre_ele = pathlist[start - 1]
-#         calledfunname = getfunnmae(pre_ele)  # 被调用函数的函数名
+#         calledfunname = getfunname(pre_ele)  # 被调用函数的函数名
 #         ret_list = []
 #         get_bb_linenum(part_path, calledfunname, ret_list, blocknamelist)
 #         if len(ret_list) > 0:
@@ -1062,7 +1142,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
 #             callerele = pathlist[start]
 #             loop_list = []
 #             tempast = parse_to_ast(callerele)
-#             callerfunname = getfunnmae(callerele)
+#             callerfunname = getfunname(callerele)
 #             isloop = judge_line_inloop(callerfunname, linenum, loop_list)
 #             if isloop:
 #                 calledele = pathlist[start - 2]  # 上一个区间中的元素
@@ -1085,7 +1165,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
 #                         endind = t[1]
 #                         part_path1 = partlist[startind:endind+1]
 #                         pre_ele1 = pathlist[startind - 1]
-#                         calledfunname = getfunnmae(pre_ele1)
+#                         calledfunname = getfunname(pre_ele1)
 #                         templist = []
 #                         get_bb_linenum(part_path1, calledfunname, templist, blocknamelist)
 #                         if len(templist) > 0:
@@ -1109,7 +1189,7 @@ def loop_move_part_positive_order(partlist, pathlist, callerast, re_po_flag, ret
 
 
 def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabel, labeldefine,
-                  return_val, ndfa_srcvaname, dfa_srcfunname, dfa_srcline):
+                  return_val, ndfa_srcvaname, dfa_srcfunname, dfa_srcline,src_funlist):
     """
     对最终路径的endpart部分进行处理（将每条路径根据end和start标识分成不同的区间，endpart部分包含第一区间到end与start之间的区间）
     :param pathlist: 列表（包含第一区间到end与start之间的区间的一条子路径）
@@ -1131,13 +1211,14 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
         end = part[-1]
         partpath = pathlist[start:end + 1]
         startele = partpath[0]
-        callerfunname = getfunnmae(startele)
+        callerfunname = getfunname(startele)
         ast = parse_to_ast(startele, return_val)
         tempast = []
         fun_ast_map = {callerfunname: tempast}
         # if part==split_path[0] and callerast is not None:
         #     tempast.append(callerast)
         varlist = []
+        decl_list = []
         for ext1 in ast.ext:
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == callerfunname:
                 # deal_return(ext1, callerfunname)
@@ -1204,9 +1285,12 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
                     continue
                 findflag = [False]
                 recurfindline(bodyast, linenum, bbname, bblocklist, varlist, tempast, inc_linenum, gotolabel,
-                              labeldefine, findflag)
-                if findflag[0] is False:
-                    find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum)
+                              labeldefine, findflag,decl_list,callerfunname,src_funlist)
+                print("??calllerfun")
+                print(callerfunname)
+                print(src_funlist[-1])
+                if findflag[0] is False and callerfunname!=src_funlist[-1]:
+                    find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum,decl_list)
         for va in varlist:
             flg = False
             finddecl(funast.decl, va, param_list, flg)
@@ -1217,6 +1301,15 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
     print("line ast....976")
     for t in line_ast:
         print(t)
+        print(list(t.keys())[0])
+        key=list(t.keys())[0]
+        for sta in t[key]:
+            print(type(sta))
+            if type(sta)==type(3):
+                continue
+            print(generator.visit(sta))
+
+
     final_ast = move_code_endpart(line_ast)
     ret_list.append(splitindex)
     ret_list.append(final_ast)
@@ -1235,7 +1328,7 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
 #     """
 #     start = end_start_part[0]
 #     callerele = pathlist[start]
-#     callerfunname = getfunnmae(callerele)
+#     callerfunname = getfunname(callerele)
 #     ind = split_pathlist.index(end_start_part)
 #     endpart_list = []
 #     blocknamelist=[]
@@ -1286,7 +1379,7 @@ def deal_end_part(pathlist, startline, ret_list, param_list, callerast, gotolabe
 # print(generator.visit(f_ast))
 
 
-def find_loopid(st, varlist):
+def find_loopid(st, varlist,decl_list):
     """
     在loop（loop的ast）中找到使用的变量
     :param st:c_ast类型的ast(loop)
@@ -1295,12 +1388,14 @@ def find_loopid(st, varlist):
     """
     if type(st) == c_ast.Decl:
         if st.init is not None:
-            findid(st.init, varlist)
+            findid(st.init, varlist,decl_list)
         else:
             return
     if type(st) == c_ast.ID:
         idname = st.name
-        if idname in varlist:
+        if idname in decl_list:
+            pass
+        elif idname in varlist:
             pass
         else:
             varlist.append(idname)
@@ -1310,29 +1405,33 @@ def find_loopid(st, varlist):
                 continue
             elif type(i) == c_ast.Decl:
                 if i.init is not None:
-                    findid(st.init, varlist)
+                    findid(st.init, varlist,decl_list)
                 else:
                     continue
             elif type(i) == c_ast.ID and type(st) != c_ast.FuncCall:
                 idname = i.name
-                if idname in varlist:
+                if idname in decl_list:
+                    continue
+                elif idname in varlist:
                     continue
                 else:
                     varlist.append(idname)
             else:
-                findid(i, varlist)
+                findid(i, varlist,decl_list)
 
 
-def findid(st, varlist):
+def findid(st, varlist,decl_list):
     """
     找出st（ast节点）中使用到的变量
     :param st:c_ast类型的ast节点
-    :param varlist:列表（用于存放为找到的tring类型的变量面）
+    :param varlist:列表（用于存放为找到的tring类型的变量name）
     :return:无
     """
     if type(st) == c_ast.ID:
         idname = st.name
-        if idname in varlist:
+        if idname in decl_list:
+            return
+        elif idname in varlist:
             return
         elif idname.endswith("_return_"):
             return
@@ -1342,8 +1441,13 @@ def findid(st, varlist):
     for i in st:
         if (i == None):
             break
+        elif type(i) == c_ast.Decl:
+            decl_list.append(i.name)
+            findid(i.init,varlist,decl_list)
         elif type(i) == c_ast.ID and type(st) != c_ast.FuncCall:
             idname = i.name
+            if idname in decl_list:
+                continue
             if idname in varlist:
                 continue
             elif idname.endswith("_return_"):
@@ -1351,11 +1455,11 @@ def findid(st, varlist):
             else:
                 varlist.append(idname)
         else:
-            findid(i, varlist)
+            findid(i, varlist,decl_list)
 
 
 def recurfindline(bodyast, line, blockname, blocknamelist, varlist, tempast, inc_linenum, gotolabel, labeldefine,
-                  findflag):
+                  findflag,decl_list,funname,src_funlist):
     """
     根据给定行号，递归的在函数体中找到行号对应的最大的ast
     :param bodyast: c_ast类型的节点，初始的时候为函数体对应的bodyast，之后为每条c语句对应的ast
@@ -1384,10 +1488,10 @@ def recurfindline(bodyast, line, blockname, blocknamelist, varlist, tempast, inc
         get_last_linenum(bodyast, lastnum, inc_linenum)
         if funn in blocknamelist:
             pass
-        elif type(bodyast) == c_ast.Decl:
+        elif funname not in src_funlist:
             pass
         else:
-            findid(bodyast, varlist)
+            findid(bodyast, varlist,decl_list)
         find_goto_balel(bodyast, gotolabel, labeldefine)
         tempast.append(bodyast)
         findflag[0] = True
@@ -1407,17 +1511,17 @@ def recurfindline(bodyast, line, blockname, blocknamelist, varlist, tempast, inc
                 # 判断何时需要将声明记录到para_list
                 if funn in blocknamelist:
                     pass
-                elif type(c) == c_ast.Decl:
+                elif funname not in src_funlist:
                     pass
                 else:
-                    findid(c, varlist)
+                    findid(c, varlist,decl_list)
                 find_goto_balel(c, gotolabel, labeldefine)
                 tempast.append(c)
                 findflag[0] = True
                 return
             else:
                 recurfindline(c, line, blockname, blocknamelist, varlist, tempast, inc_linenum, gotolabel, labeldefine,
-                              findflag)
+                              findflag,decl_list,funname,src_funlist)
         else:
             if str(line) in str(c.coord):
                 print(str(c.coord))
@@ -1429,10 +1533,10 @@ def recurfindline(bodyast, line, blockname, blocknamelist, varlist, tempast, inc
                 # 判断何时需要将声明记录到para_list
                 if funn in blocknamelist:
                     pass
-                elif type(c) == c_ast.Decl:
+                elif funname not in src_funlist:
                     pass
                 else:
-                    findid(c, varlist)
+                    findid(c, varlist,decl_list)
                 find_goto_balel(c, gotolabel, labeldefine)
                 tempast.append(c)
                 findflag[0] = True
@@ -1534,8 +1638,8 @@ def judge_recur(pathlist, subpart):
 
     preele = pathlist[start - 1]
     startele = pathlist[start]
-    prefunname = getfunnmae(preele)
-    startfunname = getfunnmae(startele)
+    prefunname = getfunname(preele)
+    startfunname = getfunname(startele)
     if prefunname == startfunname:
         recur_flag = True
     return recur_flag
@@ -1579,6 +1683,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
     is_first_part = False
     if len(endlist) > 0:  # endlist不为空
         endlist.reverse()  # 逆转endlist
+        print(endlist)
         len_endlist=len(endlist)
         for part in endlist:
             index_part=endlist.index(part)
@@ -1587,25 +1692,69 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
             print(part)
             '''解析c文件获取ast'''
             varlist = []
-            if part == endlist[-1]:
-                break
+            decl_list= []
+            # if part == endlist[-1]:
+            #     break
             start = part[0]
             end = part[1]
             partpath = pathlist[start: end + 1]
+            if part ==endlist[1]:
+                curele=pathlist[start]
+                curfunname=getfunname(curele)
+                loop_list=[]
+                tempast=parse_to_ast(curele,return_val)
+                linenum=getlinenum(curele)
+                isloop=judge_line_inloop(curfunname,linenum,loop_list)
+                if isloop:
+                    loop_range = loop_list[1]
+                    loop_start = int(loop_range[0])
+                    loop_end = int(loop_range[1])
+                    int_loop_range = list(range(loop_start, loop_end + 1))
+                    for p in partpath:
+                        if p.get_name().endswith("_end"):
+                            continue
+                        lastlinenum=getbb_lastlinenum(p)
+                        if p not in int_loop_range:
+                            ret_index=blocknamelist.index(p.get_name())
+                            split_flag=True
+                    retlist=[]
+                    if split_flag:
+                        retlist.append("three")
+                        retlist.append(pathlist[ret_index:])
+                        retlist.append(loop_list[0])
+                    elif split_flag is False:
+                        retlist.append("four")
+                    find_loopid(loop_list[0],varlist,decl_list)
+                    for ext1 in tempast.ext:
+                        if type(ext1) == c_ast.FuncDef and ext1.decl.name == curfunname:
+                            for va in varlist:
+                                flg = False
+                                finddecl(ext1.decl, va, param_list, flg)
+                                if flg == False:
+                                    finddecl(ext1.body, va, param_list, flg)
+                    return retlist
+
+                else:
+                    break
+
+
             called_ele = pathlist[start - 1]
-            called_funname = getfunnmae(called_ele)
+            called_funname = getfunname(called_ele)
             # 判断callend函数所在的基本块和行号
+
             ret_list = []
+            print(called_funname)
             get_bb_linenum_inloop(partpath, called_funname, ret_list, blocknamelist)
             if len(ret_list) > 0:
                 linenum = ret_list[0]
                 """将loop所在的part拆分成两部分"""
+                print(ret_list)
                 splitindex = ret_list[1]
                 curele = pathlist[splitindex]
                 # 判断called函数的行号是否在loop中
                 loop_list = []
                 tempast = parse_to_ast(curele, return_val)
-                curfunname = getfunnmae(curele)
+                curfunname = getfunname(curele)
                 isloop = judge_line_inloop(curfunname, linenum, loop_list)
                 if isloop:
                     """
@@ -1625,7 +1774,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
                         dfa_functionlist.append(curfunname)
 
                     print(generator.visit(loop_list[0]))
-                    find_loopid(loop_list[0], varlist)
+                    find_loopid(loop_list[0], varlist,decl_list)
                     if part == endlist[0]:
                         is_first_part = True
                     subpart_ele_index = ret_list[2]
@@ -1662,7 +1811,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
                             endind = t[1]
                             part_path1 = pathlist[startind:endind + 1]
                             pre_ele1 = pathlist[startind - 1]
-                            funname = getfunnmae(pre_ele1)
+                            funname = getfunname(pre_ele1)
                             print(funname)
                             templist = []
                             get_bb_linenum(part_path1, funname, templist, blocknamelist)
@@ -1672,7 +1821,7 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
 
                                 if is_gen_xml:
                                     temp_c_file = get_c_filename(bbele)
-                                    temp_funname = getfunnmae(bbele)
+                                    temp_funname = getfunname(bbele)
                                     if temp_c_file not in dfa_filelist_c:
                                         dfa_filelist_c.append(temp_c_file)
                                     dfa_functionlist.append(temp_funname)
@@ -1737,6 +1886,19 @@ def deal_reverse_loop(pathlist, param_list, gotolabel, labeldefine, return_val, 
         retlist.append(pathlist)
     return retlist
 
+def get_src_loc_call_fun(pathlist):
+    srcfun_list=[]
+
+    for p in pathlist:
+        funname = getfunname(p)
+        bbname=p.get_name()
+        if bbname.endswith("_start"):
+            break
+        elif funname not in srcfun_list:
+            srcfun_list.append(funname)
+    return srcfun_list
+
+
 
 def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val, srcinfo):
     """
@@ -1772,7 +1934,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
     is_dfa = False  # 用于判断是否需要数据流分析
     dfa_functionlist = []  # 存放loop入口到source 的函数名
     if is_gen_xml:
-        dfa_srcfunname = getfunnmae(srcinfo[2])  # src所在函数名用于dfa
+        dfa_srcfunname = getfunname(srcinfo[2])  # src所在函数名用于dfa
         dfa_srcline = srcinfo[1]  # dfa src行号
     else:
         dfa_srcfunname = None
@@ -1786,6 +1948,10 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
         bbname = bb.get_name()
         bblist.append(bbname)
     split_path_pos(bblist, split_pathlist)
+    src_fun_list=get_src_loc_call_fun(pathlist)
+
+    print("?????????????????????")
+    print(src_fun_list)
     """
     1.首先判断一条路径是否拥有end节点
     """
@@ -1806,7 +1972,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                 """递归类型处理"""
                 start = end_start_part[0][0]
                 preele = pathlist[start - 1]
-                prefunname = getfunnmae(preele)
+                prefunname = getfunname(preele)
                 re_po_flag = "positive"
                 """
                 目前只支持在src所在的函数为递归函数
@@ -1944,8 +2110,8 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
             e_end = endstart_part[0][1]
             e_start_ele = pathlist[e_start - 1]
             e_end_ele = pathlist[e_end]
-            e_start_funname = getfunnmae(e_start_ele)
-            e_end_funname = getfunnmae(e_end_ele)
+            e_start_funname = getfunname(e_start_ele)
+            e_end_funname = getfunname(e_end_ele)
             if e_start_funname == e_end_funname:
                 """source和sink同一个函数中，且这个函数被一个loop调用"""
                 print("source and sink in a loop...")
@@ -2074,7 +2240,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     dealed_ast = [callerast]
                     line_ast = []
                     deal_start_part(bblist, startpathlist, startlinenum, endline, dealed_ast, line_ast, param_list,
-                                    None, gotolabel, labeldefine, return_val, None, None, None)
+                                    None, gotolabel, labeldefine, return_val, None, None, None,src_fun_list)
                     line_ast.reverse()
                     gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine, return_val)
                 elif rloop_list[0] == "three":
@@ -2095,7 +2261,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                     endpathlist = subpathlist[start:end + 1]
                     dep_list = []
                     deal_end_part(endpathlist, starline, dep_list, param_list, callerast, gotolabel, labeldefine,
-                                  return_val, None, None, None)
+                                  return_val, None, None, None,src_fun_list)
                     if len(dep_list) > 0:
                         split_index = dep_list[0]
                         startpathlist = subpathlist[split_index:]
@@ -2106,7 +2272,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                         inc_line = dep_list[2]
                         deal_start_part(bblist, startpathlist, startlinenum, endline, endpart_astlist, line_ast,
                                         param_list,
-                                        inc_line, gotolabel, labeldefine, return_val, None, None, None)
+                                        inc_line, gotolabel, labeldefine, return_val, None, None, None,src_fun_list)
                         print("line ast...")
                         for t in line_ast:
                             print(t)
@@ -2142,7 +2308,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
                         inc_line = dep_list[2]
                         deal_start_part(bblist, startpathlist, startlinenum, endline, endpart_astlist, line_ast,
                                         param_list,
-                                        inc_line, gotolabel, labeldefine, return_val, None, None, None)
+                                        inc_line, gotolabel, labeldefine, return_val, None, None, None,src_fun_list)
                         line_ast.reverse()
                         gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine,
                                             return_val)
@@ -2153,7 +2319,7 @@ def gen_code_entry(pathlist, startline, endline, outfile, genfunname, return_val
         dealed_ast = []
         line_ast = []
         deal_start_part(bblist, pathlist, startline, endline, dealed_ast, line_ast, param_list, None, gotolabel,
-                        labeldefine, return_val, ndfa_srcvarname, dfa_srcfunname, dfa_srcline)
+                        labeldefine, return_val, ndfa_srcvarname, dfa_srcfunname, dfa_srcline,src_fun_list)
         line_ast.reverse()
         gen_final_startpart(line_ast, outfile, genfunname, param_list, gotolabel, labeldefine, return_val)
 
@@ -2295,6 +2461,31 @@ def get_last_lineinfo(no):
     return pathline[-1]
 
 
+def getbb_lastlinenum(ele):
+    """
+    获取基本块中第一条语句的行号
+    :param ele: Node（基本块节点）
+    :return: string型的行号
+    """
+    pathline=[]
+    relabel_list = ele.get("label")[2:-2]
+    relabellist_list = relabel_list.split("\n")
+    relist1_linenum = 0
+    for l in relabellist_list:
+        if "/home/" in l:
+            if l.startswith('BB'):
+                # print(l)
+                index = l.index('/home/')
+                l1 = l[index:]
+                pathline.append(l1)
+            else:
+                pathline.append(l)
+    lastline=pathline[-1]
+    ind=lastline.index(":")
+    relist1_linenum=lastline[ind+1:-2]
+    return relist1_linenum
+
+
 def get_lineinfo(no):
     """
     将所有以“/home”开始的行信息添加到列表中（保证列表中的信息不重复）
@@ -2413,12 +2604,12 @@ def finddecl(child, va, parm_list, flg):
     #         finddecl(c, va, parm_list, flg)
 
 
-def find_in_return(linenum, tempast, funname, varlist, inc_linenum):
+def find_in_return(linenum, tempast, funname, varlist, inc_linenum,decl_list):
     if funname in global_return_sta.keys():
         tempdic = global_return_sta[funname]
         if linenum in tempdic.keys():
             returnsta = tempdic[linenum][0]
-            findid(returnsta, varlist)
+            findid(returnsta, varlist,decl_list)
             tempast.append(returnsta)
             if len(inc_linenum) > 0:
                 inc_linenum[0] = tempdic[linenum][1]
@@ -2427,7 +2618,7 @@ def find_in_return(linenum, tempast, funname, varlist, inc_linenum):
 
 
 def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, line_ast, param_list, inc_line, gotolabel,
-                    labeldefine, return_val, ndfa_srcvarname, dfa_srcfunnme, dfa_srcline):
+                    labeldefine, return_val, ndfa_srcvarname, dfa_srcfunnme, dfa_srcline,src_fun_list):
     """
     处理最终路径列表中的startpart部分（包括本身路径单重没有_end节点的情况，将路径拆分出startpart的情况）
     :param blocknamelist: 列表（包含所有未拆分情况下的基本块name）
@@ -2451,7 +2642,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
         end = part[-1]
         partpath = pathlist[start:end + 1]
         startele = partpath[0]
-        callerfunname = getfunnmae(startele)
+        callerfunname = getfunname(startele)
         ast = parse_to_ast(startele, return_val)
 
         tempast = []
@@ -2461,6 +2652,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                 for t in dealed_ast:
                     tempast.append(t)
         varlist = []
+        decl_list = []
         for ext1 in ast.ext:
             if type(ext1) == c_ast.FuncDef and ext1.decl.name == callerfunname:
                 funast = copy.deepcopy(ext1)
@@ -2495,13 +2687,16 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                         break
                     findflag = [False]
                     recurfindline(bodyast, linenum, bbname, bblocklist, varlist, tempast, inc_linenum, gotolabel,
-                                  labeldefine, findflag)
-                    if findflag[0] is False:
-                        find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum)
+                                  labeldefine, findflag,decl_list,callerfunname,src_fun_list)
+                    print("??calllerfun")
+                    print(callerfunname)
+                    print(src_fun_list[-1])
+                    if findflag[0] is False and callerfunname !=src_fun_list[-1]:
+                        find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum,decl_list)
             line_ast.append(fun_ast_map)
         else:
             called_ele = pathlist[end + 1]
-            called_funname = getfunnmae(called_ele)
+            called_funname = getfunname(called_ele)
             # 判断callend函数所在的基本块和行号
             ret_list = []
             get_bb_linenum_inloop(partpath, called_funname, ret_list, bblocklist)
@@ -2512,7 +2707,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                 curele = pathlist[splitindex]
                 # 判断called函数的行号是否在loop中
                 loop_list = []
-                curfunname = getfunnmae(curele)
+                curfunname = getfunname(curele)
                 isloop = judge_line_inloop(curfunname, called_linenum, loop_list)
                 if isloop:
                     loop_range = loop_list[1]
@@ -2521,8 +2716,10 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                     funn = 'BB' + callerfunname + '_start'
                     if funn in blocknamelist:
                         pass
+                    elif curfunname not in src_fun_list:
+                        pass
                     else:
-                        find_loopid(loopast, varlist)
+                        find_loopid(loopast, varlist,decl_list)
                     loop_start = loop_range[0]
                     loop_end = loop_range[1]
                     int_loop_range = range(loop_start, loop_end + 1)
@@ -2546,9 +2743,12 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                                     break
                                 findflag = [False]
                                 recurfindline(bodyast, linenum, bbname, bblocklist, varlist, tempast, inc_linenum,
-                                              gotolabel, labeldefine, findflag)
-                                if findflag[0] is False:
-                                    find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum)
+                                              gotolabel, labeldefine, findflag,decl_list,callerfunname,src_fun_list)
+                                print("??calllerfun")
+                                print(callerfunname)
+                                print(src_fun_list[-1])
+                                if findflag[0] is False and callerfunname !=src_fun_list[-1]:
+                                    find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum,decl_list)
                         if is_inloop:
                             tempast.append(loopast)
                             break
@@ -2569,7 +2769,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                             endind = t[1]
                             part_path1 = pathlist[startind:endind + 1]
                             next_ele = pathlist[endind + 1]
-                            funname = getfunnmae(next_ele)
+                            funname = getfunname(next_ele)
                             print(funname)
                             templist = []
                             get_bb_linenum(part_path1, funname, templist, bblocklist)
@@ -2602,9 +2802,12 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                                 break
                             findflag = [False]
                             recurfindline(bodyast, linenum, bbname, bblocklist, varlist, tempast, inc_linenum,
-                                          gotolabel, labeldefine, findflag)
-                            if findflag[0] is False:
-                                find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum)
+                                          gotolabel, labeldefine, findflag,decl_list,callerfunname,src_fun_list)
+                            print("??calllerfun")
+                            print(callerfunname)
+                            print(src_fun_list[-1])
+                            if findflag[0] is False and callerfunname != src_fun_list[-1]:
+                                find_in_return(linenum, tempast, callerfunname, varlist, inc_linenum,decl_list)
                     line_ast.append(fun_ast_map)
         for va in varlist:
             flg = False
@@ -2613,7 +2816,7 @@ def deal_start_part(blocknamelist, pathlist, startline, endline, dealed_ast, lin
                 finddecl(funast.body, va, param_list, flg)
 
 
-def getfunnmae(ele):
+def getfunname(ele):
     """
     获取此基本块所属函数的函数名
     :param ele:Node（基本块）
@@ -2637,13 +2840,13 @@ def get_classifypath_key(pathlist):
     :return: string(key值）
     """
     p1 = pathlist[0]
-    prefunname = getfunnmae(p1)
+    prefunname = getfunname(p1)
     prebbname = p1.get_name()
     k = 1
     key = prefunname + "_" + str(k)
     for i in range(1, len(pathlist)):
         curp = pathlist[i]
-        curfunname = getfunnmae(curp)
+        curfunname = getfunname(curp)
         curbbname = curp.get_name()
         if prebbname.endswith("_start") or prebbname.endswith("_end"):
             k = k + 1
@@ -2923,7 +3126,7 @@ def loop_move(loopast, linenum, ele, re_po_flat, return_val,dfa_srcvarname,dfa_s
     :return: ext1.body.block_items
     """
     tempast = parse_to_ast(ele, return_val)
-    funname = getfunnmae(ele)
+    funname = getfunname(ele)
     for ext1 in tempast.ext:
         if type(ext1) == c_ast.FuncDef and ext1.decl.name == funname:
             # deal_return(ext1, funname)
@@ -2937,17 +3140,21 @@ def loop_move(loopast, linenum, ele, re_po_flat, return_val,dfa_srcvarname,dfa_s
                 print("srcname in loop_move....")
                 print(dfa_srcvarname[0])
                 temp_c_file = get_c_filename(ele)
-                curfunname=getfunnmae(ele)
+                curfunname=getfunname(ele)
                 if temp_c_file not in dfa_filelist_c:
                     dfa_filelist_c.append(temp_c_file)
                 dfa_functionlist.append(curfunname)
 
             rdic = []
+            print("flag....")
+            print(loopast)
+            print(linenum)
+            print(funname)
             find_called_fun(loopast, linenum, funname, rdic)
             if len(rdic) > 0:
                 compoundst = re_move_code(rdic, funname, next_ast, re_po_flat)
-                # print("compoundst....1")
-                # print(compoundst)
+                print("compoundst....1")
+                print(compoundst)
                 return compoundst
             break
 
@@ -2962,11 +3169,14 @@ def judge_line_inloop(funname, startlinenum, ret_list):
     """
     isloop = False
     if funname in fun_loop.keys():
+        print("loop if.....")
+        print(fun_loop)
         for loop in fun_loop[funname]:
             loopkey = list(loop.keys())[0].split(":")
             start = int(loopkey[0])
             end = int(loopkey[1])
-            templist = list(range(start, end))
+            templist = list(range(start, end+1))
+            print(templist)
             if int(startlinenum) in templist:
                 onlyloopast = copy.deepcopy(loop[list(loop.keys())[0]])
                 loop_list = [start, end]
@@ -2982,11 +3192,13 @@ def get_bb_linenum_inloop(part_path, called_funname, ret_list, bblocklist):
     在区间中找被调用函数，并获取被调用函数的行号
     :param part_path: 子区间（包含一些基本块）
     :param called_funname: called函数的函数名
-    :param ret_list: 返回值列表，包含行号和ccalled函数所在基本块在整个基本款列表中的索引
+    :param ret_list: 返回值列表，包含行号和ccalled函数所在基本块在整个基本kuai列表中的索引
     :param bblocklist:基本块的name列表
     :return:无
     """
     """获取子区间中对called函数调用所在的行号"""
+    for p in part_path:
+        print(p.get_name())
     n = 0
     for p in part_path:
         if p.get_name().endswith("_end") or p.get_name().endswith("_start"):
